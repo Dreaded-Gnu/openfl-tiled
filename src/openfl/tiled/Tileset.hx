@@ -1,0 +1,145 @@
+package openfl.tiled;
+
+import openfl.geom.Rectangle;
+import openfl.events.Event;
+import openfl.events.EventDispatcher;
+import openfl.tiled.tileset.FillMode;
+import openfl.tiled.tileset.TileRenderSize;
+import openfl.tiled.tileset.ObjectAlignment;
+import openfl.tiled.map.Orientation;
+
+class Tileset extends EventDispatcher {
+  public var firstgid(default, null):Int;
+  public var source(default, null):String;
+  public var name(default, null):String;
+  public var klass(default, null):String;
+  public var tilewidth(default, null):Int;
+  public var tileheight(default, null):Int;
+  public var spacing(default, null):Int;
+  public var margin(default, null):Int;
+  public var tilecount(default, null):Int;
+  public var columns(default, null):Int;
+  public var objectalignment(default, null):ObjectAlignment;
+  public var tilerendersize(default, null):TileRenderSize;
+  public var fillmode(default, null):FillMode;
+  public var image(default, null):openfl.tiled.Image;
+  public var tileoffset(default, null):openfl.tiled.tileset.TileOffset;
+  public var grid(default, null):openfl.tiled.tileset.Grid;
+  public var properties(default, null):openfl.tiled.Properties;
+  public var tile(default, null):Array<openfl.tiled.tileset.Tile>;
+
+  private var mMap:openfl.tiled.Map;
+
+  /**
+   * Constructor
+   * @param node
+   */
+  public function new(node:Xml, map:openfl.tiled.Map) {
+    // call parent constructor
+    super();
+    // cache map
+    this.mMap = map;
+    // parse stuff
+    this.firstgid = Std.parseInt(node.get("firstgid"));
+    this.source = node.get("source");
+    this.name = node.get("name");
+    this.klass = node.exists("class")
+      ? node.get("class")
+      : "";
+    this.tilewidth = Std.parseInt(node.get("tilewidth"));
+    this.tileheight = Std.parseInt(node.get("tileheight"));
+    this.spacing = node.exists("spacing")
+      ? Std.parseInt(node.get("spacing"))
+      : 0;
+    this.margin = node.exists("margin")
+      ? Std.parseInt(node.get("margin"))
+      : 0;
+    this.tilecount = node.exists("tilecount")
+      ? Std.parseInt(node.get("tilecount"))
+      : -1;
+    this.columns = node.exists("columns")
+      ? Std.parseInt(node.get("columns"))
+      : -1;
+    var o:String = node.get("objectalignment");
+    switch (o) {
+      case "unspecified":
+        this.objectalignment = this.mMap.orientation == Orientation.MapOrientationOrthogonal
+          ? ObjectAlignment.TilesetObjectAlignmentBottomLeft
+          : ObjectAlignment.TilesetObjectAlignmentBottom;
+      case "topleft":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentTopLeft;
+      case "top":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentTop;
+      case "topright":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentTopRight;
+      case "left":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentLeft;
+      case "center":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentCenter;
+      case "right":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentRight;
+      case "bottomleft":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentBottomLeft;
+      case "bottom":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentBottom;
+      case "bottomright":
+        this.objectalignment = ObjectAlignment.TilesetObjectAlignmentBottomRight;
+      default:
+        this.objectalignment = this.mMap.orientation == Orientation.MapOrientationOrthogonal
+          ? ObjectAlignment.TilesetObjectAlignmentBottomLeft
+          : ObjectAlignment.TilesetObjectAlignmentBottom;
+    }
+    var tr:String = node.exists("tilerendersize")
+      ? node.get("tilerendersize")
+      : "tile";
+    switch (tr) {
+      case "tile":
+        this.tilerendersize = TileRenderSize.TilesetTileRenderSizeTile;
+      case "grid":
+        this.tilerendersize = TileRenderSize.TilesetTileRenderSizeGrid;
+    }
+    var fm:String = node.exists("fillmode")
+      ? node.get("fillmode")
+      : "stretch";
+    switch (fm) {
+      case "stretch":
+        this.fillmode = FillMode.TilesetFillModeStretch;
+      case "preserve-aspect-fit":
+        this.fillmode = FillMode.TilesetFillModePreserveAspectFit;
+    }
+
+    for (child in node) {
+      if (child.nodeType != Xml.Element) {
+        continue;
+      }
+
+      switch (child.nodeName) {
+        case "image":
+          this.image = new openfl.tiled.Image(child);
+      }
+    }
+  }
+
+  /**
+   * Load callback
+   */
+  public function load():Void {
+    if (this.image != null) {
+      // add complete listener
+      this.image.addEventListener(Event.COMPLETE, onImageCompleted);
+      // load image
+      this.image.load();
+    }
+  }
+
+  /**
+   * Callback for on image completed
+   * @param event
+   */
+  private function onImageCompleted(event:Event):Void {
+    // remove event listener
+    this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
+    // fire complete event
+    this.dispatchEvent(new Event(Event.COMPLETE));
+  }
+}
