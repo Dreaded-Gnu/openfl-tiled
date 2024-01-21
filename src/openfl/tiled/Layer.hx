@@ -1,5 +1,9 @@
 package openfl.tiled;
 
+import openfl.geom.ColorTransform;
+import openfl.errors.Error;
+import openfl.tiled.map.RenderOrder;
+import openfl.display.Tile;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
@@ -83,41 +87,87 @@ class Layer {
    * @param x
    * @param y
    */
-  public function render(displayObject:Sprite, x:Int, y:Int, offsetX:Int, offsetY:Int):Void {
-    // calculate array position depending on x / y
-    var id:Int = this.mMap.width * x + y;
-    // get gid
-    var gid:Int = this.data.tile[id].gid;
-    // handle invalid
-    if (0 == gid) {
+  public function render(displayObject:Sprite, offsetX:Int, offsetY:Int):Void {
+    if (1 != this.visible) {
       return;
     }
-    // get tileset
-    var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
-    if (null == tileset) {
-      return;
+
+    var tilesetData:std.Map<Int, openfl.display.Tileset> =
+      new std.Map<Int, openfl.display.Tileset>();
+    var tilemapData:std.Map<Int, openfl.display.Tilemap> =
+      new std.Map<Int, openfl.display.Tilemap>();
+    // render layers
+    switch (this.mMap.renderorder) {
+      case RenderOrder.MapRenderOrderRightDown:
+        for (x in 0...this.width) {
+          for (y in 0...this.height) {
+            // calculate array position depending on x / y
+            var id:Int = this.mMap.width * x + y;
+            // get gid
+            var gid:Int = this.data.tile[id].gid;
+            // handle invalid
+            if (0 == gid) {
+              continue;
+            }
+            // get tileset
+            var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+            if (null == tileset) {
+              continue;
+            }
+            // subtract first gid from tileset
+            gid -= tileset.firstgid;
+
+            if (null == tilesetData.get(gid)) {
+              var txlen:Int = Std.int(tileset.image.width / tileset.tilewidth);
+              var tylen:Int = Std.int(tileset.image.height / tileset.tileheight);
+              var rect:Array<Rectangle> = new Array<Rectangle>();
+              for (ty in 0...tylen) {
+                for (tx in 0...txlen) {
+                  rect.push(
+                    new Rectangle(
+                      tx * tileset.tilewidth,
+                      ty * tileset.tileheight,
+                      tileset.tilewidth,
+                      tileset.tileheight
+                    )
+                  );
+                }
+              }
+              var ts:openfl.display.Tileset = new openfl.display.Tileset(
+                tileset.image.bitmap.bitmapData,
+                rect
+              );
+              var tm:openfl.display.Tilemap = new openfl.display.Tilemap(
+                this.width * tileset.tilewidth,
+                this.height * tileset.tileheight,
+                ts
+              );
+              tm.alpha = this.opacity;
+              //tm.opaqueBackground = tileset.image.trans;
+              tm.tileColorTransformEnabled = true;
+              tilesetData.set(gid, ts);
+              tilemapData.set(gid, tm);
+            }
+            var t:openfl.display.Tile = new openfl.display.Tile(
+              gid,
+              y * this.mMap.tileheight + offsetY,
+              x * this.mMap.tilewidth + offsetX
+            );
+            // add tile at position
+            tilemapData.get(gid).addTile(t);
+          }
+        }
+      case RenderOrder.MapRenderOrderRightUp:
+        throw new Error('Unsupported');
+      case RenderOrder.MapRenderOrderLeftDown:
+        throw new Error('Unsupported');
+      case RenderOrder.MapRenderOrderLeftUp:
+        throw new Error('Unsupported');
     }
-    // subtract first gid from tileset
-    gid -= tileset.firstgid;
-    // extract pixels
-    var pixels = tileset.image.bitmap.bitmapData.getPixels(new Rectangle(
-      Std.int(gid % Std.int(tileset.image.width / tileset.tilewidth)) * tileset.tilewidth,
-      Std.int(gid / Std.int(tileset.image.width / tileset.tilewidth)) * tileset.tileheight,
-      tileset.tilewidth,
-      tileset.tileheight
-    ));
-    // generate new bitmap data
-    var bitmapData:BitmapData = new BitmapData(tileset.tilewidth, tileset.tileheight);
-    // set pixels
-    bitmapData.setPixels(new Rectangle(0, 0, tileset.tilewidth, tileset.tileheight), pixels);
-    // create new bitmap
-    var bitmap:Bitmap = new Bitmap(bitmapData);
-    // set x and y position
-    bitmap.y = x * this.mMap.tilewidth + offsetX;
-    bitmap.x = y * this.mMap.tileheight + offsetY;
-    bitmap.alpha = this.opacity;
-    //bitmap.opaqueBackground = tileset.image.trans;
-    // add as child to display object
-    displayObject.addChild(bitmap);
+
+    // add display objects
+    for(tm in tilemapData) {
+      displayObject.addChild(tm);
+    }
   }
 }

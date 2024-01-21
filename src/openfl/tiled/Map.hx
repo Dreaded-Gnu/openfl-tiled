@@ -1,9 +1,6 @@
 package openfl.tiled;
 
-import openfl.text.TextField;
 import openfl.display.Sprite;
-import openfl.display.DisplayObject;
-import haxe.Constraints.Function;
 import openfl.events.EventDispatcher;
 import openfl.tiled.map.StaggerIndex;
 import openfl.tiled.map.StaggerAxis;
@@ -266,49 +263,7 @@ class Map extends EventDispatcher {
     var displayObject:Sprite = new Sprite();
 
     for(layer in this.layer) {
-      // skip invisible layers
-      if (1 != layer.visible) {
-        continue;
-      }
-      // render layers
-      switch (this.renderorder) {
-        case RenderOrder.MapRenderOrderRightDown:
-          for (x in 0...this.width) {
-            for (y in 0...this.height) {
-              layer.render(displayObject, x, y, offsetX, offsetY);
-            }
-          }
-        case RenderOrder.MapRenderOrderRightUp:
-          for (x in 0...this.width) {
-            var y:Int = this.height - 1;
-            while (y >= 0) {
-              layer.render(displayObject, x, y, offsetX, offsetY);
-              // decrement y
-              y--;
-            }
-          }
-        case RenderOrder.MapRenderOrderLeftDown:
-          var x:Int = this.width - 1;
-          while (x >= 0) {
-            for (y in 0...this.height) {
-              layer.render(displayObject, x, y, offsetX, offsetY);
-            }
-            // decrement x
-            x--;
-          }
-        case RenderOrder.MapRenderOrderLeftUp:
-          var x:Int = this.width - 1;
-          while (x >= 0) {
-            var y = this.height - 1;
-            while (y >= 0) {
-              layer.render(displayObject, x, y, offsetX, offsetY);
-              // decrement y
-              y--;
-            }
-            // decrement x
-            x--;
-          }
-      }
+      layer.render(displayObject, offsetX, offsetY);
     }
     // return display object
     return displayObject;
