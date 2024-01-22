@@ -18,7 +18,7 @@ class App extends Sprite {
   public function new() {
     super();
     // load map
-    this.mMap = new openfl.tiled.Map("/isometric_grass_and_water.tmx");
+    this.mMap = new openfl.tiled.Map("/desert.tmx");
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -71,19 +71,24 @@ class App extends Sprite {
     var change:Bool = false;
     if (mKeys[Keyboard.UP]) {
       change = true;
-      mOffsetX += 10;
+      mOffsetY = Std.int(Math.max(mOffsetY - 10, 0));
     } else if (mKeys[Keyboard.DOWN]) {
       change = true;
-      mOffsetX -= 10;
+      mOffsetY = Std.int(Math.min(
+        mOffsetY + 10,
+        this.mMap.height * this.mMap.tileheight - this.stage.stageHeight
+      ));
     } else if (mKeys[Keyboard.LEFT]) {
       change = true;
-      mOffsetY += 10;
+      mOffsetX = Std.int(Math.max(mOffsetX - 10, 0));
     } else if (mKeys[Keyboard.RIGHT]) {
       change = true;
-      mOffsetY -= 10;
+      mOffsetX = Std.int(Math.min(
+        mOffsetX + 10,
+        this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth
+      ));
     }
     if (this.mMap.isLoaded && change) {
-      trace(mOffsetX, mOffsetY);
       this.switchMapRender(this.mMap.render(mOffsetX, mOffsetY));
     }
   }

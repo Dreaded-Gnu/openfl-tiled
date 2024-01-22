@@ -23,7 +23,10 @@ class Data {
       if (child.nodeType != Xml.Element) {
         continue;
       }
-      /// FIXME: HANDLE POSSIBLE ELEMENTS LIKE CHUNKS
+      switch (child.nodeName) {
+        case "chunk":
+          this.chunk.push(new openfl.tiled.layer.Chunk(child, this));
+      }
     }
 
     // handle no elements / parsed data
@@ -40,7 +43,7 @@ class Data {
               throw new Error("gzip compression not supported");
             case "zlib":
               // convert chunk to base 64 byte array
-              var data:ByteArray = base64ToByteArray(chunk);
+              var data:ByteArray = Helper.base64ToByteArray(chunk);
               // decompress it
               data.uncompress();
               // set access mode
@@ -53,7 +56,7 @@ class Data {
               throw new Error("zstd compression not supported");
             default:
               // convert chunk to base 64 byte array
-              var data:ByteArray = base64ToByteArray(chunk);
+              var data:ByteArray = Helper.base64ToByteArray(chunk);
               // set access mode
               data.endian = LITTLE_ENDIAN;
               // read tiles and push them
@@ -62,72 +65,13 @@ class Data {
               }
           }
         case "csv":
-          // split rows by newline
-          var rows:Array<String> = StringTools.trim(chunk).split("\n");
-          // iterate through rows
-          for(row in rows) {
-            // skip empty rows
-            if ("" == row) {
-              continue;
-            }
-            // split row by comma to get entries
-            var entries:Array<String> = row.split(",");
-            // loop through entries
-            for (entry in entries) {
-              // skip empty strings
-              if ("" == entry) {
-                continue;
-              }
-              // push back tile
-              this.tile.push(new openfl.tiled.layer.Tile(Std.parseInt(entry)));
-            }
+          var tileIndexList:Array<Int> = Helper.csvToArray(chunk);
+          for (tileId in tileIndexList) {
+            this.tile.push(new openfl.tiled.layer.Tile(tileId));
           }
         default:
           throw new Error("no encoding not supported");
       }
     }
-  }
-
-  private static inline var BASE64_CHARS:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-  private static function base64ToByteArray(data:String):ByteArray{
-    var output:ByteArray = new ByteArray();
-    //initialize lookup table
-    var lookup:Array<Int> = new Array<Int>();
-    for (c in 0...BASE64_CHARS.length){
-      lookup[BASE64_CHARS.charCodeAt(c)] = c;
-    }
-
-    var i:Int = 0;
-    var char:String = null;
-
-    while (i < data.length - 3) {
-      char = data.charAt(i);
-      // Ignore whitespace
-      if (char == " " || char == "\n" || char =='\r'){
-      	i++; continue;
-      }
-
-      //read 4 bytes and look them up in the table
-      var a0:Int = lookup[data.charCodeAt(i)];
-      var a1:Int = lookup[data.charCodeAt(i + 1)];
-      var a2:Int = lookup[data.charCodeAt(i + 2)];
-      var a3:Int = lookup[data.charCodeAt(i + 3)];
-
-      // convert to and write 3 bytes
-      if(a1 < 64) {
-        output.writeByte((a0 << 2) + ((a1 & 0x30) >> 4));
-      }
-      if(a2 < 64) {
-        output.writeByte(((a1 & 0x0f) << 4) + ((a2 & 0x3c) >> 2));
-      }
-      if(a3 < 64) {
-        output.writeByte(((a2 & 0x03) << 6) + a3);
-      }
-      i += 4;
-    }
-
-    // Rewind & return decoded data
-    output.position = 0;
-    return output;
   }
 }

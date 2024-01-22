@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="1" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="desert.tsx"/>
+ <layer id="1" name="Ground" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   <chunk x="0" y="0" width="16" height="16">
+   eJyTY2BgkBvFdMGSQCyFhknRrwjESmgYl1oNPPpVgFgLiFXJtF8ZiU9IjxoZ+g3Q9KHr14GGnS4BP6PzsYUftnDSQLNfDY9+kLg6Dj8TYz+yPLo56FgTGm/ImB2KOYCYEYiZCGBmNHUAc/cdqA==
+  </chunk>
+   <chunk x="16" y="0" width="16" height="16">
+   eJyTY2BgkMOD+YCYH4gFCKjDhvWw6Jcn0QxK7AfZJQbE4kAsQYZ+EGYEYiYgZkYzF8aWwoOlgZgTiLmAmBuH+Up4sPKofpL0qwCxFhCrkqlfBxpvunR0vxYerE2EfiYCWJaAfgBUiRso
+  </chunk>
+   <chunk x="32" y="0" width="16" height="16">
+   eJyTY2BgkMODCQF8ekf1j+of1T+49QMAE9EPAQ==
+  </chunk>
+   <chunk x="0" y="16" width="16" height="16">
+   eJzjZ2Bg4AdiASDmBGIuApgbTZ04FEsAsSAQCxHAwmjq5KBYHYlNCSbVHGrZO4pH8VDEAHnbHDo=
+  </chunk>
+   <chunk x="16" y="16" width="16" height="16">
+   eJzjYmBg4CICcwOxHBYsRCQWxqF/qGBJIJbCggnp04PSikCshAUTaz8l+vXJ0K9ORfsp0a8/CMKPGvo1gVgLCx7odA0Ak4wdxA==
+  </chunk>
+   <chunk x="32" y="16" width="16" height="16">
+   eJyTY2BgkMODCQF8einRrwDE8hTar0CEfikcWJpI9yshYRUg1gJiVSBWJkM/SI8BECsOUf06DJCw0yVTP7pbKNVvQAf7tXBgbSL1Uzv/KJCoHwBh0xCA
+  </chunk>
+   <chunk x="0" y="32" width="16" height="16">
+   eJyTY2BgkBvFIxaPgpENACSjDwE=
+  </chunk>
+   <chunk x="16" y="32" width="16" height="16">
+   eJyTY2BgkBsgrDCAdo9iCB4FIxsAACurDwM=
+  </chunk>
+   <chunk x="32" y="32" width="16" height="16">
+   eJyTY2BgkMODCQFktfIU6odhBQr1U2r/SNI/CkY2AAAW5QeE
+  </chunk>
+  </data>
+ </layer>
+</map>

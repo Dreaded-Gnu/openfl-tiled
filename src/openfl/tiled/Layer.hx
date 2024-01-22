@@ -188,19 +188,19 @@ class Layer {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
         // apply render offset
-        t.x += offsetY;
-        t.y += offsetX;
+        t.x += offsetX;
+        t.y += offsetY;
       case MapOrientationOrthogonal:
         t = new openfl.display.Tile(
           gid,
-          x * this.mMap.tilewidth - tileset.tileoffset.x + offsetY,
-          y * this.mMap.tileheight - tileset.tileoffset.y + offsetX
+          x * this.mMap.tilewidth - tileset.tileoffset.x - offsetX,
+          y * this.mMap.tileheight - tileset.tileoffset.y - offsetY
         );
       case MapOrientationHexagonal:
         t = new openfl.display.Tile(
           gid,
-          x * this.mMap.tilewidth - tileset.tileoffset.x + offsetY,
-          y * this.mMap.tileheight - tileset.tileoffset.y + offsetX
+          x * this.mMap.tilewidth - tileset.tileoffset.x - offsetX,
+          y * this.mMap.tileheight - tileset.tileoffset.y - offsetY
         );
         if (this.mMap.staggeraxis == MapStaggerAxisY) {
           var adjustX:Int = 0;
@@ -248,25 +248,33 @@ class Layer {
     // render layers
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
-        for (y in 0...this.height) {
-          for (x in 0...this.width) {
-            this.renderInternal(
-              displayObject,
-              offsetX,
-              offsetY,
-              x,
-              y,
-              tilesetData,
-              tilemapData
-            );
+        if (this.mMap.infinite == 1) {
+          // FIXME: ADD INFINITE MAP RENDERING
+          var currentX:Int = Std.int(offsetX / this.mMap.tilewidth);
+          var currentY:Int = Std.int(offsetY / this.mMap.tileheight);
+          for (chunk in this.data.chunk) {
+          }
+        } else {
+          for (y in 0...this.height) {
+            for (x in 0...this.width) {
+              this.renderInternal(
+                displayObject,
+                offsetX,
+                offsetY,
+                x,
+                y,
+                tilesetData,
+                tilemapData
+              );
+            }
           }
         }
       case RenderOrder.MapRenderOrderRightUp:
-        throw new Error('Unsupported');
+        throw new Error('Unsupported render order right-up');
       case RenderOrder.MapRenderOrderLeftDown:
-        throw new Error('Unsupported');
+        throw new Error('Unsupported render order left-down');
       case RenderOrder.MapRenderOrderLeftUp:
-        throw new Error('Unsupported');
+        throw new Error('Unsupported render order left-up');
     }
 
     // add display objects

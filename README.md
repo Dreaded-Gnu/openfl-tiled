@@ -16,4 +16,5 @@ Implementation of tiled map parsing for openfl and haxe
 
 - [ ] Move map files into subfolder
 - [ ] Allow path to be passed into map parser to be able to load map assets from subfolder
-- [ ] Fix weird coordinate swapping
+- [x] Fix weird coordinate swapping
+- [ ] Add support for chunk handling in layer rendering
