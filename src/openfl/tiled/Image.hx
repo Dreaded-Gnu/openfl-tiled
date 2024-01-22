@@ -1,5 +1,7 @@
 package openfl.tiled;
 
+import openfl.geom.Point;
+import openfl.display.BitmapData;
 import openfl.display.Bitmap;
 import openfl.display.Loader;
 import openfl.events.Event;
@@ -16,6 +18,7 @@ class Image extends EventDispatcher {
   public var data(default, null):openfl.tiled.layer.Data;
 
   public var bitmap(default, null):Bitmap;
+  private var mTransSet:Bool;
 
   public function new(node:Xml) {
     // call parent constructor
@@ -26,6 +29,7 @@ class Image extends EventDispatcher {
     this.trans = node.exists("trans")
       ? Std.parseInt("0xFF" + node.get("trans"))
       : 0x00000000;
+    this.mTransSet = node.exists("trans");
     this.width = Std.parseInt(node.get("width"));
     this.height = Std.parseInt(node.get("height"));
   }
@@ -34,25 +38,27 @@ class Image extends EventDispatcher {
    * Load method
    */
   public function load():Void {
-    // load image asynchronously
-    var request:URLRequest = new URLRequest(this.source);
-    var loader:Loader = new Loader();
-    loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
-    loader.load(request);
+    BitmapData.loadFromFile(this.source).onComplete(onLoadComplete);
   }
 
   /**
    * On load complete event
    * @param event
    */
-  private function onLoadComplete(event:Event) {
-    // get loader
-    var loader:Loader = cast(event.target.loader, Loader);
-    // unregister complete handler
-    loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete);
-    // save graphics
-    bitmap = cast(loader.content, Bitmap);
-    // dispatch loaded event
+  private function onLoadComplete(bitmapData:BitmapData) {
+    // manipulate pixel once trans property is set
+    if (this.mTransSet) {
+      bitmapData.threshold(
+        bitmapData,
+        bitmapData.rect,
+        new Point(0,0),
+        "==",
+        this.trans
+      );
+    }
+    // create bitmap
+    bitmap = new Bitmap(bitmapData);
+    // dispatch load complete
     this.dispatchEvent(new Event(Event.COMPLETE));
   }
 }

@@ -77,21 +77,170 @@ class Layer {
         case "data":
           this.data = new openfl.tiled.layer.Data(child);
         case "properties":
+          this.properties = new openfl.tiled.Properties(child);
       }
     }
   }
 
   /**
-   * Render layer position x / y
+   * Internal helper to render position
+   * @param displayObject
+   * @param offsetX
+   * @param offsetY
+   * @param x
+   * @param y
+   * @param tilesetData
+   * @param tilemapData
+   */
+  private function renderInternal(
+    displayObject:Sprite,
+    offsetX:Int,
+    offsetY:Int,
+    x:Int,
+    y:Int,
+    tilesetData:std.Map<Int, openfl.display.Tileset>,
+    tilemapData:std.Map<Int, openfl.display.Tilemap>
+  ):Void {
+    // calculate array position depending on x / y
+    var id:Int = this.mMap.height * y + x;
+    // get gid
+    var gid:Int = this.data.tile[id].gid;
+    // handle invalid
+    if (0 == gid) {
+      return;
+    }
+    // get tileset
+    var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+    if (null == tileset) {
+      return;
+    }
+    // subtract first gid from tileset
+    gid -= tileset.firstgid;
+
+    if (null == tilesetData.get(gid)) {
+      var txlen:Int = Std.int(tileset.image.width / tileset.tilewidth);
+      var tylen:Int = Std.int(tileset.image.height / tileset.tileheight);
+      var rect:Array<Rectangle> = new Array<Rectangle>();
+      for (ty in 0...tylen) {
+        for (tx in 0...txlen) {
+          rect.push(
+            new Rectangle(
+              tx * tileset.tilewidth + tx * tileset.spacing + tileset.margin,
+              ty * tileset.tileheight + ty * tileset.spacing + tileset.margin,
+              tileset.tilewidth,
+              tileset.tileheight
+            )
+          );
+        }
+      }
+      var ts:openfl.display.Tileset = new openfl.display.Tileset(
+        tileset.image.bitmap.bitmapData,
+        rect
+      );
+      var tm:openfl.display.Tilemap = new openfl.display.Tilemap(
+        this.width * tileset.tilewidth,
+        this.height * tileset.tileheight,
+        ts
+      );
+      tm.alpha = this.opacity;
+      tm.visible = 1 == this.visible;
+      tilesetData.set(gid, ts);
+      tilemapData.set(gid, tm);
+    }
+    // generate tile
+    var t:openfl.display.Tile = null;
+    switch (this.mMap.orientation) {
+      case MapOrientationIsometric,
+           MapOrientationStaggered:
+        t = new openfl.display.Tile(
+          gid,
+          (x - y) * (tileset.tilewidth / 2),
+          (x + y) * (tileset.tileheight / 2)
+        );
+        if (this.mMap.orientation == MapOrientationStaggered) {
+          // default x and y position
+          t.x = x * tileset.tilewidth;
+          t.y = y * tileset.tileheight;
+          if (this.mMap.staggeraxis == MapStaggerAxisY) {
+            t.y = Std.int(t.y / 2);
+            if (this.mMap.staggerindex == MapStaggerIndexOdd) {
+              t.x += Std.int(( y & 1 ) * tileset.tilewidth / 2);
+            } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
+              t.x -= Std.int(( y & 1 ) * tileset.tilewidth / 2);
+            }
+          } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
+            t.x = Std.int(t.x / 2);
+            if (this.mMap.staggerindex == MapStaggerIndexOdd) {
+              t.y += Std.int(( x & 1 ) * tileset.tileheight / 2);
+            } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
+              t.y -= Std.int(( x & 1 ) * tileset.tileheight / 2);
+            }
+          }
+        }
+        // apply position correction when tileheight is greater than tilemap
+        if (tileset.tileheight > this.mMap.tileheight) {
+          t.y = Std.int(t.y / (tileset.tileheight / this.mMap.tileheight));
+        }
+        if (tileset.tilewidth > this.mMap.tilewidth) {
+          t.x = Std.int(t.x / (tileset.tilewidth / this.mMap.tilewidth));
+        }
+        // apply tileoffset
+        t.x -= tileset.tileoffset.x;
+        t.y -= tileset.tileoffset.y;
+        // apply render offset
+        t.x += offsetY;
+        t.y += offsetX;
+      case MapOrientationOrthogonal:
+        t = new openfl.display.Tile(
+          gid,
+          x * this.mMap.tilewidth - tileset.tileoffset.x + offsetY,
+          y * this.mMap.tileheight - tileset.tileoffset.y + offsetX
+        );
+      case MapOrientationHexagonal:
+        t = new openfl.display.Tile(
+          gid,
+          x * this.mMap.tilewidth - tileset.tileoffset.x + offsetY,
+          y * this.mMap.tileheight - tileset.tileoffset.y + offsetX
+        );
+        if (this.mMap.staggeraxis == MapStaggerAxisY) {
+          var adjustX:Int = 0;
+          if (this.mMap.staggerindex == MapStaggerIndexEven) {
+            if (0 != (y + 1) % 2) {
+              adjustX = this.mMap.hexsidelength;
+            }
+          } else if(this.mMap.staggerindex == MapStaggerIndexOdd) {
+            if (0 == (y + 1) % 2) {
+              adjustX = this.mMap.hexsidelength;
+            }
+          }
+          t.y -= (this.mMap.hexsidelength / 2) * y;
+          t.x += adjustX;
+        } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
+          var adjustY:Int = 0;
+          if (this.mMap.staggerindex == MapStaggerIndexEven) {
+            if (0 != (y + 1) % 2) {
+              adjustY = this.mMap.hexsidelength;
+            }
+          } else if(this.mMap.staggerindex == MapStaggerIndexOdd) {
+            if (0 == (y + 1) % 2) {
+              adjustY = this.mMap.hexsidelength;
+            }
+          }
+          t.y += adjustY;
+          t.x -= (this.mMap.hexsidelength / 2) * x;
+        }
+    }
+    // add tile at position
+    tilemapData.get(gid).addTile(t);
+  }
+
+  /**
+   * Render layer
    * @param displayObject
    * @param x
    * @param y
    */
   public function render(displayObject:Sprite, offsetX:Int, offsetY:Int):Void {
-    if (1 != this.visible) {
-      return;
-    }
-
     var tilesetData:std.Map<Int, openfl.display.Tileset> =
       new std.Map<Int, openfl.display.Tileset>();
     var tilemapData:std.Map<Int, openfl.display.Tilemap> =
@@ -99,62 +248,17 @@ class Layer {
     // render layers
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
-        for (x in 0...this.width) {
-          for (y in 0...this.height) {
-            // calculate array position depending on x / y
-            var id:Int = this.mMap.width * x + y;
-            // get gid
-            var gid:Int = this.data.tile[id].gid;
-            // handle invalid
-            if (0 == gid) {
-              continue;
-            }
-            // get tileset
-            var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
-            if (null == tileset) {
-              continue;
-            }
-            // subtract first gid from tileset
-            gid -= tileset.firstgid;
-
-            if (null == tilesetData.get(gid)) {
-              var txlen:Int = Std.int(tileset.image.width / tileset.tilewidth);
-              var tylen:Int = Std.int(tileset.image.height / tileset.tileheight);
-              var rect:Array<Rectangle> = new Array<Rectangle>();
-              for (ty in 0...tylen) {
-                for (tx in 0...txlen) {
-                  rect.push(
-                    new Rectangle(
-                      tx * tileset.tilewidth,
-                      ty * tileset.tileheight,
-                      tileset.tilewidth,
-                      tileset.tileheight
-                    )
-                  );
-                }
-              }
-              var ts:openfl.display.Tileset = new openfl.display.Tileset(
-                tileset.image.bitmap.bitmapData,
-                rect
-              );
-              var tm:openfl.display.Tilemap = new openfl.display.Tilemap(
-                this.width * tileset.tilewidth,
-                this.height * tileset.tileheight,
-                ts
-              );
-              tm.alpha = this.opacity;
-              //tm.opaqueBackground = tileset.image.trans;
-              tm.tileColorTransformEnabled = true;
-              tilesetData.set(gid, ts);
-              tilemapData.set(gid, tm);
-            }
-            var t:openfl.display.Tile = new openfl.display.Tile(
-              gid,
-              y * this.mMap.tileheight + offsetY,
-              x * this.mMap.tilewidth + offsetX
+        for (y in 0...this.height) {
+          for (x in 0...this.width) {
+            this.renderInternal(
+              displayObject,
+              offsetX,
+              offsetY,
+              x,
+              y,
+              tilesetData,
+              tilemapData
             );
-            // add tile at position
-            tilemapData.get(gid).addTile(t);
           }
         }
       case RenderOrder.MapRenderOrderRightUp:

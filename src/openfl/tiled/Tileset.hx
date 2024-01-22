@@ -1,5 +1,7 @@
 package openfl.tiled;
 
+import openfl.net.URLRequest;
+import openfl.net.URLLoader;
 import openfl.geom.Rectangle;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
@@ -26,8 +28,12 @@ class Tileset extends EventDispatcher {
   public var tileoffset(default, null):openfl.tiled.tileset.TileOffset;
   public var grid(default, null):openfl.tiled.tileset.Grid;
   public var properties(default, null):openfl.tiled.Properties;
+  public var terraintypes(default, null):openfl.tiled.tileset.TerrainTypes;
+  public var wangset(default, null):openfl.tiled.tileset.Wangsets;
+  public var transformations(default, null):openfl.tiled.tileset.Transformations;
   public var tile(default, null):Array<openfl.tiled.tileset.Tile>;
 
+  private var mSourceLoaded:Bool = false;
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -40,8 +46,21 @@ class Tileset extends EventDispatcher {
     // cache map
     this.mMap = map;
     // parse stuff
-    this.firstgid = Std.parseInt(node.get("firstgid"));
-    this.source = node.get("source");
+    this.parse(node);
+  }
+
+  /**
+   * Helper to parse
+   * @param node
+   */
+  private function parse(node:Xml):Void {
+    // parse stuff
+    this.firstgid = node.exists("firstgid")
+      ? Std.parseInt(node.get("firstgid"))
+      : this.firstgid;
+    this.source = node.exists("source")
+      ? node.get("source")
+      : this.source;
     this.name = node.get("name");
     this.klass = node.exists("class")
       ? node.get("class")
@@ -108,6 +127,7 @@ class Tileset extends EventDispatcher {
         this.fillmode = FillMode.TilesetFillModePreserveAspectFit;
     }
 
+    this.tile = new Array<openfl.tiled.tileset.Tile>();
     for (child in node) {
       if (child.nodeType != Xml.Element) {
         continue;
@@ -116,7 +136,22 @@ class Tileset extends EventDispatcher {
       switch (child.nodeName) {
         case "image":
           this.image = new openfl.tiled.Image(child);
+        case "tile":
+          this.tile.push(new openfl.tiled.tileset.Tile(child));
+        case "tileoffset":
+          this.tileoffset = new openfl.tiled.tileset.TileOffset(child);
+        case "grid":
+          this.grid = new openfl.tiled.tileset.Grid(child);
+        case "properties":
+          this.properties = new openfl.tiled.Properties(child);
+        case "terraintypes":
+        case "wangset":
+        case "transformations":
       }
+    }
+
+    if (this.tileoffset == null) {
+      this.tileoffset = new openfl.tiled.tileset.TileOffset(null);
     }
   }
 
@@ -124,7 +159,21 @@ class Tileset extends EventDispatcher {
    * Load callback
    */
   public function load():Void {
-    if (this.image != null) {
+    if (!this.mSourceLoaded && this.source != null) {
+      // load source file
+      var request:URLRequest = new URLRequest(this.source);
+      var loader:URLLoader = new URLLoader();
+      // set load complete callback
+      loader.addEventListener(Event.COMPLETE, (event:Event) -> {
+        // rerun parsing
+        this.parse(Xml.parse(loader.data).firstElement());
+        // set loaded to true
+        this.mSourceLoaded = true;
+        // continue loading
+        this.load();
+      });
+      loader.load(request);
+    } else if (this.image != null) {
       // add complete listener
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       // load image

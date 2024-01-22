@@ -1,0 +1,13 @@
+{
+  "name": "openfl-tiled",
+  "url": "https://github.com/Dreaded-Gnu/openfl-tiled",
+  "license": "MIT",
+  "tags": [],
+  "description": "openfl tiled parsing library",
+  "version": "0.1.0",
+  "releasenote": "Initial release",
+  "contributors": [
+    "DreadedGnu"
+  ],
+  "classPath": "src"
+}
