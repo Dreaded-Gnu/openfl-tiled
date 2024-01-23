@@ -1,12 +1,8 @@
 package openfl.tiled;
 
-import openfl.geom.ColorTransform;
 import openfl.errors.Error;
 import openfl.tiled.map.RenderOrder;
 import openfl.display.Tile;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.geom.Rectangle;
 import openfl.display.Sprite;
 
 class Layer {

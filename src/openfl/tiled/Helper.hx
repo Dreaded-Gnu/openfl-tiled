@@ -1,5 +1,6 @@
 package openfl.tiled;
 
+import haxe.io.Path;
 import openfl.utils.ByteArray;
 
 class Helper {
@@ -80,5 +81,21 @@ class Helper {
       }
     }
     return result;
+  }
+
+  /**
+   * Helper to join two path parts
+   * @param path1
+   * @param path2
+   * @return String
+   */
+  public static function joinPath(path1:String, path2:String):String {
+    if (path1 == null) {
+      path1 = "";
+    }
+    if (path2 == null) {
+      path2 = "";
+    }
+    return Path.normalize(path1 + path2);
   }
 }

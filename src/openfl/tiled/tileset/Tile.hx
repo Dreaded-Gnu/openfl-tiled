@@ -17,13 +17,17 @@ class Tile extends EventDispatcher {
   public var objectgroup(default, null):openfl.tiled.ObjectGroup;
   public var animation(default, null):openfl.tiled.tileset.Animation;
 
+  private var mMap:openfl.tiled.Map;
+
   /**
    * Constructor
    * @param node
+   * @param map
    */
-  public function new(node:Xml) {
+  public function new(node:Xml, map:openfl.tiled.Map) {
     // call parent constructor
     super();
+    this.mMap = map;
     // parse properties
     this.id = Std.parseInt(node.get("id"));
     this.type = node.exists("type") ? node.get("type") : "";
@@ -48,7 +52,7 @@ class Tile extends EventDispatcher {
         case "properties":
           this.properties = new openfl.tiled.Properties(child);
         case "image":
-          this.image = new openfl.tiled.Image(child);
+          this.image = new openfl.tiled.Image(child, this.mMap);
         case "objectgroup":
         case "animation":
       }

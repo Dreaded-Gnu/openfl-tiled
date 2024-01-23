@@ -18,7 +18,7 @@ class App extends Sprite {
   public function new() {
     super();
     // load map
-    this.mMap = new openfl.tiled.Map("/desert_infinite.tmx");
+    this.mMap = new openfl.tiled.Map("/island/","/island/island.tmx");
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener

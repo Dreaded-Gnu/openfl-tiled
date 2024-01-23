@@ -19,10 +19,13 @@ class Image extends EventDispatcher {
 
   public var bitmap(default, null):Bitmap;
   private var mTransSet:Bool;
+  private var mMap:openfl.tiled.Map;
 
-  public function new(node:Xml) {
+  public function new(node:Xml, map:openfl.tiled.Map) {
     // call parent constructor
     super();
+    // cache map
+    this.mMap = map;
     // parse stuff
     this.format = node.get("format");
     this.source = node.get("source");
@@ -38,7 +41,12 @@ class Image extends EventDispatcher {
    * Load method
    */
   public function load():Void {
-    BitmapData.loadFromFile(this.source).onComplete(onLoadComplete);
+    BitmapData.loadFromFile(
+      Helper.joinPath(
+        this.mMap.prefix,
+        this.source
+      )
+    ).onComplete(onLoadComplete);
   }
 
   /**

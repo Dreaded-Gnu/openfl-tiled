@@ -139,9 +139,9 @@ class Tileset extends EventDispatcher {
 
       switch (child.nodeName) {
         case "image":
-          this.image = new openfl.tiled.Image(child);
+          this.image = new openfl.tiled.Image(child, this.mMap);
         case "tile":
-          this.tile.push(new openfl.tiled.tileset.Tile(child));
+          this.tile.push(new openfl.tiled.tileset.Tile(child, this.mMap));
         case "tileoffset":
           this.tileoffset = new openfl.tiled.tileset.TileOffset(child);
         case "grid":
@@ -179,7 +179,12 @@ class Tileset extends EventDispatcher {
   public function load():Void {
     if (!this.mSourceLoaded && this.source != null) {
       // load source file
-      var request:URLRequest = new URLRequest(this.source);
+      var request:URLRequest = new URLRequest(
+        Helper.joinPath(
+          this.mMap.prefix,
+          this.source
+        )
+      );
       var loader:URLLoader = new URLLoader();
       // set load complete callback
       loader.addEventListener(Event.COMPLETE, (event:Event) -> {

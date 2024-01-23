@@ -38,14 +38,16 @@ class Map extends EventDispatcher {
   public var group(default, null):Array<openfl.tiled.Group>;
 
   public var isLoaded(default, null):Bool;
+  public var prefix(default, null):String;
   private var mTilesetLoad:Array<openfl.tiled.Tileset>;
   private var mPath:String;
 
-  public function new(path:String) {
+  public function new(prefix:String, path:String) {
     // call parent constructor first
     super();
     // save path
     this.mPath = path;
+    this.prefix = prefix;
     this.isLoaded = false;
   }
 
