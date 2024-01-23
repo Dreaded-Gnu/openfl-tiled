@@ -34,6 +34,7 @@ class Tileset extends EventDispatcher {
   public var tile(default, null):Array<openfl.tiled.tileset.Tile>;
 
   private var mSourceLoaded:Bool = false;
+  private var mTileLoaded:Bool = false;
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -127,7 +128,9 @@ class Tileset extends EventDispatcher {
         this.fillmode = FillMode.TilesetFillModePreserveAspectFit;
     }
 
+    // initialize arrays
     this.tile = new Array<openfl.tiled.tileset.Tile>();
+    // loop through children
     for (child in node) {
       if (child.nodeType != Xml.Element) {
         continue;
@@ -156,6 +159,20 @@ class Tileset extends EventDispatcher {
   }
 
   /**
+   * Helper to get tile by gid
+   * @param gid
+   * @return openfl.tiled.tileset.Tile
+   */
+  private function getTileByGid(gid:Int):openfl.tiled.tileset.Tile {
+    for(tile in this.tile) {
+      if (tile.id == gid) {
+        return tile;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Load callback
    */
   public function load():Void {
@@ -173,6 +190,28 @@ class Tileset extends EventDispatcher {
         this.load();
       });
       loader.load(request);
+    } else if (!this.mTileLoaded && 0 != this.tile.length) {
+      // put all tiles into temporary array
+      var tmpTile:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
+      for (tile in this.tile) {
+        tmpTile.push(tile);
+      }
+      // loop through tiles and start loading them
+      for (tile in this.tile) {
+        tile.addEventListener(Event.COMPLETE, (event:Event)-> {
+          // remove loaded tile
+          tmpTile.remove(tile);
+          // continue loading when end was reached
+          if (0 >= tmpTile.length) {
+            // set tile loaded to true
+            this.mTileLoaded = true;
+            // continue with load process
+            this.load();
+          }
+        });
+        // load tile
+        tile.load();
+      }
     } else if (this.image != null) {
       // add complete listener
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);

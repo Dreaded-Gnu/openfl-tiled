@@ -117,7 +117,7 @@ class Layer {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
 
-    if (null == tilesetData.get(gid)) {
+    if (null == tilesetData.get(tileset.firstgid)) {
       var txlen:Int = Std.int(tileset.image.width / tileset.tilewidth);
       var tylen:Int = Std.int(tileset.image.height / tileset.tileheight);
       var rect:Array<Rectangle> = new Array<Rectangle>();
@@ -144,8 +144,8 @@ class Layer {
       );
       tm.alpha = this.opacity;
       tm.visible = 1 == this.visible;
-      tilesetData.set(gid, ts);
-      tilemapData.set(gid, tm);
+      tilesetData.set(tileset.firstgid, ts);
+      tilemapData.set(tileset.firstgid, tm);
     }
     // generate tile
     var t:openfl.display.Tile = null;
@@ -231,7 +231,7 @@ class Layer {
         }
     }
     // add tile at position
-    tilemapData.get(gid).addTile(t);
+    tilemapData.get(tileset.firstgid).addTile(t);
   }
 
   /**

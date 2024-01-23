@@ -11,6 +11,7 @@ Implementation of tiled map parsing for openfl and haxe
 | hexagonal-mini.tmx                      |  &check;  |
 | isometric_grass_and_water.tmx           |  &cross;  |
 | isometric_staggered_grass_and_water.tmx |  &cross;  |
+| island.tmx                              |  &cross;  |
 
 ## ToDo
 
@@ -18,3 +19,8 @@ Implementation of tiled map parsing for openfl and haxe
 - [ ] Allow path to be passed into map parser to be able to load map assets from subfolder
 - [x] Fix weird coordinate swapping
 - [ ] Add support for chunk handling in layer rendering
+- [x] Finish isometric rendering
+- [ ] Finish staggered isometric rendering
+- [ ] Add support for animations
+- [ ] Implement image layers
+- [ ] Implement object groups

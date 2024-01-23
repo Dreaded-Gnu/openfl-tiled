@@ -1,6 +1,9 @@
 package openfl.tiled.tileset;
 
-class Tile {
+import openfl.events.EventDispatcher;
+import openfl.events.Event;
+
+class Tile extends EventDispatcher {
   public var id(default, null):Int;
   public var type(default, null):String;
   public var terrain(default, null):String;
@@ -14,7 +17,14 @@ class Tile {
   public var objectgroup(default, null):openfl.tiled.ObjectGroup;
   public var animation(default, null):openfl.tiled.tileset.Animation;
 
+  /**
+   * Constructor
+   * @param node
+   */
   public function new(node:Xml) {
+    // call parent constructor
+    super();
+    // parse properties
     this.id = Std.parseInt(node.get("id"));
     this.type = node.exists("type") ? node.get("type") : "";
     this.terrain = node.get("terrain");
@@ -38,9 +48,36 @@ class Tile {
         case "properties":
           this.properties = new openfl.tiled.Properties(child);
         case "image":
+          this.image = new openfl.tiled.Image(child);
         case "objectgroup":
         case "animation":
       }
     }
+  }
+
+  /**
+   * Load async necessary stuff
+   */
+  public function load() {
+    if (this.image != null) {
+      // add complete listener
+      this.image.addEventListener(Event.COMPLETE, onImageCompleted);
+      // load image
+      this.image.load();
+    } else {
+      // dispatch succeeded event
+      this.dispatchEvent(new Event(Event.COMPLETE));
+    }
+  }
+
+  /**
+   * Callback for on image completed
+   * @param event
+   */
+  private function onImageCompleted(event:Event):Void {
+    // remove event listener
+    this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
+    // fire complete event
+    this.dispatchEvent(new Event(Event.COMPLETE));
   }
 }
