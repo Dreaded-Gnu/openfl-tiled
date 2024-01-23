@@ -148,7 +148,7 @@ class Map extends EventDispatcher {
     this.parallaxoriginy = xmlParsed.exists("parallaxoriginy")
       ? Std.parseInt(xmlParsed.get("parallaxoriginy"))
       : 0;
-    this.backgroundcolor = xmlParsed.exists("parallaxoriginy")
+    this.backgroundcolor = xmlParsed.exists("backgroundcolor")
       ? Std.parseInt(
         StringTools.replace(xmlParsed.get("backgroundcolor"), "#", "0xFF")
       ) : 0x00000000;
@@ -179,6 +179,9 @@ class Map extends EventDispatcher {
           this.tileset.push(new openfl.tiled.Tileset(child, this));
         case "layer":
           this.layer.push(new openfl.tiled.Layer(child, this, layerId++));
+        case "objectgroup":
+        case "imagelayer":
+        case "group":
       }
     }
 
@@ -263,8 +266,10 @@ class Map extends EventDispatcher {
     this.mTilesetLoad.remove(tileset);
     // handle fully loaded
     if (0 >= this.mTilesetLoad.length) {
-      this.dispatchEvent(new Event(Event.COMPLETE));
+      // set loaded to true
       this.isLoaded = true;
+      // dispatch complete event
+      this.dispatchEvent(new Event(Event.COMPLETE));
     }
   }
 

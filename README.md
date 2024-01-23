@@ -12,7 +12,6 @@ Implementation of tiled map parsing for openfl and haxe
 | hexagonal-mini/hexagonal-mini.tmx                                           |  &check;  |
 | isometric_grass_and_water/isometric_grass_and_water.tmx                     |  &check;  |
 | isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx |  &check;  |
-| island/island.tmx                                                           |  &cross;  |
 
 ## ToDo
 
@@ -23,5 +22,7 @@ Implementation of tiled map parsing for openfl and haxe
 - [x] Finish isometric rendering
 - [x] Finish staggered isometric rendering
 - [ ] Add support for animations
+- [ ] Add example with animations
+- [ ] Add example with image layer
 - [ ] Implement image layers
 - [ ] Implement object groups

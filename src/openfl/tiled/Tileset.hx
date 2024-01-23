@@ -31,7 +31,7 @@ class Tileset extends EventDispatcher {
   public var terraintypes(default, null):openfl.tiled.tileset.TerrainTypes;
   public var wangset(default, null):openfl.tiled.tileset.Wangsets;
   public var transformations(default, null):openfl.tiled.tileset.Transformations;
-  public var tile(default, null):Array<openfl.tiled.tileset.Tile>;
+  public var tile(default, null):std.Map<Int, openfl.tiled.tileset.Tile>;
 
   public var tileset(default, null):openfl.display.Tileset;
   private var mSourceLoaded:Bool = false;
@@ -130,7 +130,7 @@ class Tileset extends EventDispatcher {
     }
 
     // initialize arrays
-    this.tile = new Array<openfl.tiled.tileset.Tile>();
+    this.tile = new std.Map<Int, openfl.tiled.tileset.Tile>();
     // loop through children
     for (child in node) {
       if (child.nodeType != Xml.Element) {
@@ -141,7 +141,10 @@ class Tileset extends EventDispatcher {
         case "image":
           this.image = new openfl.tiled.Image(child, this.mMap);
         case "tile":
-          this.tile.push(new openfl.tiled.tileset.Tile(child, this.mMap));
+          this.tile.set(
+            Std.parseInt(child.get("id")),
+            new openfl.tiled.tileset.Tile(child, this.mMap)
+          );
         case "tileoffset":
           this.tileoffset = new openfl.tiled.tileset.TileOffset(child);
         case "grid":
@@ -196,11 +199,17 @@ class Tileset extends EventDispatcher {
         this.load();
       });
       loader.load(request);
-    } else if (!this.mTileLoaded && 0 != this.tile.length) {
+    } else if (!this.mTileLoaded) {
       // put all tiles into temporary array
       var tmpTile:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
       for (tile in this.tile) {
         tmpTile.push(tile);
+      }
+      // handle no tiles to be loaded
+      if (0 >= tmpTile.length) {
+        this.mTileLoaded = true;
+        this.load();
+        return;
       }
       // loop through tiles and start loading them
       for (tile in this.tile) {
@@ -223,6 +232,9 @@ class Tileset extends EventDispatcher {
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       // load image
       this.image.load();
+    } else {
+      // nothing to do, dispatch complete
+      this.dispatchEvent(new Event(Event.COMPLETE));
     }
   }
 

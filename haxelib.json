@@ -1,13 +1,21 @@
 {
-  "name": "openfl-tiled",
+  "name": "openfl-tiled2",
   "url": "https://github.com/Dreaded-Gnu/openfl-tiled",
   "license": "MIT",
-  "tags": [],
-  "description": "openfl tiled parsing library",
+  "tags": [
+    "openfl",
+    "tiled",
+    "map",
+    "tilemap"
+  ],
+  "description": "openfl-tiled2 is a library, which gives openfl developers the ability to use the TILED map editor.",
   "version": "0.1.0",
   "releasenote": "Initial release",
   "contributors": [
     "DreadedGnu"
   ],
-  "classPath": "src"
+  "classPath": "src",
+  "dependencies": {
+    "openfl": "9.3.2"
+  }
 }

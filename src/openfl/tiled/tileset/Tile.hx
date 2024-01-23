@@ -1,5 +1,6 @@
 package openfl.tiled.tileset;
 
+import openfl.geom.Rectangle;
 import openfl.events.EventDispatcher;
 import openfl.events.Event;
 
@@ -17,6 +18,7 @@ class Tile extends EventDispatcher {
   public var objectgroup(default, null):openfl.tiled.ObjectGroup;
   public var animation(default, null):openfl.tiled.tileset.Animation;
 
+  public var tileset(default, null):openfl.display.Tileset;
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -81,6 +83,18 @@ class Tile extends EventDispatcher {
   private function onImageCompleted(event:Event):Void {
     // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
+    // parse image to tileset
+    var rect:Array<Rectangle> = new Array<Rectangle>();
+    rect.push(new Rectangle(
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    ));
+    this.tileset = new openfl.display.Tileset(
+      this.image.bitmap.bitmapData,
+      rect
+    );
     // fire complete event
     this.dispatchEvent(new Event(Event.COMPLETE));
   }
