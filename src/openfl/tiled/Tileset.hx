@@ -33,6 +33,7 @@ class Tileset extends EventDispatcher {
   public var transformations(default, null):openfl.tiled.tileset.Transformations;
   public var tile(default, null):Array<openfl.tiled.tileset.Tile>;
 
+  public var tileset(default, null):openfl.display.Tileset;
   private var mSourceLoaded:Bool = false;
   private var mTileLoaded:Bool = false;
   private var mMap:openfl.tiled.Map;
@@ -227,6 +228,26 @@ class Tileset extends EventDispatcher {
   private function onImageCompleted(event:Event):Void {
     // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
+    // parse tileset
+    var txlen:Int = Std.int(this.image.width / this.tilewidth);
+    var tylen:Int = Std.int(this.image.height / this.tileheight);
+    var rect:Array<Rectangle> = new Array<Rectangle>();
+    for (ty in 0...tylen) {
+      for (tx in 0...txlen) {
+        rect.push(
+          new Rectangle(
+            tx * this.tilewidth + tx * this.spacing + this.margin,
+            ty * this.tileheight + ty * this.spacing + this.margin,
+            this.tilewidth,
+            this.tileheight
+          )
+        );
+      }
+    }
+    this.tileset = new openfl.display.Tileset(
+      this.image.bitmap.bitmapData,
+      rect
+    );
     // fire complete event
     this.dispatchEvent(new Event(Event.COMPLETE));
   }

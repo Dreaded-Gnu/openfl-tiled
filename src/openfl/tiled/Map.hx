@@ -174,9 +174,36 @@ class Map extends EventDispatcher {
       }
       switch (child.nodeName) {
         case "tileset":
-          tileset.push(new openfl.tiled.Tileset(child, this));
+          this.tileset.push(new openfl.tiled.Tileset(child, this));
         case "layer":
-          layer.push(new openfl.tiled.Layer(child, this, layerId++));
+          this.layer.push(new openfl.tiled.Layer(child, this, layerId++));
+      }
+    }
+
+    if (this.infinite == 1) {
+      // determine and adjust max widths
+      var maxWidth:Int = 0;
+      var maxHeight:Int = 0;
+      // loop through all layers
+      for (layer in this.layer) {
+        // loop through all chunks
+        for (chunk in layer.data.chunk) {
+          // check for new max width
+          if (chunk.x + chunk.width > maxWidth) {
+            maxWidth = chunk.x + chunk.width;
+          }
+          // check for new map height
+          if (chunk.y + chunk.height > maxHeight) {
+            maxHeight = chunk.y + chunk.height;
+          }
+        }
+      }
+      // overwrite width and height property if greater
+      if (maxWidth > this.width) {
+        this.width = maxWidth;
+      }
+      if (maxHeight > this.height) {
+        this.height = maxHeight;
       }
     }
   }
@@ -258,7 +285,7 @@ class Map extends EventDispatcher {
    * Render method renders to sprite for display purpose
    * @return Sprite
    */
-  public function render(offsetX:Int = -1, offsetY:Int = -1):Sprite {
+  public function render(offsetX:Int = 0, offsetY:Int = 0):Sprite {
     // generate sprite for rendering
     var displayObject:Sprite = new Sprite();
 
