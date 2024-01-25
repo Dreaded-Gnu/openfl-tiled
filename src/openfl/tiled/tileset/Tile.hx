@@ -56,7 +56,9 @@ class Tile extends EventDispatcher {
         case "image":
           this.image = new openfl.tiled.Image(child, this.mMap);
         case "objectgroup":
+          this.objectgroup = new openfl.tiled.ObjectGroup(child, this.mMap);
         case "animation":
+          this.animation = new openfl.tiled.tileset.Animation(child);
       }
     }
   }

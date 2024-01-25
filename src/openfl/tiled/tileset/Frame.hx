@@ -4,6 +4,8 @@ class Frame {
   public var tileid(default, null):Int;
   public var duration(default, null):Int;
 
-  public function new() {
+  public function new(node:Xml) {
+    this.tileid = Std.parseInt(node.get("tileid"));
+    this.duration = Std.parseInt(node.get("duration"));
   }
 }

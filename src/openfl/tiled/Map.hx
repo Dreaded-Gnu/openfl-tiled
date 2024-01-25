@@ -42,6 +42,11 @@ class Map extends EventDispatcher {
   private var mTilesetLoad:Array<openfl.tiled.Tileset>;
   private var mPath:String;
 
+  /**
+   * Constructor
+   * @param prefix
+   * @param path
+   */
   public function new(prefix:String, path:String) {
     // call parent constructor first
     super();
@@ -180,8 +185,11 @@ class Map extends EventDispatcher {
         case "layer":
           this.layer.push(new openfl.tiled.Layer(child, this, layerId++));
         case "objectgroup":
+          this.objectgroup.push(new openfl.tiled.ObjectGroup(child, this));
         case "imagelayer":
+          //this.imagelayer.push(new openfl.tiled.ImageLayer(child, this));
         case "group":
+          //this.group.push(new openfl.tiled.Group(child, this));
       }
     }
 
@@ -298,6 +306,9 @@ class Map extends EventDispatcher {
 
     for(layer in this.layer) {
       layer.render(displayObject, offsetX, offsetY);
+    }
+    for (objectgroup in this.objectgroup) {
+      objectgroup.update(displayObject, offsetX, offsetY);
     }
     // return display object
     return displayObject;

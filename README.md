@@ -26,3 +26,4 @@ Implementation of tiled map parsing for openfl and haxe
 - [ ] Add example with image layer
 - [ ] Implement image layers
 - [ ] Implement object groups
+- [ ] Finish isometric objects

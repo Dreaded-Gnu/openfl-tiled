@@ -26,6 +26,8 @@ class Data {
       switch (child.nodeName) {
         case "chunk":
           this.chunk.push(new openfl.tiled.layer.Chunk(child, this));
+        case "tile":
+          this.tile.push(new openfl.tiled.layer.Tile(Std.parseInt(child.get("gid"))));
       }
     }
 

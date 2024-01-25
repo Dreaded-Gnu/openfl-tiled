@@ -18,7 +18,7 @@ class App extends Sprite {
   public function new() {
     super();
     // load map
-    this.mMap = new openfl.tiled.Map("/desert_infinite/","/desert_infinite/desert_infinite.tmx");
+    this.mMap = new openfl.tiled.Map("/tiled/rpg/","/tiled/rpg/island.tmx");
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -98,7 +98,7 @@ class App extends Sprite {
    * main function
    */
   public static function main():Void {
-    var stage = new Stage(800, 600, 0x000000, App);
+    var stage = new Stage(640, 480, 0x000000, App);
     stage.addChild(new FPS(10, 10, 0xffffff));
     js.Browser.document.body.appendChild(stage.element);
   }

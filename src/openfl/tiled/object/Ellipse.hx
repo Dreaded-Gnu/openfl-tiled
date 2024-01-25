@@ -1,11 +1,14 @@
 package openfl.tiled.object;
 
 class Ellipse {
-  public var x(default, null):Int;
-  public var y(default, null):Int;
-  public var width(default, null):Int;
-  public var height(default, null):Int;
+  private var object:openfl.tiled.Object;
 
-  public function new() {
+  /**
+   * Constructor
+   * @param node
+   * @param object
+   */
+  public function new(node:Xml, object:openfl.tiled.Object) {
+    this.object = object;
   }
 }

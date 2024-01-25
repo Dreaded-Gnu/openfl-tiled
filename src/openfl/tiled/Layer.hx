@@ -96,7 +96,7 @@ class Layer {
     tilemapData:std.Map<Int, openfl.display.Tilemap>
   ):Void {
     // calculate array position depending on x / y
-    var id:Int = this.mMap.height * y + x;
+    var id:Int = x + y * this.mMap.width;
     // get gid
     var gid:Int = this.data.tile[id].gid;
     // handle invalid
