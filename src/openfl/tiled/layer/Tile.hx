@@ -22,12 +22,8 @@ class Tile {
    * @return Int
    */
   private function get_gid():Int {
-    return this.gid & ~(
-      Helper.GID_FLIPPED_HORIZONTALLY_FLAG
-      | Helper.GID_FLIPPED_VERTICALLY_FLAG
-      | Helper.GID_FLIPPED_DIAGONALLY_FLAG
-      | Helper.GID_ROTATED_HEXAGONAL_120_FLAG
-    );
+    return
+      this.gid & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
   }
 
   /**
@@ -35,8 +31,7 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_horizontally():Bool {
-    return this.gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG ==
-      Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
+    return this.gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
   }
 
   /**
@@ -44,8 +39,7 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_vertically():Bool {
-    return this.gid & Helper.GID_FLIPPED_VERTICALLY_FLAG ==
-      Helper.GID_FLIPPED_VERTICALLY_FLAG;
+    return this.gid & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
   }
 
   /**
@@ -53,8 +47,7 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_diagonally():Bool {
-    return this.gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG ==
-      Helper.GID_FLIPPED_DIAGONALLY_FLAG;
+    return this.gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
   }
 
   /**
@@ -62,7 +55,6 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_hexagonal_120():Bool {
-    return this.gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG ==
-      Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+    return this.gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
   }
 }

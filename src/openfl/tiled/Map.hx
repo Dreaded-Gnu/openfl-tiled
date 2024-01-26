@@ -39,35 +39,36 @@ class Map extends EventDispatcher {
 
   public var isLoaded(default, null):Bool;
   public var prefix(default, null):String;
+  public var tilemap(get, null):openfl.display.Tilemap;
+
   private var mTilesetLoad:Array<openfl.tiled.Tileset>;
   private var mPath:String;
+  private var mTileMap:openfl.display.Tilemap;
+  private var mRenderObjects:Array<Dynamic>;
 
   /**
    * Constructor
-   * @param prefix
-   * @param path
+   * @param prefix folder prefix used when loading additional assets internally
+   * @param path full path to map
+   * @param width openfl stage width
+   * @param height openfl stage height
    */
-  public function new(prefix:String, path:String) {
-    // call parent constructor first
+  public function new(prefix:String, path:String, tilemap:openfl.display.Tilemap) {
     super();
-    // save path
     this.mPath = path;
     this.prefix = prefix;
     this.isLoaded = false;
+    this.mTileMap = tilemap;
   }
 
   /**
    * On load complete callback
    * @param event
    */
-  private function onLoadComplete(event:Event) {
-    // get loader
+  private function onLoadComplete(event:Event):Void {
     var loader:URLLoader = cast(event.target, URLLoader);
-    // remove event listener
     loader.removeEventListener(Event.COMPLETE, onLoadComplete);
-    // parse XML
     parseXml(loader.data);
-    // load tileset data
     this.loadTilesetData();
   }
 
@@ -75,14 +76,11 @@ class Map extends EventDispatcher {
    * Helper method to parse XML
    * @param xmlContent
    */
-  private function parseXml(xmlContent:String) {
-    // parse xml
+  private function parseXml(xmlContent:String):Void {
     var xmlParsed:Xml = Xml.parse(xmlContent).firstElement();
     // parse map
     this.version = Std.parseFloat(xmlParsed.get("version"));
-    this.tiledversion = xmlParsed.exists("tiledversion")
-      ? Std.parseFloat(xmlParsed.get("tiledversion"))
-      : -1;
+    this.tiledversion = xmlParsed.exists("tiledversion") ? Std.parseFloat(xmlParsed.get("tiledversion")) : -1;
     this.klass = xmlParsed.exists("class") ? xmlParsed.get("class") : "";
     // parse orientation
     var o:String = xmlParsed.get("orientation");
@@ -99,9 +97,7 @@ class Map extends EventDispatcher {
         throw new Error('Unsupported orientation $o');
     }
     // parse render order
-    var r:String = xmlParsed.exists("renderorder")
-      ? xmlParsed.get("renderorder")
-      : "right-down";
+    var r:String = xmlParsed.exists("renderorder") ? xmlParsed.get("renderorder") : "right-down";
     switch (r) {
       case "right-down":
         this.renderorder = RenderOrder.MapRenderOrderRightDown;
@@ -112,9 +108,7 @@ class Map extends EventDispatcher {
       case "left-up":
         this.renderorder = RenderOrder.MapRenderOrderLeftUp;
     }
-    this.compressionlevel = xmlParsed.exists("compressionlevel")
-      ? Std.parseInt(xmlParsed.get("compressionlevel"))
-      : -1;
+    this.compressionlevel = xmlParsed.exists("compressionlevel") ? Std.parseInt(xmlParsed.get("compressionlevel")) : -1;
     this.width = Std.parseInt(xmlParsed.get("width"));
     this.height = Std.parseInt(xmlParsed.get("height"));
     this.tilewidth = Std.parseInt(xmlParsed.get("tilewidth"));
@@ -124,10 +118,7 @@ class Map extends EventDispatcher {
       this.hexsidelength = Std.parseInt(xmlParsed.get("hexsidelength"));
     }
     // handle hexagonal / staggered stuff
-    if(
-      this.orientation == Orientation.MapOrientationHexagonal
-      || this.orientation == Orientation.MapOrientationStaggered
-    ) {
+    if (this.orientation == Orientation.MapOrientationHexagonal || this.orientation == Orientation.MapOrientationStaggered) {
       var axis:String = xmlParsed.get("staggeraxis");
       switch (axis) {
         case "x":
@@ -147,66 +138,59 @@ class Map extends EventDispatcher {
           throw new Error('Unsupported staggeraxis $index');
       }
     }
-    this.parallaxoriginx = xmlParsed.exists("parallaxoriginx")
-      ? Std.parseInt(xmlParsed.get("parallaxoriginx"))
-      : 0;
-    this.parallaxoriginy = xmlParsed.exists("parallaxoriginy")
-      ? Std.parseInt(xmlParsed.get("parallaxoriginy"))
-      : 0;
-    this.backgroundcolor = xmlParsed.exists("backgroundcolor")
-      ? Std.parseInt(
-        StringTools.replace(xmlParsed.get("backgroundcolor"), "#", "0xFF")
-      ) : 0x00000000;
-    this.nextlayerid = xmlParsed.exists("nextlayerid")
-      ? Std.parseInt(xmlParsed.get("nextlayerid"))
-      : -1;
-    this.nextobjectid = xmlParsed.exists("nextobjectid")
-      ? Std.parseInt(xmlParsed.get("nextobjectid"))
-      : -1;
-    this.infinite = xmlParsed.exists("infinite")
-      ? Std.parseInt(xmlParsed.get("infinite"))
-      : 0;
+    this.parallaxoriginx = xmlParsed.exists("parallaxoriginx") ? Std.parseInt(xmlParsed.get("parallaxoriginx")) : 0;
+    this.parallaxoriginy = xmlParsed.exists("parallaxoriginy") ? Std.parseInt(xmlParsed.get("parallaxoriginy")) : 0;
+    this.backgroundcolor = xmlParsed.exists("backgroundcolor") ? Std.parseInt(StringTools.replace(xmlParsed.get("backgroundcolor"), "#", "0xFF")) : 0x00000000;
+    this.nextlayerid = xmlParsed.exists("nextlayerid") ? Std.parseInt(xmlParsed.get("nextlayerid")) : -1;
+    this.nextobjectid = xmlParsed.exists("nextobjectid") ? Std.parseInt(xmlParsed.get("nextobjectid")) : -1;
+    this.infinite = xmlParsed.exists("infinite") ? Std.parseInt(xmlParsed.get("infinite")) : 0;
     // setup tileset, layer, objectgroup, imagelayer and group
     this.tileset = new Array<openfl.tiled.Tileset>();
     this.layer = new Array<openfl.tiled.Layer>();
     this.objectgroup = new Array<openfl.tiled.ObjectGroup>();
     this.imagelayer = new Array<openfl.tiled.ImageLayer>();
     this.group = new Array<openfl.tiled.Group>();
+    // setup render objects array
+    this.mRenderObjects = new Array<Dynamic>();
 
     var layerId:Int = 0;
     for (child in xmlParsed) {
-      // skip non elements
       if (child.nodeType != Xml.Element) {
+        // skip non elements
         continue;
       }
       switch (child.nodeName) {
         case "tileset":
-          this.tileset.push(new openfl.tiled.Tileset(child, this));
+          var ts:openfl.tiled.Tileset = new openfl.tiled.Tileset(child, this);
+          this.tileset.push(ts);
         case "layer":
-          this.layer.push(new openfl.tiled.Layer(child, this, layerId++));
+          var l:openfl.tiled.Layer = new openfl.tiled.Layer(child, this, layerId++);
+          this.layer.push(l);
+          this.mRenderObjects.push(l);
         case "objectgroup":
-          this.objectgroup.push(new openfl.tiled.ObjectGroup(child, this));
+          var o:openfl.tiled.ObjectGroup = new openfl.tiled.ObjectGroup(child, this);
+          this.objectgroup.push(o);
+          this.mRenderObjects.push(o);
         case "imagelayer":
-          //this.imagelayer.push(new openfl.tiled.ImageLayer(child, this));
+        // this.imagelayer.push(new openfl.tiled.ImageLayer(child, this));
         case "group":
-          //this.group.push(new openfl.tiled.Group(child, this));
+          // this.group.push(new openfl.tiled.Group(child, this));
       }
     }
 
+    // determine and adjust max widths for infinite maps
     if (this.infinite == 1) {
-      // determine and adjust max widths
       var maxWidth:Int = 0;
       var maxHeight:Int = 0;
       // loop through all layers
       for (layer in this.layer) {
-        // loop through all chunks
         for (chunk in layer.data.chunk) {
-          // check for new max width
           if (chunk.x + chunk.width > maxWidth) {
+            // check for new max width
             maxWidth = chunk.x + chunk.width;
           }
-          // check for new map height
           if (chunk.y + chunk.height > maxHeight) {
+            // check for new map height
             maxHeight = chunk.y + chunk.height;
           }
         }
@@ -217,6 +201,9 @@ class Map extends EventDispatcher {
       }
       if (maxHeight > this.height) {
         this.height = maxHeight;
+        if (this.orientation == MapOrientationIsometric || this.orientation == MapOrientationStaggered) {
+          this.height = Std.int(this.height / 2);
+        }
       }
     }
   }
@@ -225,13 +212,9 @@ class Map extends EventDispatcher {
    * Set load callback
    */
   public function load():Void {
-    // build request
     var request:URLRequest = new URLRequest(mPath);
-    // create url loader instance
     var loader:URLLoader = new URLLoader();
-    // add load complete handler
     loader.addEventListener(Event.COMPLETE, onLoadComplete);
-    // load created request
     loader.load(request);
   }
 
@@ -239,19 +222,13 @@ class Map extends EventDispatcher {
    * Load all necessary data
    */
   private function loadTilesetData():Void {
-    // setup tileset load array
     this.mTilesetLoad = new Array<openfl.tiled.Tileset>();
     for (tileset in this.tileset) {
       this.mTilesetLoad.push(tileset);
     }
     // iterate through tilesets
     for (tileset in this.tileset) {
-      // add eventlistener
-      tileset.addEventListener(
-        Event.COMPLETE,
-        onTilesetLoadComplete.bind(_, tileset)
-      );
-      // kickstart loading
+      tileset.addEventListener(Event.COMPLETE, onTilesetLoadComplete.bind(_, tileset));
       tileset.load();
     }
   }
@@ -261,20 +238,12 @@ class Map extends EventDispatcher {
    * @param event
    * @param tileset
    */
-  private function onTilesetLoadComplete(
-    event:Event,
-    tileset:openfl.tiled.Tileset
-  ):Void {
-    // remove event listener
-    tileset.removeEventListener(
-      Event.COMPLETE,
-      onTilesetLoadComplete.bind(_, tileset)
-    );
+  private function onTilesetLoadComplete(event:Event, tileset:openfl.tiled.Tileset):Void {
+    tileset.removeEventListener(Event.COMPLETE, onTilesetLoadComplete.bind(_, tileset));
     // remove index from array
     this.mTilesetLoad.remove(tileset);
     // handle fully loaded
     if (0 >= this.mTilesetLoad.length) {
-      // set loaded to true
       this.isLoaded = true;
       // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
@@ -297,20 +266,32 @@ class Map extends EventDispatcher {
   }
 
   /**
-   * Render method renders to sprite for display purpose
-   * @return Sprite
+   * Method renders map and returns tilemap to be added
+   * @param offsetX
+   * @param offsetY
+   * @param previousOffsetX
+   * @param previousOffsetY
+   * @return openfl.display.Tilemap
    */
-  public function render(offsetX:Int = 0, offsetY:Int = 0):Sprite {
-    // generate sprite for rendering
-    var displayObject:Sprite = new Sprite();
-
-    for(layer in this.layer) {
-      layer.render(displayObject, offsetX, offsetY);
-    }
-    for (objectgroup in this.objectgroup) {
-      objectgroup.update(displayObject, offsetX, offsetY);
+  public function render(offsetX:Int = 0, offsetY:Int = 0, previousOffsetX:Int = 0, previousOffsetY:Int = 0):openfl.display.Tilemap {
+    for (renderObject in this.mRenderObjects) {
+      if (Std.isOfType(renderObject, openfl.tiled.Layer)) {
+        var l:openfl.tiled.Layer = cast(renderObject, openfl.tiled.Layer);
+        l.render(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
+      } else if (Std.isOfType(renderObject, openfl.tiled.ObjectGroup)) {
+        var o:openfl.tiled.ObjectGroup = cast(renderObject, openfl.tiled.ObjectGroup);
+        o.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
+      }
     }
     // return display object
-    return displayObject;
+    return this.mTileMap;
+  }
+
+  /**
+   * Getter for tilemap property
+   * @return openfl.display.Tilemap
+   */
+  private function get_tilemap():openfl.display.Tilemap {
+    return this.mTileMap;
   }
 }

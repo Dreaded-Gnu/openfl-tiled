@@ -10,8 +10,12 @@ class Chunk {
   public var height(default, null):Int;
   public var tile(default, null):Array<openfl.tiled.layer.Tile>;
 
+  /**
+   * Constructor
+   * @param node
+   * @param data
+   */
   public function new(node:Xml, data:openfl.tiled.layer.Data) {
-    // parse basic stuff
     this.x = Std.parseInt(node.get("x"));
     this.y = Std.parseInt(node.get("y"));
     this.width = Std.parseInt(node.get("width"));
@@ -21,8 +25,7 @@ class Chunk {
     // get data
     var chunk:String = node.firstChild().nodeValue;
     // handle encoding
-    switch (data.encoding)
-    {
+    switch (data.encoding) {
       case "base64":
         // handle possible compression
         switch (data.compression) {

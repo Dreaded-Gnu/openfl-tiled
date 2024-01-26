@@ -7,6 +7,8 @@ class Wangcolor {
   public var tile(default, null):Int;
   public var probability(default, null):Int;
 
-  public function new() {
-  }
+  /**
+   * Constructor
+   */
+  public function new() {}
 }

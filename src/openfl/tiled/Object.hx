@@ -48,8 +48,8 @@ class Object {
     this.template = node.get("template");
     // loop through childs
     for (child in node) {
-      // skip non elements
       if (child.nodeType != Xml.Element) {
+        // skip non elements
         continue;
       }
       switch (child.nodeName) {
@@ -74,21 +74,16 @@ class Object {
    * @return Int
    */
   private function get_gid():Int {
-    return this.gid & ~(
-      Helper.GID_FLIPPED_HORIZONTALLY_FLAG
-      | Helper.GID_FLIPPED_VERTICALLY_FLAG
-      | Helper.GID_FLIPPED_DIAGONALLY_FLAG
-      | Helper.GID_ROTATED_HEXAGONAL_120_FLAG
-    );
+    return
+      this.gid & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
   }
 
   /**
    * Getter for flipped horizontally
    * @return Bool
    */
-   private function get_flipped_horizontally():Bool {
-    return this.gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG ==
-      Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
+  private function get_flipped_horizontally():Bool {
+    return this.gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
   }
 
   /**
@@ -96,8 +91,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_vertically():Bool {
-    return this.gid & Helper.GID_FLIPPED_VERTICALLY_FLAG ==
-      Helper.GID_FLIPPED_VERTICALLY_FLAG;
+    return this.gid & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
   }
 
   /**
@@ -105,8 +99,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_diagonally():Bool {
-    return this.gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG ==
-      Helper.GID_FLIPPED_DIAGONALLY_FLAG;
+    return this.gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
   }
 
   /**
@@ -114,7 +107,6 @@ class Object {
    * @return Bool
    */
   private function get_flipped_hexagonal_120():Bool {
-    return this.gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG ==
-      Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+    return this.gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
   }
 }

@@ -1,5 +1,6 @@
 package openfl.tiled;
 
+import openfl.errors.Error;
 import openfl.display.Sprite;
 
 class ObjectGroup {
@@ -22,7 +23,10 @@ class ObjectGroup {
   public var properties(default, null):openfl.tiled.Properties;
   public var object(default, null):Array<openfl.tiled.Object>;
 
+  private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
   private var mMap:openfl.tiled.Map;
+  private var mPreviousX:Int;
+  private var mPreviousY:Int;
 
   /**
    * Constructor
@@ -30,15 +34,15 @@ class ObjectGroup {
    * @param map
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
-    // set map
     this.mMap = map;
+    this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
+    this.mPreviousX = 0;
+    this.mPreviousY = 0;
     // parse properties
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
     this.name = node.exists("name") ? node.get("name") : "";
     this.klass = node.exists("class") ? node.get("class") : "";
-    this.color = node.exists("color")
-      ? Std.parseInt("0xFF" + node.get("color"))
-      : 0x00000000;
+    this.color = node.exists("color") ? Std.parseInt("0xFF" + node.get("color")) : 0x00000000;
     this.x = node.exists("x") ? Std.parseInt(node.get("x")) : 0;
     this.y = node.exists("y") ? Std.parseInt(node.get("y")) : 0;
     this.width = node.exists("width") ? Std.parseInt(node.get("width")) : 0;
@@ -63,8 +67,8 @@ class ObjectGroup {
     this.object = new Array<openfl.tiled.Object>();
 
     for (child in node) {
-      // skip non elements
       if (child.nodeType != Xml.Element) {
+        // skip non elements
         continue;
       }
       switch (child.nodeName) {
@@ -77,11 +81,103 @@ class ObjectGroup {
   }
 
   /**
-   * Update / render object group
-   * @param displayObject
+   * Helper to render object
+   * @param object
    * @param offsetX
    * @param offsetY
+   * @param index
    */
-  public function update(displayObject:Sprite, offsetX:Int, offsetY:Int) {
+  private function renderObject(object:openfl.tiled.Object, offsetX:Int, offsetY:Int, index:Int):Void {
+    var gid:Int = object.gid;
+    // handle invalid
+    if (0 == gid) {
+      return;
+    }
+    // get tileset
+    var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+    if (null == tileset) {
+      return;
+    }
+    // subtract first gid from tileset
+    gid -= tileset.firstgid;
+    // create tilemap if not existing
+    if (null == mTilemapData.get(tileset.firstgid)) {
+      var tc:openfl.display.TileContainer = new openfl.display.TileContainer(0, 0);
+      tc.alpha = this.opacity;
+      tc.visible = 1 == this.visible;
+      mTilemapData.set(tileset.firstgid, tc);
+    }
+    var ts:openfl.display.Tileset = tileset.tileset;
+    var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
+    if (tile?.tileset != null) {
+      ts = tile.tileset;
+    }
+    // generate tile
+    var t:openfl.tiled.helper.AnimatedTile = null;
+    switch (this.mMap.orientation) {
+      case MapOrientationIsometric, MapOrientationStaggered:
+        throw new Error("Unsupported orientation!");
+      case MapOrientationOrthogonal:
+        if (mTilemapData.get(tileset.firstgid).getTileAt(index) != null) {
+          t = cast(mTilemapData.get(tileset.firstgid).getTileAt(index), openfl.tiled.helper.AnimatedTile);
+          // gid
+          t.id = tile?.tileset != null ? 0 : gid;
+          // x / y position
+          t.x = object.x - tileset.tileoffset.x;
+          t.y = object.y - tileset.tileoffset.y - object.height;
+          // scaling depending on object size
+          t.scaleX = object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth);
+          t.scaleY = object.height / (tile?.tileset != null ? tile.height : tileset.tileheight);
+          t.rotation = 0;
+          t.animation = tileset.tile[gid]?.animation;
+          t.tileset = ts;
+          t.map = this.mMap;
+        } else {
+          t = new openfl.tiled.helper.AnimatedTile( // gid
+            tile?.tileset != null ? 0 : gid, // x / y position
+            object.x - tileset.tileoffset.x,
+            object.y - tileset.tileoffset.y - object.height, // scaling depending on object size
+            object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth),
+            object.height / (tile?.tileset != null ? tile.height : tileset.tileheight), 0, tileset.tile[gid]?.animation, this.mMap);
+          t.tileset = ts;
+        }
+      case MapOrientationHexagonal:
+        throw new Error("Unsupported orientation!");
+    }
+    // add tile at position
+    if (mTilemapData.get(tileset.firstgid).getTileAt(index) == null) {
+      mTilemapData.get(tileset.firstgid).addTileAt(t, index);
+    }
+  }
+
+  /**
+   * Update / render object group
+   * @param tilemap
+   * @param offsetX
+   * @param offsetY
+   * @param previousOffsetX
+   * @param previousOffsetY
+   */
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
+    var index:Int = 0;
+    for (object in this.object) {
+      this.renderObject(object, offsetX, offsetY, index++);
+    }
+    // apply data to tilemap
+    for (tm in this.mTilemapData) {
+      if (offsetX != this.mPreviousX) {
+        tm.x = tm.x + previousOffsetX - offsetX;
+      }
+      if (offsetY != this.mPreviousY) {
+        tm.y = tm.y + previousOffsetY - offsetY;
+      }
+      // add to tilemap
+      if (!tilemap.contains(tm)) {
+        tilemap.addTile(tm);
+      }
+    }
+    // set new previous
+    this.mPreviousX = offsetX;
+    this.mPreviousY = offsetY;
   }
 }

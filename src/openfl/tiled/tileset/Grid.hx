@@ -7,8 +7,11 @@ class Grid {
   public var width(default, null):Int;
   public var height(default, null):Int;
 
+  /**
+   * Constructor
+   * @param node
+   */
   public function new(node:Xml) {
-    // parse orientation
     var o:String = node.get("orientation");
     switch (o) {
       case "orthogonal":
@@ -18,7 +21,6 @@ class Grid {
       default:
         throw new Error("Unsupported orientation for grid");
     }
-    // parse width and height
     this.width = Std.parseInt(node.get("width"));
     this.height = Std.parseInt(node.get("height"));
   }

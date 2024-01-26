@@ -7,6 +7,8 @@ class Wangtile {
   public var vflip(default, null):Int;
   public var dflip(default, null):Int;
 
-  public function new() {
-  }
+  /**
+   * Constructor
+   */
+  public function new() {}
 }

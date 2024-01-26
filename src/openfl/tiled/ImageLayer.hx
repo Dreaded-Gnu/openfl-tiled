@@ -18,6 +18,8 @@ class ImageLayer {
   public var properties(default, null):openfl.tiled.Properties;
   public var image(default, null):openfl.tiled.Image;
 
-  public function new() {
-  }
+  /**
+   * Constructor
+   */
+  public function new() {}
 }

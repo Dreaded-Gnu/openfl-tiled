@@ -8,11 +8,10 @@ class Properties {
    * @param node
    */
   public function new(node:Xml) {
-    // setup array
     this.property = new Array<openfl.tiled.Property>();
     for (child in node) {
-      // skip non elements
       if (child.nodeType != Xml.Element) {
+        // skip non elements
         continue;
       }
       // push property

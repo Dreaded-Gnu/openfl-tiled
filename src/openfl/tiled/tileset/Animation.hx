@@ -3,6 +3,10 @@ package openfl.tiled.tileset;
 class Animation {
   public var frame(default, null):Array<openfl.tiled.tileset.Frame>;
 
+  /**
+   * Constructor
+   * @param node
+   */
   public function new(node:Xml) {
     this.frame = new Array<openfl.tiled.tileset.Frame>();
     for (child in node) {

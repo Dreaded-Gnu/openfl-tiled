@@ -4,26 +4,43 @@ Implementation of tiled map parsing for openfl and haxe
 
 ## working examples
 
-| map                                                                         |  state    |
-|-----------------------------------------------------------------------------|:---------:|
-| sewers/sewers.tmx                                                           |  &check;  |
-| desert/desert.tmx                                                           |  &check;  |
-| desert_infinite/desert_infinite.tmx                                         |  &check;  |
-| hexagonal-mini/hexagonal-mini.tmx                                           |  &check;  |
-| isometric_grass_and_water/isometric_grass_and_water.tmx                     |  &check;  |
-| isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx |  &check;  |
+| map                                                                               |  state    |
+|-----------------------------------------------------------------------------------|:---------:|
+| tiled/sewers/sewers.tmx                                                           |  &check;  |
+| tiled/desert/desert.tmx                                                           |  &check;  |
+| tiled/desert_infinite/desert_infinite.tmx                                         |  &check;  |
+| tiled/hexagonal-mini/hexagonal-mini.tmx                                           |  &check;  |
+| tiled/isometric_grass_and_water/isometric_grass_and_water.tmx                     |  &check;  |
+| tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx |  &check;  |
+| tiled/rpg/island.tmx                                                              |  &check;  |
+| tiled/forest/forest.tmx                                                           |  &check;  |
 
-## ToDo
+## Known issues
 
-- [x] Move map files into subfolder
-- [x] Allow path to be passed into map parser to be able to load map assets from subfolder
-- [x] Fix weird coordinate swapping
-- [x] Add support for chunk handling in layer rendering
-- [x] Finish isometric rendering
-- [x] Finish staggered isometric rendering
-- [ ] Add support for animations
-- [ ] Add example with animations
-- [ ] Add example with image layer
-- [ ] Implement image layers
-- [ ] Implement object groups
-- [ ] Finish isometric objects
+- [ ] tiled/desert/desert.tmx second layer looses transparency when "scrolling"
+
+## Usage example
+
+```haxe
+// create new tilemap
+var tilemap:openfl.display.Tilemap = new openfl.display.Tilemap(
+  stage.stageWidth,
+  stage.stageHeight
+);
+// add child to stage (necessary for animations)
+stage.addChild(tilemap);
+// load map
+var map:openfl.tiled.Map = new openfl.tiled.Map(
+  "/tiled/rpg/",
+  "/tiled/rpg/island.tmx",
+  tilemap
+);
+```
+
+## Installation
+
+openfl-tiled2 is currently not published to haxelib, so to install you've to use git install.
+
+```bash
+haxelib git openfl-tiled2 https://github.com/Dreaded-Gnu/openfl-tiled
+```

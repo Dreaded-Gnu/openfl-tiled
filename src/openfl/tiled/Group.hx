@@ -15,6 +15,8 @@ class Group {
   public var imagelayer(default, null):Array<openfl.tiled.ImageLayer>;
   public var Group(default, null):Array<openfl.tiled.Group>;
 
-  public function new() {
-  }
+  /**
+   * Constructor
+   */
+  public function new() {}
 }

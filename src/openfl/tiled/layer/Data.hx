@@ -12,6 +12,10 @@ class Data {
   public var tile(default, null):Array<openfl.tiled.layer.Tile>;
   public var chunk(default, null):Array<openfl.tiled.layer.Chunk>;
 
+  /**
+   * Constructor
+   * @param node
+   */
   public function new(node:Xml) {
     this.encoding = node.get("encoding");
     this.compression = node.get("compression");
@@ -33,11 +37,9 @@ class Data {
 
     // handle no elements / parsed data
     if (0 >= this.tile.length && 0 >= this.chunk.length) {
-      // get data
       var chunk:String = node.firstChild().nodeValue;
       // handle encoding
-      switch (this.encoding)
-      {
+      switch (this.encoding) {
         case "base64":
           // handle possible compression
           switch (this.compression) {

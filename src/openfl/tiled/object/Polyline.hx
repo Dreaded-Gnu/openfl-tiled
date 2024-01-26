@@ -22,10 +22,7 @@ class Polyline {
     var splittedPoints:Array<String> = p.split(" ");
     for (splittedPoint in splittedPoints) {
       var point:Array<String> = splittedPoint.split(",");
-      this.points.push(new openfl.geom.Point(
-        Std.parseFloat(point[0]),
-        Std.parseFloat(point[1])
-      ));
+      this.points.push(new openfl.geom.Point(Std.parseFloat(point[0]), Std.parseFloat(point[1])));
     }
   }
 }

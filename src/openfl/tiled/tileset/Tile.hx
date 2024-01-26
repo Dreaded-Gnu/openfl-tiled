@@ -19,6 +19,7 @@ class Tile extends EventDispatcher {
   public var animation(default, null):openfl.tiled.tileset.Animation;
 
   public var tileset(default, null):openfl.display.Tileset;
+
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -27,24 +28,17 @@ class Tile extends EventDispatcher {
    * @param map
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
-    // call parent constructor
     super();
     this.mMap = map;
     // parse properties
     this.id = Std.parseInt(node.get("id"));
     this.type = node.exists("type") ? node.get("type") : "";
     this.terrain = node.get("terrain");
-    this.probability = node.exists("probability")
-      ? Std.parseFloat(node.get("probability"))
-      : 0;
+    this.probability = node.exists("probability") ? Std.parseFloat(node.get("probability")) : 0;
     this.x = node.exists("x") ? Std.parseInt(node.get("x")) : 0;
     this.y = node.exists("y") ? Std.parseInt(node.get("y")) : 0;
-    this.width = node.exists("width")
-      ? Std.parseInt(node.get("width"))
-      : -1;
-    this.height = node.exists("height")
-      ? Std.parseInt(node.get("height"))
-      : -1;
+    this.width = node.exists("width") ? Std.parseInt(node.get("width")) : -1;
+    this.height = node.exists("height") ? Std.parseInt(node.get("height")) : -1;
     // parse children
     for (child in node) {
       if (child.nodeType != Xml.Element) {
@@ -66,14 +60,11 @@ class Tile extends EventDispatcher {
   /**
    * Load async necessary stuff
    */
-  public function load() {
+  public function load():Void {
     if (this.image != null) {
-      // add complete listener
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
-      // load image
       this.image.load();
     } else {
-      // dispatch succeeded event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
   }
@@ -83,20 +74,11 @@ class Tile extends EventDispatcher {
    * @param event
    */
   private function onImageCompleted(event:Event):Void {
-    // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // parse image to tileset
     var rect:Array<Rectangle> = new Array<Rectangle>();
-    rect.push(new Rectangle(
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    ));
-    this.tileset = new openfl.display.Tileset(
-      this.image.bitmap.bitmapData,
-      rect
-    );
+    rect.push(new Rectangle(this.x, this.y, this.width, this.height));
+    this.tileset = new openfl.display.Tileset(this.image.bitmap.bitmapData, rect);
     // fire complete event
     this.dispatchEvent(new Event(Event.COMPLETE));
   }

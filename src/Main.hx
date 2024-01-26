@@ -1,3 +1,5 @@
+package;
+
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 import openfl.display.FPS;
@@ -5,9 +7,9 @@ import openfl.events.Event;
 import openfl.display.Sprite;
 import openfl.display.Stage;
 
-class App extends Sprite {
+class Main extends Sprite {
   private var mMap:openfl.tiled.Map;
-  private var mRenderedMap:Sprite = null;
+  private var mTilemap:openfl.display.Tilemap;
   private var mKeys = [];
   private var mOffsetX:Int = 0;
   private var mOffsetY:Int = 0;
@@ -17,8 +19,13 @@ class App extends Sprite {
    */
   public function new() {
     super();
+    // tilemap
+    this.mTilemap = new openfl.display.Tilemap(stage.stageWidth, stage.stageHeight);
+    addChild(this.mTilemap);
+    // add fps counter
+    addChild(new FPS(10, 10, 0xffffff));
     // load map
-    this.mMap = new openfl.tiled.Map("/tiled/rpg/","/tiled/rpg/island.tmx");
+    this.mMap = new openfl.tiled.Map("/tiled/rpg/", "/tiled/rpg/island.tmx", this.mTilemap);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -30,26 +37,12 @@ class App extends Sprite {
   }
 
   /**
-   * Method to switch map renderer
-   * @param sprite
-   */
-  private function switchMapRender(sprite:Sprite):Void {
-    if (mRenderedMap != null) {
-      removeChild(mRenderedMap);
-    }
-    mRenderedMap = sprite;
-    addChild(mRenderedMap);
-  }
-
-  /**
    * On map load completed
    * @param event
    */
   private function onMapLoadComplete(event:Event):Void {
-    trace("Map loaded...");
     this.mMap.removeEventListener(Event.COMPLETE, onMapLoadComplete);
-    trace(this.mMap);
-    this.switchMapRender(this.mMap.render());
+    this.mMap.render();
   }
 
   /**
@@ -68,38 +61,39 @@ class App extends Sprite {
     mKeys[event.keyCode] = false;
   }
 
+  /**
+   * On frame enter
+   * @param event
+   */
   private function onEnterFrame(event:Event):Void {
     var change:Bool = false;
+    var previousOffsetX:Int = mOffsetX;
+    var previousOffsetY:Int = mOffsetY;
     if (mKeys[Keyboard.UP]) {
       change = true;
       mOffsetY = Std.int(Math.max(mOffsetY - 10, 0));
     } else if (mKeys[Keyboard.DOWN]) {
       change = true;
-      mOffsetY = Std.int(Math.min(
-        mOffsetY + 10,
-        this.mMap.height * this.mMap.tileheight - this.stage.stageHeight
-      ));
+      mOffsetY = Std.int(Math.min(mOffsetY + 10, this.mMap.height * this.mMap.tileheight - this.stage.stageHeight));
     } else if (mKeys[Keyboard.LEFT]) {
       change = true;
       mOffsetX = Std.int(Math.max(mOffsetX - 10, 0));
     } else if (mKeys[Keyboard.RIGHT]) {
       change = true;
-      mOffsetX = Std.int(Math.min(
-        mOffsetX + 10,
-        this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth
-      ));
+      mOffsetX = Std.int(Math.min(mOffsetX + 10, this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth));
     }
     if (this.mMap.isLoaded && change) {
-      this.switchMapRender(this.mMap.render(mOffsetX, mOffsetY));
+      this.mMap.render(mOffsetX, mOffsetY, previousOffsetX, previousOffsetY);
     }
   }
 
+  #if commonjs
   /**
    * main function
    */
   public static function main():Void {
-    var stage = new Stage(640, 480, 0x000000, App);
-    stage.addChild(new FPS(10, 10, 0xffffff));
+    var stage:Stage = new Stage(640, 480, 0x000000, Main);
     js.Browser.document.body.appendChild(stage.element);
   }
+  #end
 }

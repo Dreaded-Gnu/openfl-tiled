@@ -6,6 +6,8 @@ class Transformations {
   public var rotate(default, null):Int;
   public var preferuntransformed(default, null):Int;
 
-  public function new() {
-  }
+  /**
+   * Constructor
+   */
+  public function new() {}
 }

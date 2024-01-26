@@ -18,20 +18,23 @@ class Image extends EventDispatcher {
   public var data(default, null):openfl.tiled.layer.Data;
 
   public var bitmap(default, null):Bitmap;
+
   private var mTransSet:Bool;
   private var mMap:openfl.tiled.Map;
 
+  /**
+   * Constructor
+   * @param node
+   * @param map
+   */
   public function new(node:Xml, map:openfl.tiled.Map) {
-    // call parent constructor
     super();
     // cache map
     this.mMap = map;
     // parse stuff
     this.format = node.get("format");
     this.source = node.get("source");
-    this.trans = node.exists("trans")
-      ? Std.parseInt("0xFF" + node.get("trans"))
-      : 0x00000000;
+    this.trans = node.exists("trans") ? Std.parseInt("0xFF" + node.get("trans")) : 0x00000000;
     this.mTransSet = node.exists("trans");
     this.width = Std.parseInt(node.get("width"));
     this.height = Std.parseInt(node.get("height"));
@@ -41,12 +44,7 @@ class Image extends EventDispatcher {
    * Load method
    */
   public function load():Void {
-    BitmapData.loadFromFile(
-      Helper.joinPath(
-        this.mMap.prefix,
-        this.source
-      )
-    ).onComplete(onLoadComplete);
+    BitmapData.loadFromFile(Helper.joinPath(this.mMap.prefix, this.source)).onComplete(onLoadComplete);
   }
 
   /**
@@ -54,15 +52,9 @@ class Image extends EventDispatcher {
    * @param event
    */
   private function onLoadComplete(bitmapData:BitmapData) {
-    // manipulate pixel once trans property is set
     if (this.mTransSet) {
-      bitmapData.threshold(
-        bitmapData,
-        bitmapData.rect,
-        new Point(0,0),
-        "==",
-        this.trans
-      );
+      // manipulate pixel once trans property is set
+      bitmapData.threshold(bitmapData, bitmapData.rect, new Point(0, 0), "==", this.trans);
     }
     // create bitmap
     bitmap = new Bitmap(bitmapData);

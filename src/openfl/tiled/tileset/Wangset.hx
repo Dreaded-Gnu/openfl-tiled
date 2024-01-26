@@ -8,6 +8,8 @@ class Wangset {
   public var wangcolor(default, null):Array<openfl.tiled.tileset.Wangcolor>;
   public var wangtile(default, null):Array<openfl.tiled.tileset.Wangtile>;
 
-  public function new() {
-  }
+  /**
+   * Constructor
+   */
+  public function new() {}
 }
