@@ -23,7 +23,7 @@ class Object {
   public var flipped_horizontally(get, null):Bool;
   public var flipped_vertically(get, null):Bool;
   public var flipped_diagonally(get, null):Bool;
-  public var flipped_hexagonal_120(get, null):Bool;
+  public var rotated_hexagonal_120(get, null):Bool;
 
   private var mMap:openfl.tiled.Map;
 
@@ -74,8 +74,7 @@ class Object {
    * @return Int
    */
   private function get_gid():Int {
-    return
-      this.gid & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
+    return Helper.extractGid(this.gid);
   }
 
   /**
@@ -83,7 +82,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_horizontally():Bool {
-    return this.gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
+    return Helper.isGidFlippedHorizontally(this.gid);
   }
 
   /**
@@ -91,7 +90,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_vertically():Bool {
-    return this.gid & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
+    return Helper.isGidFlippedVertically(this.gid);
   }
 
   /**
@@ -99,14 +98,14 @@ class Object {
    * @return Bool
    */
   private function get_flipped_diagonally():Bool {
-    return this.gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
+    return Helper.isGidFlippedDiagonally(this.gid);
   }
 
   /**
    * Getter for flipped hexagonal 120
    * @return Bool
    */
-  private function get_flipped_hexagonal_120():Bool {
-    return this.gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+  private function get_rotated_hexagonal_120():Bool {
+    return Helper.isGidRotatedHexagonal120(this.gid);
   }
 }

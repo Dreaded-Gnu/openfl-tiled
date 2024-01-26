@@ -3,10 +3,7 @@ package openfl.tiled;
 import openfl.geom.Point;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
-import openfl.display.Loader;
 import openfl.events.Event;
-import openfl.net.URLRequest;
-import openfl.net.URLLoader;
 import openfl.events.EventDispatcher;
 
 class Image extends EventDispatcher {

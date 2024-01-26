@@ -41,7 +41,9 @@ class Map extends EventDispatcher {
   public var prefix(default, null):String;
   public var tilemap(get, null):openfl.display.Tilemap;
 
-  private var mTilesetLoad:Array<openfl.tiled.Tileset>;
+  private var mTilesetLoaded:Bool;
+  private var mImageLayerLoaded:Bool;
+  private var mGroupLoaded:Bool;
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
   private var mRenderObjects:Array<Dynamic>;
@@ -59,6 +61,9 @@ class Map extends EventDispatcher {
     this.prefix = prefix;
     this.isLoaded = false;
     this.mTileMap = tilemap;
+    this.mTilesetLoaded = false;
+    this.mImageLayerLoaded = false;
+    this.mGroupLoaded = false;
   }
 
   /**
@@ -69,7 +74,7 @@ class Map extends EventDispatcher {
     var loader:URLLoader = cast(event.target, URLLoader);
     loader.removeEventListener(Event.COMPLETE, onLoadComplete);
     parseXml(loader.data);
-    this.loadTilesetData();
+    this.loadData();
   }
 
   /**
@@ -172,9 +177,13 @@ class Map extends EventDispatcher {
           this.objectgroup.push(o);
           this.mRenderObjects.push(o);
         case "imagelayer":
-        // this.imagelayer.push(new openfl.tiled.ImageLayer(child, this));
+          var i:openfl.tiled.ImageLayer = new openfl.tiled.ImageLayer(child, this);
+          this.imagelayer.push(i);
+          this.mRenderObjects.push(i);
         case "group":
-          // this.group.push(new openfl.tiled.Group(child, this));
+          var g:openfl.tiled.Group = new openfl.tiled.Group(child, this);
+          this.group.push(g);
+          this.mRenderObjects.push(g);
       }
     }
 
@@ -221,30 +230,83 @@ class Map extends EventDispatcher {
   /**
    * Load all necessary data
    */
-  private function loadTilesetData():Void {
-    this.mTilesetLoad = new Array<openfl.tiled.Tileset>();
-    for (tileset in this.tileset) {
-      this.mTilesetLoad.push(tileset);
-    }
-    // iterate through tilesets
-    for (tileset in this.tileset) {
-      tileset.addEventListener(Event.COMPLETE, onTilesetLoadComplete.bind(_, tileset));
-      tileset.load();
-    }
-  }
-
-  /**
-   * On tileset load complete
-   * @param event
-   * @param tileset
-   */
-  private function onTilesetLoadComplete(event:Event, tileset:openfl.tiled.Tileset):Void {
-    tileset.removeEventListener(Event.COMPLETE, onTilesetLoadComplete.bind(_, tileset));
-    // remove index from array
-    this.mTilesetLoad.remove(tileset);
-    // handle fully loaded
-    if (0 >= this.mTilesetLoad.length) {
-      this.isLoaded = true;
+  private function loadData():Void {
+    if (!this.mTilesetLoaded) {
+      var tmpTileset:Array<openfl.tiled.Tileset> = new Array<openfl.tiled.Tileset>();
+      for (tileset in this.tileset) {
+        tmpTileset.push(tileset);
+      }
+      // handle no tiles to be loaded
+      if (0 >= tmpTileset.length) {
+        this.mTilesetLoaded = true;
+        this.loadData();
+        return;
+      }
+      // loop through tilesets and start loading them
+      for (tileset in this.tileset) {
+        tileset.addEventListener(Event.COMPLETE, (event:Event) -> {
+          tmpTileset.remove(tileset);
+          // continue loading when end was reached
+          if (0 >= tmpTileset.length) {
+            this.mTilesetLoaded = true;
+            // continue with load process
+            this.loadData();
+          }
+        });
+        // load tile
+        tileset.load();
+      }
+    } else if (!this.mImageLayerLoaded) {
+      var tmpImageLayer:Array<openfl.tiled.ImageLayer> = new Array<openfl.tiled.ImageLayer>();
+      for (imagelayer in this.imagelayer) {
+        tmpImageLayer.push(imagelayer);
+      }
+      // handle no tiles to be loaded
+      if (0 >= tmpImageLayer.length) {
+        this.mImageLayerLoaded = true;
+        this.loadData();
+        return;
+      }
+      // loop through tiles and start loading them
+      for (imagelayer in this.imagelayer) {
+        imagelayer.addEventListener(Event.COMPLETE, (event:Event) -> {
+          tmpImageLayer.remove(imagelayer);
+          // continue loading when end was reached
+          if (0 >= tmpImageLayer.length) {
+            this.mImageLayerLoaded = true;
+            // continue with load process
+            this.loadData();
+          }
+        });
+        // load tile
+        imagelayer.load();
+      }
+    } else if (!this.mGroupLoaded) {
+      var tmpGroup:Array<openfl.tiled.Group> = new Array<openfl.tiled.Group>();
+      for (group in this.group) {
+        tmpGroup.push(group);
+      }
+      // handle no tiles to be loaded
+      if (0 >= tmpGroup.length) {
+        this.mGroupLoaded = true;
+        this.loadData();
+        return;
+      }
+      // loop through tiles and start loading them
+      for (group in this.group) {
+        group.addEventListener(Event.COMPLETE, (event:Event) -> {
+          tmpGroup.remove(group);
+          // continue loading when end was reached
+          if (0 >= tmpGroup.length) {
+            this.mGroupLoaded = true;
+            // continue with load process
+            this.loadData();
+          }
+        });
+        // load tile
+        group.load();
+      }
+    } else {
       // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
@@ -281,6 +343,12 @@ class Map extends EventDispatcher {
       } else if (Std.isOfType(renderObject, openfl.tiled.ObjectGroup)) {
         var o:openfl.tiled.ObjectGroup = cast(renderObject, openfl.tiled.ObjectGroup);
         o.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
+      } else if (Std.isOfType(renderObject, openfl.tiled.ImageLayer)) {
+        var i:openfl.tiled.ImageLayer = cast(renderObject, openfl.tiled.ImageLayer);
+        i.render(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
+      } else if (Std.isOfType(renderObject, openfl.tiled.Group)) {
+        var g:openfl.tiled.Group = cast(renderObject, openfl.tiled.Group);
+        g.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
       }
     }
     // return display object

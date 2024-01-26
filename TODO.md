@@ -3,9 +3,11 @@
 
 ## Still to be done
 
-- [ ] Implement image layers and add example map
+- [ ] Add example map with image layer
+- [ ] Add example map with groups, best with nested groups
 - [ ] Finish object group placement for isometric and hexagonal
-- [ ] Add support for groups
+- [ ] Render only what is visible in tilemap instead of everything
+- [ ] Implement collision handling with collision layer
 
 ## Already done
 
@@ -18,3 +20,5 @@
 - [x] Add support for animations
 - [x] Add example with animations
 - [x] Implement objectgroup handling
+- [x] Add support for groups
+- [x] Implement image layers

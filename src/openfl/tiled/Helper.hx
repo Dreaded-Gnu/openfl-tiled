@@ -98,4 +98,50 @@ class Helper {
   public static function joinPath(path1:String, path2:String):String {
     return Path.normalize(Path.join([path1 ?? "", path2 ?? ""]));
   }
+
+  /**
+   * Helper to extract gid
+   * @param gid
+   * @return Int
+   */
+  public static function extractGid(gid:Int):Int {
+    return
+      gid & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
+  }
+
+  /**
+   * Helper to check if gid is flipped horizontally
+   * @param gid
+   * @return Bool
+   */
+  public static function isGidFlippedHorizontally(gid:Int):Bool {
+    return gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
+  }
+
+  /**
+   * Helper to check if gid is flipped vertically
+   * @param gid
+   * @return Bool
+   */
+  public static function isGidFlippedVertically(gid:Int):Bool {
+    return gid & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
+  }
+
+  /**
+   * Helper to check if gid is flipped diagonally
+   * @param gid
+   * @return Bool
+   */
+  public static function isGidFlippedDiagonally(gid:Int):Bool {
+    return gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
+  }
+
+  /**
+   * Helper to check if gid is flipped hexagonal 120
+   * @param gid
+   * @return Bool
+   */
+  public static function isGidRotatedHexagonal120(gid:Int):Bool {
+    return gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+  }
 }

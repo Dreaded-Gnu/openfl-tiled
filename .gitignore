@@ -3,3 +3,5 @@ dist/
 *.map
 .haxelib
 Export
+public/phaser
+public/sprites
