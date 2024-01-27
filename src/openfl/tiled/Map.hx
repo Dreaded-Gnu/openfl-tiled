@@ -373,10 +373,11 @@ class Map extends EventDispatcher {
    * @return Bool
    */
   public function checkCollision(displayObject:Sprite):Bool {
-    // get tile at position
-    // check for collide property exists and is set to true
-    // check for objectgroup with name collision and check collisions with objects
-    // Iterate through groups and check again for tile and collision layer collision
+    for (renderObject in this.mRenderObjects) {
+      if (renderObject.collides(displayObject)) {
+        return true;
+      }
+    }
     return false;
   }
 }

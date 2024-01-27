@@ -180,4 +180,17 @@ class ObjectGroup implements openfl.tiled.Updatable {
     this.mPreviousX = offsetX;
     this.mPreviousY = offsetY;
   }
+
+  /**
+   * Check for collision
+   * @param sprite
+   */
+  public function collides(sprite:openfl.display.Sprite):Bool {
+    if (this.name != Helper.COLLISION_LAYER_NAME) {
+      return false;
+    }
+    // check for objectgroup with name collision and check collisions with objects
+    // Iterate through groups and check again for tile and collision layer collision
+    return false;
+  }
 }

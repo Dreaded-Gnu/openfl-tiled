@@ -92,6 +92,19 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
   }
 
   /**
+   * Check for collision
+   * @param sprite
+   */
+  public function collides(sprite:openfl.display.Sprite):Bool {
+    for (renderObject in this.mRenderObjects) {
+      if (renderObject.collides(sprite)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Load method
    */
   public function load():Void {

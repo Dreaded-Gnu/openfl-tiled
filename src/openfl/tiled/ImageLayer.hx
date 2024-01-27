@@ -101,4 +101,12 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
     // fire complete event
     this.dispatchEvent(new Event(Event.COMPLETE));
   }
+
+  /**
+   * Check for collision
+   * @param sprite
+   */
+  public function collides(sprite:openfl.display.Sprite):Bool {
+    return false;
+  }
 }

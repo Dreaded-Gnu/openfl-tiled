@@ -8,6 +8,10 @@
 - [ ] Finish object group placement for isometric and hexagonal
 - [ ] Render only what is visible in tilemap instead of everything
 - [ ] Implement collision handling with collision layer
+- [ ] Implement horizontal flipping for objects and tiles
+- [ ] Implement vertical flipping for objects and tiles
+- [ ] Implement diagonal flipping for objects and tiles
+- [ ] Implement flipped hexagonal 120 for objects and tiles
 
 ## Already done
 

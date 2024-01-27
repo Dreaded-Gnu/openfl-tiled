@@ -9,6 +9,10 @@ class Helper {
   public static inline var GID_FLIPPED_DIAGONALLY_FLAG:UInt = 0x20000000;
   public static inline var GID_ROTATED_HEXAGONAL_120_FLAG:UInt = 0x10000000;
 
+  public static inline var COLLISION_LAYER_NAME:String = "collision";
+  public static inline var COLLISION_PROPERTY_NAME:String = "collides";
+
+
   private static inline var BASE64_CHARS:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
   /**

@@ -443,4 +443,17 @@ class Layer implements openfl.tiled.Updatable {
     this.mPreviousX = offsetX;
     this.mPreviousY = offsetY;
   }
+
+  /**
+   * Check for collision
+   * @param sprite
+   */
+  public function collides(sprite:openfl.display.Sprite):Bool {
+    // check for collide property is set for layer and is set to true
+      // check for any collision where gid is valid at current position
+    // get tile at position
+      // check for collide property exists for tile and is set to true
+      // check collision against tile and possible surrounding tiles
+    return false;
+  }
 }
