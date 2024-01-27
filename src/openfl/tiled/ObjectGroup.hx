@@ -189,8 +189,12 @@ class ObjectGroup implements openfl.tiled.Updatable {
     if (this.name != Helper.COLLISION_LAYER_NAME) {
       return false;
     }
-    // check for objectgroup with name collision and check collisions with objects
-    // Iterate through groups and check again for tile and collision layer collision
+    for (object in this.object) {
+      // check for collision
+      if (object.collides(sprite)) {
+        return true;
+      }
+    }
     return false;
   }
 }

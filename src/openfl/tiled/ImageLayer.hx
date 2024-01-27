@@ -24,6 +24,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   public var image(default, null):openfl.tiled.Image;
 
   public var tileset(default, null):openfl.display.Tileset;
+
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -73,13 +74,12 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * @param previousOffsetX
    * @param previousOffsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
-  }
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {}
 
   /**
    * Load method
    */
-   public function load():Void {
+  public function load():Void {
     if (this.image != null) {
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       this.image.load();

@@ -445,15 +445,96 @@ class Layer implements openfl.tiled.Updatable {
   }
 
   /**
+   * Helper to get tile at x/y coordinate
+   * @param x
+   * @param y
+   * @return openfl.tiled.tileset.Tile
+   */
+  public function getTileAt(x:Int, y:Int):openfl.tiled.tileset.Tile {
+    // handle non infinite maps
+    if (this.mMap.infinite != 1) {
+      var id:Int = Std.int(y / this.mMap.tileheight) * this.mMap.width + Std.int(x / this.mMap.tilewidth);
+      // get gid
+      var gid:Int = this.data.tile[id].gid;
+      // handle invalid
+      if (0 == gid) {
+        return null;
+      }
+      // get tileset
+      var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+      if (null == tileset) {
+        return null;
+      }
+      // subtract first gid from tileset
+      gid -= tileset.firstgid;
+      // get tile by gid
+      var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
+      // add tile if valid and not set
+      return tile;
+    }
+    // handle infinite maps
+    for (chunk in this.data.chunk) {
+      // check if chunk is affected
+      if (!(chunk.x * this.mMap.tilewidth <= x
+        && chunk.x * this.mMap.tilewidth + this.mMap.tilewidth * chunk.width > x
+        && chunk.y * this.mMap.tileheight <= y
+        && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y)) {
+        continue;
+      }
+      var realX:Int = x - chunk.x * this.mMap.tilewidth;
+      var realY:Int = y - chunk.y * this.mMap.tileheight;
+      // get id
+      var id:Int = Std.int(realY / this.mMap.tileheight) * this.mMap.width + Std.int(realX / this.mMap.tilewidth);
+      // get gid
+      var gid:Int = chunk.tile[id].gid;
+      // handle invalid
+      if (0 == gid) {
+        return null;
+      }
+      // get tileset
+      var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+      if (null == tileset) {
+        return null;
+      }
+      // subtract first gid from tileset
+      gid -= tileset.firstgid;
+      // get tile by gid
+      var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
+      // add tile if valid and not set
+      return tile;
+    }
+    // nothing found, return null
+    return null;
+  }
+
+  /**
    * Check for collision
    * @param sprite
    */
   public function collides(sprite:openfl.display.Sprite):Bool {
-    // check for collide property is set for layer and is set to true
-      // check for any collision where gid is valid at current position
-    // get tile at position
-      // check for collide property exists for tile and is set to true
-      // check collision against tile and possible surrounding tiles
+    // array of tiles
+    var tiles:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
+    // loop through width and height of sprite
+    for (x in 0...Std.int(sprite.width)) {
+      for (y in 0...Std.int(sprite.height)) {
+        // get tile at x/y coordinate
+        var tile:openfl.tiled.tileset.Tile = getTileAt(Std.int(sprite.x + x), Std.int(sprite.y + y));
+        // push tile if not null and not yet existing
+        if (tile != null && -1 == tiles.indexOf(tile)) {
+          tiles.push(tile);
+        }
+      }
+    }
+    // check for collision enabled on layer level
+    var layerCollision:Bool = this.properties.propertyByName(Helper.COLLISION_PROPERTY_NAME) != null;
+    // iterate tiles
+    for (tile in tiles) {
+      // handle either map collision is set
+      if (layerCollision || tile.properties.propertyByName(Helper.COLLISION_PROPERTY_NAME) != null) {
+        return true;
+      }
+    }
+    // return no collision
     return false;
   }
 }

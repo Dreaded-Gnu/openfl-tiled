@@ -108,4 +108,14 @@ class Object {
   private function get_rotated_hexagonal_120():Bool {
     return Helper.isGidRotatedHexagonal120(this.gid);
   }
+
+  /**
+   * Checks for collision with sprite
+   * @param sprite
+   * @return Bool
+   */
+  public function collides(sprite:openfl.display.Sprite):Bool {
+    /// FIXME: ADD LOGIC
+    return false;
+  }
 }
