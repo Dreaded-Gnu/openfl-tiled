@@ -362,4 +362,31 @@ class Map extends EventDispatcher {
   private function get_tilemap():openfl.display.Tilemap {
     return this.mTileMap;
   }
+
+  /**
+   * Helper to get objectgroup by name, e.g. for collision layer
+   * @param name
+   * @return openfl.tiled.ObjectGroup
+   */
+  public function objectgroupByName(name:String):openfl.tiled.ObjectGroup {
+    for (objectgroup in this.objectgroup) {
+      if (objectgroup.name == name) {
+        return objectgroup;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Helper to check for collision
+   * @param displayObject
+   * @return Bool
+   */
+  public function checkCollision(displayObject:Sprite):Bool {
+    // get tile at position
+    // check for collide property exists and is set to true
+    // check for objectgroup with name collision and check collisions with objects
+    // Iterate through groups and check again for tile and collision layer collision
+    return false;
+  }
 }

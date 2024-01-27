@@ -18,4 +18,18 @@ class Properties {
       this.property.push(new openfl.tiled.Property(child));
     }
   }
+
+  /**
+   * Helper to get property by name
+   * @param name
+   * @return Property
+   */
+  public function propertyByName(name:String):Property {
+    for (property in this.property) {
+      if (property.name == name) {
+        return property;
+      }
+    }
+    return null;
+  }
 }
