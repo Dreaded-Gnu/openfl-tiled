@@ -3,7 +3,7 @@ package openfl.tiled;
 import openfl.errors.Error;
 import openfl.display.Sprite;
 
-class ObjectGroup {
+class ObjectGroup implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;
   public var klass(default, null):String;

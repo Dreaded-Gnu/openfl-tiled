@@ -3,7 +3,7 @@ package openfl.tiled;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 
-class Group extends EventDispatcher {
+class Group extends EventDispatcher implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;
   public var klass(default, null):String;
@@ -19,7 +19,7 @@ class Group extends EventDispatcher {
   public var group(default, null):Array<openfl.tiled.Group>;
 
   private var mMap:openfl.tiled.Map;
-  private var mRenderObjects:Array<Dynamic>;
+  private var mRenderObjects:Array<openfl.tiled.Updatable>;
   private var mImageLayerLoaded:Bool;
   private var mGroupLoaded:Bool;
 
@@ -47,7 +47,7 @@ class Group extends EventDispatcher {
     this.imagelayer = new Array<openfl.tiled.ImageLayer>();
     this.group = new Array<openfl.tiled.Group>();
     // setup render objects array
-    this.mRenderObjects = new Array<Dynamic>();
+    this.mRenderObjects = new Array<openfl.tiled.Updatable>();
     // parse children
     for (child in node) {
       if (child.nodeType != Xml.Element) {
@@ -87,19 +87,7 @@ class Group extends EventDispatcher {
    */
   public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
     for (renderObject in this.mRenderObjects) {
-      if (Std.isOfType(renderObject, openfl.tiled.Layer)) {
-        var l:openfl.tiled.Layer = cast(renderObject, openfl.tiled.Layer);
-        l.render(this.mMap.tilemap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      } else if (Std.isOfType(renderObject, openfl.tiled.ObjectGroup)) {
-        var o:openfl.tiled.ObjectGroup = cast(renderObject, openfl.tiled.ObjectGroup);
-        o.update(this.mMap.tilemap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      } else if (Std.isOfType(renderObject, openfl.tiled.ImageLayer)) {
-        var i:openfl.tiled.ImageLayer = cast(renderObject, openfl.tiled.ImageLayer);
-        i.render(this.mMap.tilemap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      } else if (Std.isOfType(renderObject, openfl.tiled.Group)) {
-        var g:openfl.tiled.Group = cast(renderObject, openfl.tiled.Group);
-        g.update(this.mMap.tilemap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      }
+      renderObject.update(this.mMap.tilemap, offsetX, offsetY, previousOffsetX, previousOffsetY);
     }
   }
 

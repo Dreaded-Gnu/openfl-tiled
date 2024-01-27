@@ -6,7 +6,7 @@ import openfl.tiled.map.RenderOrder;
 import openfl.display.Tile;
 import openfl.display.Sprite;
 
-class Layer {
+class Layer implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;
   public var klass(default, null):String;
@@ -402,7 +402,7 @@ class Layer {
    * @param previousOffsetX
    * @param previousOffsetY
    */
-  public function render(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
         if (this.mMap.infinite == 1) {

@@ -46,7 +46,7 @@ class Map extends EventDispatcher {
   private var mGroupLoaded:Bool;
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
-  private var mRenderObjects:Array<Dynamic>;
+  private var mRenderObjects:Array<openfl.tiled.Updatable>;
 
   /**
    * Constructor
@@ -156,7 +156,7 @@ class Map extends EventDispatcher {
     this.imagelayer = new Array<openfl.tiled.ImageLayer>();
     this.group = new Array<openfl.tiled.Group>();
     // setup render objects array
-    this.mRenderObjects = new Array<Dynamic>();
+    this.mRenderObjects = new Array<openfl.tiled.Updatable>();
 
     var layerId:Int = 0;
     for (child in xmlParsed) {
@@ -307,6 +307,8 @@ class Map extends EventDispatcher {
         group.load();
       }
     } else {
+      // set loaded flag
+      this.isLoaded = true;
       // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
@@ -337,19 +339,7 @@ class Map extends EventDispatcher {
    */
   public function render(offsetX:Int = 0, offsetY:Int = 0, previousOffsetX:Int = 0, previousOffsetY:Int = 0):openfl.display.Tilemap {
     for (renderObject in this.mRenderObjects) {
-      if (Std.isOfType(renderObject, openfl.tiled.Layer)) {
-        var l:openfl.tiled.Layer = cast(renderObject, openfl.tiled.Layer);
-        l.render(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      } else if (Std.isOfType(renderObject, openfl.tiled.ObjectGroup)) {
-        var o:openfl.tiled.ObjectGroup = cast(renderObject, openfl.tiled.ObjectGroup);
-        o.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      } else if (Std.isOfType(renderObject, openfl.tiled.ImageLayer)) {
-        var i:openfl.tiled.ImageLayer = cast(renderObject, openfl.tiled.ImageLayer);
-        i.render(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      } else if (Std.isOfType(renderObject, openfl.tiled.Group)) {
-        var g:openfl.tiled.Group = cast(renderObject, openfl.tiled.Group);
-        g.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
-      }
+      renderObject.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
     }
     // return display object
     return this.mTileMap;

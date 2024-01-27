@@ -5,7 +5,7 @@ import openfl.events.Event;
 import openfl.display.BitmapData;
 import openfl.events.EventDispatcher;
 
-class ImageLayer extends EventDispatcher {
+class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;
   public var klass(default, null):String;
@@ -73,7 +73,7 @@ class ImageLayer extends EventDispatcher {
    * @param previousOffsetX
    * @param previousOffsetY
    */
-  public function render(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
   }
 
   /**
