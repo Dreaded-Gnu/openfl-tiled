@@ -133,8 +133,8 @@ class ObjectGroup implements openfl.tiled.Updatable {
         tile?.tileset != null ? 0 : gid, // x / y position
         object.x - tileset.tileoffset.x,
         object.y - tileset.tileoffset.y - object.height, // scaling depending on object size
-        object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth),
-        object.height / (tile?.tileset != null ? tile.height : tileset.tileheight), 0, tileset.tile[gid]?.animation, this.mMap);
+        object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth), object.height / (tile?.tileset != null ? tile.height : tileset.tileheight),
+        0, tileset.tile[gid]?.animation, this.mMap);
       t.tileset = ts;
     }
     // add tile at position
