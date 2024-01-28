@@ -115,7 +115,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
     if (mTilemapData.get(tileset.firstgid).getTileAt(index) != null) {
-      t = cast(mTilemapData.get(tileset.firstgid).getTileAt(index), openfl.tiled.helper.AnimatedTile);
+      t = cast mTilemapData.get(tileset.firstgid).getTileAt(index);
       // gid
       t.id = tile?.tileset != null ? 0 : gid;
       // x / y position

@@ -48,7 +48,7 @@ class Main extends Sprite {
     // create and add player
     this.mPlayer = new openfl.display.Sprite();
     this.mPlayer.graphics.beginFill(0xFFCC00);
-    this.mPlayer.graphics.drawRect(0, 0, this.mMap.tilewidth, this.mMap.tileheight);
+    this.mPlayer.graphics.drawRect(0, 0, this.mMap.tilewidth - 1, this.mMap.tileheight - 1);
     this.mPlayer.x = this.mMap.tilewidth;
     this.mPlayer.y = this.mMap.tileheight;
     addChild(this.mPlayer);
@@ -83,19 +83,19 @@ class Main extends Sprite {
     if (mKeys[Keyboard.UP]) {
       change = true;
       mOffsetY = Std.int(Math.max(mOffsetY - 10, 0));
-      playerOffsetY -= 10;
+      playerOffsetY -= 1;
     } else if (mKeys[Keyboard.DOWN]) {
       change = true;
       mOffsetY = Std.int(Math.min(mOffsetY + 10, this.mMap.height * this.mMap.tileheight - this.stage.stageHeight));
-      playerOffsetY += 10;
+      playerOffsetY += 1;
     } else if (mKeys[Keyboard.LEFT]) {
       change = true;
       mOffsetX = Std.int(Math.max(mOffsetX - 10, 0));
-      playerOffsetX -= 10;
+      playerOffsetX -= 1;
     } else if (mKeys[Keyboard.RIGHT]) {
       change = true;
       mOffsetX = Std.int(Math.min(mOffsetX + 10, this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth));
-      playerOffsetX += 10;
+      playerOffsetX += 1;
     }
     if (this.mMap.isLoaded && change) {
       if (this.mPlayer != null) {

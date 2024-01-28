@@ -71,7 +71,7 @@ class Map extends EventDispatcher {
    * @param event
    */
   private function onLoadComplete(event:Event):Void {
-    var loader:URLLoader = cast(event.target, URLLoader);
+    var loader:URLLoader = cast event.target;
     loader.removeEventListener(Event.COMPLETE, onLoadComplete);
     parseXml(loader.data);
     this.loadData();

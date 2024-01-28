@@ -106,7 +106,7 @@ class Layer implements openfl.tiled.Updatable {
     switch (this.mMap.orientation) {
       case MapOrientationIsometric, MapOrientationStaggered:
         if (mTilemapData.get(tileset.firstgid).getTileAt(id) != null) {
-          t = cast(mTilemapData.get(tileset.firstgid).getTileAt(id), openfl.tiled.helper.AnimatedTile);
+          t = cast mTilemapData.get(tileset.firstgid).getTileAt(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -155,7 +155,7 @@ class Layer implements openfl.tiled.Updatable {
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
         if (mTilemapData.get(tileset.firstgid).getTileAt(id) != null) {
-          t = cast(mTilemapData.get(tileset.firstgid).getTileAt(id), openfl.tiled.helper.AnimatedTile);
+          t = cast mTilemapData.get(tileset.firstgid).getTileAt(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -184,7 +184,7 @@ class Layer implements openfl.tiled.Updatable {
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
         if (mTilemapData.get(tileset.firstgid).getTileAt(id) != null) {
-          t = cast(mTilemapData.get(tileset.firstgid).getTileAt(id), openfl.tiled.helper.AnimatedTile);
+          t = cast mTilemapData.get(tileset.firstgid).getTileAt(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -283,7 +283,7 @@ class Layer implements openfl.tiled.Updatable {
         switch (this.mMap.orientation) {
           case MapOrientationIsometric, MapOrientationStaggered:
             if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
-              t = cast(mTilemapData.get(chunkIndex).getTileAt(id), openfl.tiled.helper.AnimatedTile);
+              t = cast mTilemapData.get(chunkIndex).getTileAt(id);
               // gid
               t.id = gid;
               // x / y position
@@ -332,7 +332,7 @@ class Layer implements openfl.tiled.Updatable {
             t.y -= tileset.tileoffset.y;
           case MapOrientationOrthogonal:
             if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
-              t = cast(mTilemapData.get(chunkIndex).getTileAt(id), openfl.tiled.helper.AnimatedTile);
+              t = cast mTilemapData.get(chunkIndex).getTileAt(id);
               t.id = gid;
               // x / y position
               t.x = x * this.mMap.tilewidth - tileset.tileoffset.x;
@@ -351,7 +351,7 @@ class Layer implements openfl.tiled.Updatable {
             }
           case MapOrientationHexagonal:
             if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
-              t = cast(mTilemapData.get(chunkIndex).getTileAt(id), openfl.tiled.helper.AnimatedTile);
+              t = cast mTilemapData.get(chunkIndex).getTileAt(id);
               // gid
               t.id = gid;
               // x / y position

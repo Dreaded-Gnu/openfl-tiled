@@ -145,10 +145,8 @@ class Object {
             var dist2:Float = pointDistance(x + tx, y + ty, x2, y2);
             // get line length
             var linelength:Float = pointDistance(x1, y1, x2, y2);
-            var buffer:Float = 0.1;
             // handle collision
-            if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer) {
-              trace("true");
+            if (dist1 + dist2 == linelength) {
               return true;
             }
           }
