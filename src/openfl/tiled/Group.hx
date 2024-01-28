@@ -93,11 +93,15 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
 
   /**
    * Check for collision
-   * @param sprite
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @return Bool
    */
-  public function collides(sprite:openfl.display.Sprite):Bool {
+  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     for (renderObject in this.mRenderObjects) {
-      if (renderObject.collides(sprite)) {
+      if (renderObject.collides(x, y, width, height)) {
         return true;
       }
     }

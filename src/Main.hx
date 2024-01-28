@@ -26,7 +26,7 @@ class Main extends Sprite {
     // add fps counter
     addChild(new FPS(10, 10, 0xffffff));
     // load map
-    this.mMap = new openfl.tiled.Map("/phaser/tmx/", "/phaser/tmx/tile collision test.tmx", this.mTilemap);
+    this.mMap = new openfl.tiled.Map("/phaser/tmx/", "/phaser/tmx/collision test.tmx", this.mTilemap);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -101,12 +101,12 @@ class Main extends Sprite {
       if (this.mPlayer != null) {
         this.mPlayer.x += playerOffsetX;
         this.mPlayer.y += playerOffsetY;
-        if (this.mMap.checkCollision(this.mPlayer)) {
+        if (this.mMap.collides(Std.int(this.mPlayer.x), Std.int(this.mPlayer.y), Std.int(this.mPlayer.width), Std.int(this.mPlayer.height))) {
           this.mPlayer.x -= playerOffsetX;
           this.mPlayer.y -= playerOffsetY;
         }
       }
-      //this.mMap.render(mOffsetX, mOffsetY, previousOffsetX, previousOffsetY);
+      // this.mMap.render(mOffsetX, mOffsetY, previousOffsetX, previousOffsetY);
     }
   }
 

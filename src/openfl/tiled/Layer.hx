@@ -562,18 +562,22 @@ class Layer implements openfl.tiled.Updatable {
 
   /**
    * Check for collision
-   * @param sprite
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @return Bool
    */
-  public function collides(sprite:openfl.display.Sprite):Bool {
+  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     // array of tiles
     var tiles:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
     // loop through width and height of sprite
-    for (x in 0...Std.int(sprite.width)) {
-      for (y in 0...Std.int(sprite.height)) {
+    for (tx in 0...width) {
+      for (ty in 0...height) {
         // get tile at x/y coordinate
-        var tile:openfl.tiled.tileset.Tile = getTileAt(Std.int(sprite.x + x), Std.int(sprite.y + y));
-        var id:Int = getTileGidAt(Std.int(sprite.x + x), Std.int(sprite.y + y));
+        var tile:openfl.tiled.tileset.Tile = getTileAt(x + tx, y + ty);
+        var id:Int = getTileGidAt(x + tx, y + ty);
         // push tile if not null and not yet existing
         if (tile != null && -1 == tiles.indexOf(tile)) {
           tiles.push(tile);

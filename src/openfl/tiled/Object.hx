@@ -110,11 +110,14 @@ class Object {
   }
 
   /**
-   * Checks for collision with sprite
-   * @param sprite
+   * Checks for collision
+   * @param x
+   * @param y
+   * @param width
+   * @param height
    * @return Bool
    */
-  public function collides(sprite:openfl.display.Sprite):Bool {
+  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     /// FIXME: ADD LOGIC
     return false;
   }

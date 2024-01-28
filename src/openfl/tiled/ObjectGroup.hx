@@ -183,15 +183,19 @@ class ObjectGroup implements openfl.tiled.Updatable {
 
   /**
    * Check for collision
-   * @param sprite
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @return Bool
    */
-  public function collides(sprite:openfl.display.Sprite):Bool {
+  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     if (this.name != Helper.COLLISION_LAYER_NAME) {
       return false;
     }
     for (object in this.object) {
       // check for collision
-      if (object.collides(sprite)) {
+      if (object.collides(x, y, width, height)) {
         return true;
       }
     }

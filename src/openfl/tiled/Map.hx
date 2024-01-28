@@ -369,12 +369,15 @@ class Map extends EventDispatcher {
 
   /**
    * Helper to check for collision
-   * @param displayObject
+   * @param x start x
+   * @param y start y
+   * @param width width
+   * @param height height
    * @return Bool
    */
-  public function checkCollision(displayObject:Sprite):Bool {
+  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     for (renderObject in this.mRenderObjects) {
-      if (renderObject.collides(displayObject)) {
+      if (renderObject.collides(x, y, width, height)) {
         return true;
       }
     }
