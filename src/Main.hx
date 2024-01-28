@@ -10,6 +10,7 @@ import openfl.display.Stage;
 class Main extends Sprite {
   private var mMap:openfl.tiled.Map;
   private var mTilemap:openfl.display.Tilemap;
+  private var mPlayer:openfl.display.Sprite;
   private var mKeys = [];
   private var mOffsetX:Int = 0;
   private var mOffsetY:Int = 0;
@@ -25,7 +26,7 @@ class Main extends Sprite {
     // add fps counter
     addChild(new FPS(10, 10, 0xffffff));
     // load map
-    this.mMap = new openfl.tiled.Map("/tiled/rpg/", "/tiled/rpg/island.tmx", this.mTilemap);
+    this.mMap = new openfl.tiled.Map("/phaser/tmx/", "/phaser/tmx/tile collision test.tmx", this.mTilemap);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -42,7 +43,15 @@ class Main extends Sprite {
    */
   private function onMapLoadComplete(event:Event):Void {
     this.mMap.removeEventListener(Event.COMPLETE, onMapLoadComplete);
+    // render map
     this.mMap.render();
+    // create and add player
+    this.mPlayer = new openfl.display.Sprite();
+    this.mPlayer.graphics.beginFill(0xFFCC00);
+    this.mPlayer.graphics.drawRect(0, 0, this.mMap.tilewidth, this.mMap.tileheight);
+    this.mPlayer.x = this.mMap.tilewidth;
+    this.mPlayer.y = this.mMap.tileheight;
+    addChild(this.mPlayer);
   }
 
   /**
@@ -69,21 +78,35 @@ class Main extends Sprite {
     var change:Bool = false;
     var previousOffsetX:Int = mOffsetX;
     var previousOffsetY:Int = mOffsetY;
+    var playerOffsetX:Int = 0;
+    var playerOffsetY:Int = 0;
     if (mKeys[Keyboard.UP]) {
       change = true;
       mOffsetY = Std.int(Math.max(mOffsetY - 10, 0));
+      playerOffsetY -= this.mMap.tileheight;
     } else if (mKeys[Keyboard.DOWN]) {
       change = true;
       mOffsetY = Std.int(Math.min(mOffsetY + 10, this.mMap.height * this.mMap.tileheight - this.stage.stageHeight));
+      playerOffsetY += this.mMap.tileheight;
     } else if (mKeys[Keyboard.LEFT]) {
       change = true;
       mOffsetX = Std.int(Math.max(mOffsetX - 10, 0));
+      playerOffsetX -= this.mMap.tilewidth;
     } else if (mKeys[Keyboard.RIGHT]) {
       change = true;
       mOffsetX = Std.int(Math.min(mOffsetX + 10, this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth));
+      playerOffsetX += this.mMap.tilewidth;
     }
     if (this.mMap.isLoaded && change) {
-      this.mMap.render(mOffsetX, mOffsetY, previousOffsetX, previousOffsetY);
+      if (this.mPlayer != null) {
+        this.mPlayer.x += playerOffsetX;
+        this.mPlayer.y += playerOffsetY;
+        if (this.mMap.checkCollision(this.mPlayer)) {
+          this.mPlayer.x -= playerOffsetX;
+          this.mPlayer.y -= playerOffsetY;
+        }
+      }
+      //this.mMap.render(mOffsetX, mOffsetY, previousOffsetX, previousOffsetY);
     }
   }
 
