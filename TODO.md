@@ -5,7 +5,6 @@
 
 - [ ] Add example map with image layer
 - [ ] Add example map with groups, best with nested groups
-- [ ] Finish object group placement for isometric and hexagonal
 - [ ] Render only what is visible in tilemap instead of everything
 - [ ] Implement collision handling with collision layer
 - [ ] Implement horizontal flipping for objects and tiles
@@ -26,3 +25,4 @@
 - [x] Implement objectgroup handling
 - [x] Add support for groups
 - [x] Implement image layers
+- [x] ~~Finish object group placement for isometric and hexagonal~~ Groups are absolute positioned not tile relative

@@ -83,19 +83,19 @@ class Main extends Sprite {
     if (mKeys[Keyboard.UP]) {
       change = true;
       mOffsetY = Std.int(Math.max(mOffsetY - 10, 0));
-      playerOffsetY -= this.mMap.tileheight;
+      playerOffsetY -= 10;
     } else if (mKeys[Keyboard.DOWN]) {
       change = true;
       mOffsetY = Std.int(Math.min(mOffsetY + 10, this.mMap.height * this.mMap.tileheight - this.stage.stageHeight));
-      playerOffsetY += this.mMap.tileheight;
+      playerOffsetY += 10;
     } else if (mKeys[Keyboard.LEFT]) {
       change = true;
       mOffsetX = Std.int(Math.max(mOffsetX - 10, 0));
-      playerOffsetX -= this.mMap.tilewidth;
+      playerOffsetX -= 10;
     } else if (mKeys[Keyboard.RIGHT]) {
       change = true;
       mOffsetX = Std.int(Math.min(mOffsetX + 10, this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth));
-      playerOffsetX += this.mMap.tilewidth;
+      playerOffsetX += 10;
     }
     if (this.mMap.isLoaded && change) {
       if (this.mPlayer != null) {
@@ -115,7 +115,7 @@ class Main extends Sprite {
    * main function
    */
   public static function main():Void {
-    var stage:Stage = new Stage(640, 480, 0x000000, Main);
+    var stage:Stage = new Stage(1024, 768, 0x000000, Main);
     js.Browser.document.body.appendChild(stage.element);
   }
   #end

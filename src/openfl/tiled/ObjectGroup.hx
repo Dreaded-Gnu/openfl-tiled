@@ -114,35 +114,28 @@ class ObjectGroup implements openfl.tiled.Updatable {
     }
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
-    switch (this.mMap.orientation) {
-      case MapOrientationIsometric, MapOrientationStaggered:
-        throw new Error("Unsupported orientation!");
-      case MapOrientationOrthogonal:
-        if (mTilemapData.get(tileset.firstgid).getTileAt(index) != null) {
-          t = cast(mTilemapData.get(tileset.firstgid).getTileAt(index), openfl.tiled.helper.AnimatedTile);
-          // gid
-          t.id = tile?.tileset != null ? 0 : gid;
-          // x / y position
-          t.x = object.x - tileset.tileoffset.x;
-          t.y = object.y - tileset.tileoffset.y - object.height;
-          // scaling depending on object size
-          t.scaleX = object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth);
-          t.scaleY = object.height / (tile?.tileset != null ? tile.height : tileset.tileheight);
-          t.rotation = 0;
-          t.animation = tileset.tile[gid]?.animation;
-          t.tileset = ts;
-          t.map = this.mMap;
-        } else {
-          t = new openfl.tiled.helper.AnimatedTile( // gid
-            tile?.tileset != null ? 0 : gid, // x / y position
-            object.x - tileset.tileoffset.x,
-            object.y - tileset.tileoffset.y - object.height, // scaling depending on object size
-            object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth),
-            object.height / (tile?.tileset != null ? tile.height : tileset.tileheight), 0, tileset.tile[gid]?.animation, this.mMap);
-          t.tileset = ts;
-        }
-      case MapOrientationHexagonal:
-        throw new Error("Unsupported orientation!");
+    if (mTilemapData.get(tileset.firstgid).getTileAt(index) != null) {
+      t = cast(mTilemapData.get(tileset.firstgid).getTileAt(index), openfl.tiled.helper.AnimatedTile);
+      // gid
+      t.id = tile?.tileset != null ? 0 : gid;
+      // x / y position
+      t.x = object.x - tileset.tileoffset.x;
+      t.y = object.y - tileset.tileoffset.y - object.height;
+      // scaling depending on object size
+      t.scaleX = object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth);
+      t.scaleY = object.height / (tile?.tileset != null ? tile.height : tileset.tileheight);
+      t.rotation = 0;
+      t.animation = tileset.tile[gid]?.animation;
+      t.tileset = ts;
+      t.map = this.mMap;
+    } else {
+      t = new openfl.tiled.helper.AnimatedTile( // gid
+        tile?.tileset != null ? 0 : gid, // x / y position
+        object.x - tileset.tileoffset.x,
+        object.y - tileset.tileoffset.y - object.height, // scaling depending on object size
+        object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth),
+        object.height / (tile?.tileset != null ? tile.height : tileset.tileheight), 0, tileset.tile[gid]?.animation, this.mMap);
+      t.tileset = ts;
     }
     // add tile at position
     if (mTilemapData.get(tileset.firstgid).getTileAt(index) == null) {
