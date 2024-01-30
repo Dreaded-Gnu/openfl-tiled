@@ -1,6 +1,6 @@
 package openfl.tiled.objectgroup;
 
-enum DrawOrder {
-  ObjectGroupDrawOrderIndex;
-  ObjectGroupDrawOrderTopDown;
+enum abstract DrawOrder(String) {
+  var ObjectGroupDrawOrderIndex = "index";
+  var ObjectGroupDrawOrderTopDown = "topdown";
 }

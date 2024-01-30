@@ -1,6 +1,6 @@
 package openfl.tiled.tileset;
 
-enum FillMode {
-  TilesetFillModeStretch;
-  TilesetFillModePreserveAspectFit;
+enum abstract FillMode(String) {
+  var TilesetFillModeStretch = "stretch";
+  var TilesetFillModePreserveAspectFit = "preserve-aspect-fit";
 }

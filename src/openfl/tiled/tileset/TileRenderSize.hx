@@ -1,6 +1,6 @@
 package openfl.tiled.tileset;
 
-enum TileRenderSize {
-  TilesetTileRenderSizeTile;
-  TilesetTileRenderSizeGrid;
+enum abstract TileRenderSize(String) {
+  var TilesetTileRenderSizeTile = "tile";
+  var TilesetTileRenderSizeGrid = "grid";
 }

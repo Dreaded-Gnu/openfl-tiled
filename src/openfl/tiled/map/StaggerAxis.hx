@@ -1,6 +1,6 @@
 package openfl.tiled.map;
 
-enum StaggerAxis {
-  MapStaggerAxisX;
-  MapStaggerAxisY;
+enum abstract StaggerAxis(String) {
+  var MapStaggerAxisX = "x";
+  var MapStaggerAxisY = "y";
 }

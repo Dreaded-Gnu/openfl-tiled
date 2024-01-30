@@ -1,14 +1,14 @@
 package openfl.tiled.tileset;
 
-enum ObjectAlignment {
-  TilesetObjectAlignmentUnspecified;
-  TilesetObjectAlignmentTopLeft;
-  TilesetObjectAlignmentTop;
-  TilesetObjectAlignmentTopRight;
-  TilesetObjectAlignmentLeft;
-  TilesetObjectAlignmentCenter;
-  TilesetObjectAlignmentRight;
-  TilesetObjectAlignmentBottomLeft;
-  TilesetObjectAlignmentBottom;
-  TilesetObjectAlignmentBottomRight;
+enum abstract ObjectAlignment(String) {
+  var TilesetObjectAlignmentUnspecified = "unspecified";
+  var TilesetObjectAlignmentTopLeft = "topleft";
+  var TilesetObjectAlignmentTop = "top";
+  var TilesetObjectAlignmentTopRight = "topright";
+  var TilesetObjectAlignmentLeft = "left";
+  var TilesetObjectAlignmentCenter = "leftcenter";
+  var TilesetObjectAlignmentRight = "right";
+  var TilesetObjectAlignmentBottomLeft = "bottomleft";
+  var TilesetObjectAlignmentBottom = "bottom";
+  var TilesetObjectAlignmentBottomRight = "bottomright";
 }

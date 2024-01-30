@@ -1,8 +1,8 @@
 package openfl.tiled.map;
 
-enum RenderOrder {
-  MapRenderOrderRightDown;
-  MapRenderOrderRightUp;
-  MapRenderOrderLeftDown;
-  MapRenderOrderLeftUp;
+enum abstract RenderOrder(String) {
+  var MapRenderOrderRightDown = "right-down";
+  var MapRenderOrderRightUp = "right-up";
+  var MapRenderOrderLeftDown = "left-down";
+  var MapRenderOrderLeftUp = "left-up";
 }

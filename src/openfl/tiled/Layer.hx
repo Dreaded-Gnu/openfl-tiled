@@ -490,7 +490,7 @@ class Layer implements openfl.tiled.Updatable {
       var realX:Int = x - chunk.x * this.mMap.tilewidth;
       var realY:Int = y - chunk.y * this.mMap.tileheight;
       // get id
-      var id:Int = Std.int(realY / this.mMap.tileheight) * this.mMap.width + Std.int(realX / this.mMap.tilewidth);
+      var id:Int = Std.int(realY / this.mMap.tileheight) * chunk.width + Std.int(realX / this.mMap.tilewidth);
       // get gid
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
@@ -548,7 +548,7 @@ class Layer implements openfl.tiled.Updatable {
       var realX:Int = x - chunk.x * this.mMap.tilewidth;
       var realY:Int = y - chunk.y * this.mMap.tileheight;
       // get id
-      var id:Int = Std.int(realY / this.mMap.tileheight) * this.mMap.width + Std.int(realX / this.mMap.tilewidth);
+      var id:Int = Std.int(realY / this.mMap.tileheight) * chunk.width + Std.int(realX / this.mMap.tilewidth);
       // get gid
       var gid:Int = chunk.tile[id].gid;
       // handle invalid

@@ -1,6 +1,6 @@
 package openfl.tiled.map;
 
-enum StaggerIndex {
-  MapStaggerIndexEven;
-  MapStaggerIndexOdd;
+enum abstract StaggerIndex(String) {
+  var MapStaggerIndexEven = "even";
+  var MapStaggerIndexOdd = "odd";
 }
