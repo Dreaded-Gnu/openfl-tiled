@@ -2,7 +2,6 @@ package openfl.tiled;
 
 import openfl.geom.Rectangle;
 import openfl.events.Event;
-import openfl.display.BitmapData;
 import openfl.events.EventDispatcher;
 
 class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {

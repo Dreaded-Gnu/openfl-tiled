@@ -15,9 +15,9 @@ class Grid {
     var o:String = node.get("orientation");
     switch (o) {
       case "orthogonal":
-        this.orientation = MapOrientationOrthogonal;
+        this.orientation = openfl.tiled.map.Orientation.MapOrientationOrthogonal;
       case "isometric":
-        this.orientation = MapOrientationIsometric;
+        this.orientation = openfl.tiled.map.Orientation.MapOrientationIsometric;
       default:
         throw new Error("Unsupported orientation for grid");
     }

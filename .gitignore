@@ -5,3 +5,4 @@ dist/
 Export
 public/phaser
 public/sprites
+out/

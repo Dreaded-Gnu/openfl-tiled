@@ -35,6 +35,15 @@ var map:openfl.tiled.Map = new openfl.tiled.Map(
   "/tiled/rpg/island.tmx",
   tilemap
 );
+map.addEventListener(Event.COMPLETE, onMapLoadComplete);
+
+...
+
+function onMapLoadComplete(event:Event):Void {
+  map.removeEventListener(Event.COMPLETE, onMapLoadComplete);
+  // render map
+  map.render();
+}
 ```
 
 ## Installation

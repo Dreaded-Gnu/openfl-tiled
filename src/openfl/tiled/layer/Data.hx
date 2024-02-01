@@ -2,9 +2,6 @@ package openfl.tiled.layer;
 
 import openfl.errors.Error;
 import openfl.utils.ByteArray;
-import haxe.io.BytesInput;
-import haxe.zip.Reader;
-import haxe.crypto.Base64;
 
 class Data {
   public var encoding(default, null):String;

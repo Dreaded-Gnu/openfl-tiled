@@ -1,6 +1,5 @@
 package openfl.tiled;
 
-import openfl.display.Sprite;
 import openfl.events.EventDispatcher;
 import openfl.tiled.map.StaggerIndex;
 import openfl.tiled.map.StaggerAxis;
@@ -47,6 +46,8 @@ class Map extends EventDispatcher {
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
   private var mRenderObjects:Array<openfl.tiled.Updatable>;
+  private var mPreviousOffsetX:Int;
+  private var mPreviousOffsetY:Int;
 
   /**
    * Constructor
@@ -64,6 +65,8 @@ class Map extends EventDispatcher {
     this.mTilesetLoaded = false;
     this.mImageLayerLoaded = false;
     this.mGroupLoaded = false;
+    this.mPreviousOffsetX = 0;
+    this.mPreviousOffsetY = 0;
   }
 
   /**
@@ -337,10 +340,13 @@ class Map extends EventDispatcher {
    * @param previousOffsetY
    * @return openfl.display.Tilemap
    */
-  public function render(offsetX:Int = 0, offsetY:Int = 0, previousOffsetX:Int = 0, previousOffsetY:Int = 0):openfl.display.Tilemap {
+  public function render(offsetX:Int = 0, offsetY:Int = 0):openfl.display.Tilemap {
     for (renderObject in this.mRenderObjects) {
-      renderObject.update(this.mTileMap, offsetX, offsetY, previousOffsetX, previousOffsetY);
+      renderObject.update(this.mTileMap, offsetX, offsetY, mPreviousOffsetX, mPreviousOffsetY);
     }
+    // update previous x and y offsets
+    mPreviousOffsetX = offsetX;
+    mPreviousOffsetY = offsetY;
     // return display object
     return this.mTileMap;
   }
@@ -369,8 +375,8 @@ class Map extends EventDispatcher {
 
   /**
    * Helper to check for collision
-   * @param x start x
-   * @param y start y
+   * @param x global x coordinate start
+   * @param y global y coordinate start
    * @param width width
    * @param height height
    * @return Bool

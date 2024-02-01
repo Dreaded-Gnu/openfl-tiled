@@ -1,8 +1,5 @@
 package openfl.tiled;
 
-import openfl.errors.Error;
-import openfl.display.Sprite;
-
 class ObjectGroup implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;

@@ -1,8 +1,6 @@
 package openfl.tiled.helper;
 
 import openfl.events.Event;
-import openfl.events.TimerEvent;
-import openfl.utils.Timer;
 
 class AnimatedTile extends openfl.display.Tile {
   public var animation(get, set):openfl.tiled.tileset.Animation;

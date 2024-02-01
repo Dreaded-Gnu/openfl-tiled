@@ -79,8 +79,6 @@ class Main extends Sprite {
   private function onEnterFrame(event:Event):Void {
     var changeX:Bool = false;
     var changeY:Bool = false;
-    var previousOffsetX:Int = mOffsetX;
-    var previousOffsetY:Int = mOffsetY;
     var newOffsetX:Int = mOffsetX;
     var newOffsetY:Int = mOffsetY;
     var playerOffsetX:Int = Std.int(this.mPlayer?.x ?? 0);
@@ -158,7 +156,7 @@ class Main extends Sprite {
         }
         mOffsetX = newOffsetX;
         mOffsetY = newOffsetY;
-        this.mMap.render(mOffsetX, mOffsetY, previousOffsetX, previousOffsetY);
+        this.mMap.render(mOffsetX, mOffsetY);
       }
     }
   }
