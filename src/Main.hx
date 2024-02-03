@@ -26,7 +26,7 @@ class Main extends Sprite {
     this.mTilemap = new openfl.display.Tilemap(stage.stageWidth, stage.stageHeight);
     addChild(this.mTilemap);
     // load map
-    this.mMap = new openfl.tiled.Map("/tiled/desert_infinite/", "/tiled/desert_infinite/desert_infinite.tmx", this.mTilemap);
+    this.mMap = new openfl.tiled.Map("/tiled/sewers/", "/tiled/sewers/sewers.tmx", this.mTilemap);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener

@@ -91,7 +91,7 @@ class Layer implements openfl.tiled.Updatable {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
     if (null == this.mTilemapData.get(tileset.firstgid)) {
-      var tc:openfl.display.TileContainer = new openfl.display.TileContainer(this.x * tileset.tilewidth, this.y * tileset.tileheight,);
+      var tc:openfl.display.TileContainer = new openfl.display.TileContainer(this.x * tileset.tilewidth, this.y * tileset.tileheight);
       tc.alpha = this.opacity;
       tc.visible = 1 == this.visible;
       this.mTilemapData.set(tileset.firstgid, tc);
@@ -117,13 +117,12 @@ class Layer implements openfl.tiled.Updatable {
           t.scaleY = 1;
           t.rotation = 0;
           t.animation = tileset.tile[gid]?.animation;
-          t.tileset = ts;
           t.map = this.mMap;
         } else {
           t = new openfl.tiled.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1,
             1, 0, tileset.tile[gid]?.animation, this.mMap);
-          t.tileset = ts;
         }
+        t.tileset = ts;
         if (this.mMap.orientation == MapOrientationStaggered) {
           t.x = x * tileset.tilewidth;
           t.y = y * tileset.tileheight;
@@ -166,13 +165,12 @@ class Layer implements openfl.tiled.Updatable {
           t.scaleY = 1;
           t.rotation = 0;
           t.animation = tileset.tile[gid]?.animation;
-          t.tileset = ts;
           t.map = this.mMap;
         } else {
           t = new openfl.tiled.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
-          t.tileset = ts;
         }
+        t.tileset = ts;
         // apply position correction when tileheight is greater than tilemap tileheight
         if (tileset.tileheight > this.mMap.tileheight) {
           t.y -= tileset.tileheight / Std.int(tileset.tileheight / this.mMap.tileheight);
@@ -195,13 +193,12 @@ class Layer implements openfl.tiled.Updatable {
           t.scaleY = 1;
           t.rotation = 0;
           t.animation = tileset.tile[gid]?.animation;
-          t.tileset = ts;
           t.map = this.mMap;
         } else {
           t = new openfl.tiled.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
-          t.tileset = ts;
         }
+        t.tileset = ts;
         if (this.mMap.staggeraxis == MapStaggerAxisY) {
           var adjustX:Int = 0;
           if (this.mMap.staggerindex == MapStaggerIndexEven) {
@@ -294,13 +291,12 @@ class Layer implements openfl.tiled.Updatable {
               t.scaleY = 1;
               t.rotation = 0;
               t.animation = tileset.tile[gid]?.animation;
-              t.tileset = ts;
               t.map = this.mMap;
             } else {
               t = new openfl.tiled.helper.AnimatedTile(gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1, 1, 0,
                 tileset.tile[gid]?.animation, this.mMap);
-              t.tileset = ts;
             }
+            t.tileset = ts;
             if (this.mMap.orientation == MapOrientationStaggered) {
               t.x = x * tileset.tilewidth;
               t.y = y * tileset.tileheight;
@@ -342,13 +338,12 @@ class Layer implements openfl.tiled.Updatable {
               t.scaleY = 1;
               t.rotation = 0;
               t.animation = tileset.tile[gid]?.animation;
-              t.tileset = ts;
               t.map = this.mMap;
             } else {
               t = new openfl.tiled.helper.AnimatedTile(gid, x * this.mMap.tilewidth - tileset.tileoffset.x, y * this.mMap.tileheight - tileset.tileoffset.y,
                 1, 1, 0, tileset.tile[gid]?.animation, this.mMap);
-              t.tileset = ts;
             }
+            t.tileset = ts;
           case MapOrientationHexagonal:
             if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
               t = cast mTilemapData.get(chunkIndex).getTileAt(id);
@@ -362,13 +357,12 @@ class Layer implements openfl.tiled.Updatable {
               t.scaleY = 1;
               t.rotation = 0;
               t.animation = tileset.tile[gid]?.animation;
-              t.tileset = ts;
               t.map = this.mMap;
             } else {
               t = new openfl.tiled.helper.AnimatedTile(gid, x * this.mMap.tilewidth - tileset.tileoffset.x, y * this.mMap.tileheight - tileset.tileoffset.y,
                 1, 1, 0, tileset.tile[gid]?.animation, this.mMap);
-              t.tileset = ts;
             }
+            t.tileset = ts;
             if (this.mMap.staggeraxis == MapStaggerAxisY) {
               var adjustX:Int = 0;
               if (this.mMap.staggerindex == MapStaggerIndexEven) {
@@ -410,10 +404,8 @@ class Layer implements openfl.tiled.Updatable {
    * @param tilemap
    * @param offsetX
    * @param offsetY
-   * @param previousOffsetX
-   * @param previousOffsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int, previousOffsetX:Int, previousOffsetY:Int):Void {
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
         if (this.mMap.infinite == 1) {
@@ -440,10 +432,10 @@ class Layer implements openfl.tiled.Updatable {
 
     for (tm in this.mTilemapData) {
       if (offsetX != this.mPreviousX) {
-        tm.x = tm.x + previousOffsetX - offsetX;
+        tm.x = tm.x + this.mPreviousX - offsetX;
       }
       if (offsetY != this.mPreviousY) {
-        tm.y = tm.y + previousOffsetY - offsetY;
+        tm.y = tm.y + this.mPreviousY - offsetY;
       }
       // add to tilemap
       if (!tilemap.contains(tm)) {

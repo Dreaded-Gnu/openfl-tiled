@@ -17,7 +17,7 @@ Implementation of tiled map parsing for openfl and haxe
 
 ## Known issues
 
-- [ ] tiled/desert/desert.tmx second layer looses transparency when "scrolling"
+- [ ] tiled/sewers/sewers.tmx second layer looses transparency when "scrolling"
 
 ## Usage example
 
