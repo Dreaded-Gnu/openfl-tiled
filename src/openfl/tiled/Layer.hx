@@ -171,13 +171,24 @@ class Layer implements openfl.tiled.Updatable {
             tileset.tile[gid]?.animation, this.mMap);
         }
         t.tileset = ts;
-        // apply position correction when tileheight is greater than tilemap tileheight
-        if (tileset.tileheight > this.mMap.tileheight) {
-          t.y -= tileset.tileheight / Std.int(tileset.tileheight / this.mMap.tileheight);
+        if (tile?.tileset != null) {
+          var rect:openfl.geom.Rectangle = ts.getRect(0);
+          if (rect.height > this.mMap.tileheight) {
+            t.y -= rect.height / Std.int(rect.height / this.mMap.tileheight);
+          }
+          /*if (rect.width > this.mMap.tilewidth) {
+            t.x -= rect.width / Std.int(rect.width / this.mMap.tilewidth);
+          }*/
+        } else {
+          // apply position correction when tileheight is greater than tilemap tileheight
+          if (tileset.tileheight > this.mMap.tileheight) {
+            t.y -= tileset.tileheight / Std.int(tileset.tileheight / this.mMap.tileheight);
+          }
+          /*if (tileset.tilewidth > this.mMap.tilewidth) {
+            t.x -= tileset.tilewidth / Std.int(tileset.tilewidth / this.mMap.tilewidth);
+          }*/
         }
-        /*if (tileset.tilewidth > this.mMap.tilewidth) {
-          t.x -= tileset.tilewidth / Std.int(tileset.tilewidth / this.mMap.tilewidth);
-        }*/ // apply tileoffset
+        // apply tileoffset
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
@@ -344,6 +355,23 @@ class Layer implements openfl.tiled.Updatable {
                 1, 1, 0, tileset.tile[gid]?.animation, this.mMap);
             }
             t.tileset = ts;
+            if (tile?.tileset != null) {
+              var rect:openfl.geom.Rectangle = ts.getRect(0);
+              if (rect.height > this.mMap.tileheight) {
+                t.y -= rect.height / Std.int(rect.height / this.mMap.tileheight);
+              }
+              /*if (rect.width > this.mMap.tilewidth) {
+                t.x -= rect.width / Std.int(rect.width / this.mMap.tilewidth);
+              }*/
+            } else {
+              // apply position correction when tileheight is greater than tilemap tileheight
+              if (tileset.tileheight > this.mMap.tileheight) {
+                t.y -= tileset.tileheight / Std.int(tileset.tileheight / this.mMap.tileheight);
+              }
+              /*if (tileset.tilewidth > this.mMap.tilewidth) {
+                t.x -= tileset.tilewidth / Std.int(tileset.tilewidth / this.mMap.tilewidth);
+              }*/
+            }
           case MapOrientationHexagonal:
             if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
               t = cast mTilemapData.get(chunkIndex).getTileAt(id);
