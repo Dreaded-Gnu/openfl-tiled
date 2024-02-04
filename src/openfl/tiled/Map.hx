@@ -190,18 +190,9 @@ class Map extends EventDispatcher {
     if (this.infinite == 1) {
       var maxWidth:Int = 0;
       var maxHeight:Int = 0;
-      // loop through all layers
-      for (layer in this.layer) {
-        for (chunk in layer.data.chunk) {
-          if (chunk.x + chunk.width > maxWidth) {
-            // check for new max width
-            maxWidth = chunk.x + chunk.width;
-          }
-          if (chunk.y + chunk.height > maxHeight) {
-            // check for new map height
-            maxHeight = chunk.y + chunk.height;
-          }
-        }
+      for (renderObject in this.mRenderObjects) {
+        maxWidth = Std.int(Math.max(maxWidth, renderObject.evaluateWidth()));
+        maxHeight = Std.int(Math.max(maxHeight, renderObject.evaluateHeight()));
       }
       // overwrite width and height property if greater
       if (maxWidth > this.width) {

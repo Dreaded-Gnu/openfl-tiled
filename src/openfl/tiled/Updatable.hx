@@ -18,4 +18,16 @@ interface Updatable {
    * @return Bool
    */
   public function collides(x:Int, y:Int, width:Int, height:Int):Bool;
+
+  /**
+   * Helper to evaluate width
+   * @return Int
+   */
+  public function evaluateWidth():Int;
+
+  /**
+   * Helper to evaluate height
+   * @return Int
+   */
+  public function evaluateHeight():Int;
 }

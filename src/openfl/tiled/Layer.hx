@@ -604,4 +604,42 @@ class Layer implements openfl.tiled.Updatable {
     // return no collision
     return false;
   }
+
+  /**
+   * Helper to evaluate width
+   * @return Int
+   */
+  public function evaluateWidth():Int {
+    if (0 == this.data.chunk.length) {
+      return this.width;
+    }
+    var maxWidth:Int = 0;
+    // loop through all layers
+    for (chunk in this.data.chunk) {
+      if (chunk.x + chunk.width > maxWidth) {
+        // check for new max width
+        maxWidth = chunk.x + chunk.width;
+      }
+    }
+    return maxWidth;
+  }
+
+  /**
+   * Helper to evaluate height
+   * @return Int
+   */
+  public function evaluateHeight():Int {
+    if (0 == this.data.chunk.length) {
+      return this.height;
+    }
+    var maxHeight:Int = 0;
+    // loop through all layers
+    for (chunk in this.data.chunk) {
+      if (chunk.y + chunk.height > maxHeight) {
+        // check for new map height
+        maxHeight = chunk.y + chunk.height;
+      }
+    }
+    return maxHeight;
+  }
 }

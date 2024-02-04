@@ -189,4 +189,20 @@ class ObjectGroup implements openfl.tiled.Updatable {
     }
     return false;
   }
+
+  /**
+   * Helper to evaluate width
+   * @return Int
+   */
+  public function evaluateWidth():Int {
+    return 0;
+  }
+
+  /**
+   * Helper to evaluate height
+   * @return Int
+   */
+  public function evaluateHeight():Int {
+    return 0;
+  }
 }

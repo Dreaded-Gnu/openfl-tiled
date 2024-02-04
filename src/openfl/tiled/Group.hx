@@ -107,6 +107,30 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
   }
 
   /**
+   * Helper to evaluate width
+   * @return Int
+   */
+  public function evaluateWidth():Int {
+    var width:Int = 0;
+    for (renderObject in this.mRenderObjects) {
+      width = Std.int(Math.max(width, renderObject.evaluateWidth()));
+    }
+    return width;
+  }
+
+  /**
+   * Helper to evaluate height
+   * @return Int
+   */
+  public function evaluateHeight():Int {
+    var height:Int = 0;
+    for (renderObject in this.mRenderObjects) {
+      height = Std.int(Math.max(height, renderObject.evaluateHeight()));
+    }
+    return height;
+  }
+
+  /**
    * Load method
    */
   public function load():Void {

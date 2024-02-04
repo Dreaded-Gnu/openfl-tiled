@@ -66,14 +66,6 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   }
 
   /**
-   * Render method
-   * @param tilemap
-   * @param offsetX
-   * @param offsetY
-   */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {}
-
-  /**
    * Load method
    */
   public function load():Void {
@@ -100,6 +92,14 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   }
 
   /**
+   * Render method
+   * @param tilemap
+   * @param offsetX
+   * @param offsetY
+   */
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {}
+
+  /**
    * Check for collision
    * @param x
    * @param y
@@ -109,5 +109,21 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    */
   public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     return false;
+  }
+
+  /**
+   * Helper to evaluate width
+   * @return Int
+   */
+  public function evaluateWidth():Int {
+    return 0;
+  }
+
+  /**
+   * Helper to evaluate height
+   * @return Int
+   */
+  public function evaluateHeight():Int {
+    return 0;
   }
 }
