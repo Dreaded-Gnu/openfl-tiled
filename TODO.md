@@ -10,6 +10,7 @@
 - [ ] Implement vertical flipping for objects and tiles
 - [ ] Implement diagonal flipping for objects and tiles
 - [ ] Implement flipped hexagonal 120 for objects and tiles
+- [ ] Get perspective_walls example to work
 
 ## Already done
 
