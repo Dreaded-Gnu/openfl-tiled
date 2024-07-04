@@ -12,7 +12,7 @@
     "webpack-dev-server": "5.0.4"
   },
   "haxeDependencies": {
-    "haxe": "4.3.3"
+    "haxe": "4.3.4"
   },
   "scripts": {
     "build": "npm run build:prod",

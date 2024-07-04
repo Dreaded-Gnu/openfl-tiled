@@ -485,6 +485,10 @@ class Layer implements openfl.tiled.Updatable {
     // handle non infinite maps
     if (this.mMap.infinite != 1) {
       var id:Int = Std.int(y / this.mMap.tileheight) * this.mMap.width + Std.int(x / this.mMap.tilewidth);
+      // handle not set
+      if (null == this.data.tile[id]) {
+        return 0;
+      }
       // get gid
       var gid:Int = this.data.tile[id].gid;
       // handle invalid
@@ -538,6 +542,10 @@ class Layer implements openfl.tiled.Updatable {
     // handle non infinite maps
     if (this.mMap.infinite != 1) {
       var id:Int = Std.int(y / this.mMap.tileheight) * this.mMap.width + Std.int(x / this.mMap.tilewidth);
+      // handle not set
+      if (null == this.data.tile[id]) {
+        return null;
+      }
       // get gid
       var gid:Int = this.data.tile[id].gid;
       // handle invalid

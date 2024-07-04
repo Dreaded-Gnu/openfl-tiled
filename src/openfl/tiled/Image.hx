@@ -33,8 +33,8 @@ class Image extends EventDispatcher {
     this.source = node.get("source");
     this.trans = node.exists("trans") ? Std.parseInt("0xFF" + node.get("trans")) : 0x00000000;
     this.mTransSet = node.exists("trans");
-    this.width = Std.parseInt(node.get("width"));
-    this.height = Std.parseInt(node.get("height"));
+    this.width = node.exists("width") ? Std.parseInt(node.get("width")) : -1;
+    this.height = node.exists("height") ? Std.parseInt(node.get("height")) : -1;
   }
 
   /**
@@ -56,10 +56,10 @@ class Image extends EventDispatcher {
     // create bitmap
     bitmap = new Bitmap(bitmapData);
     // populate width and height if undefined
-    if (null == this.width) {
+    if (-1 == this.width) {
       this.width = Std.int(bitmap.width);
     }
-    if (null == this.height) {
+    if (-1 == this.height) {
       this.height = Std.int(bitmap.height);
     }
     // dispatch load complete
