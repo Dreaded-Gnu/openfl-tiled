@@ -14,6 +14,7 @@ Implementation of tiled map parsing for openfl and haxe
 | tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx |  &check;  |
 | tiled/rpg/island.tmx                                                              |  &check;  |
 | tiled/forest/forest.tmx                                                           |  &check;  |
+| tiled/perspective_walls/perspective_walls.tmx                                     |  &check;  |
 
 ## Known issues
 

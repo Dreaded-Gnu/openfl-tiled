@@ -4,5 +4,7 @@
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.rulers": [ 80, 120 ],
-  "editor.fontSize": 12
+  "editor.fontSize": 12,
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true
 }

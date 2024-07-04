@@ -160,6 +160,7 @@ class Tileset extends EventDispatcher {
       var loader:URLLoader = new URLLoader();
       // set load complete callback
       loader.addEventListener(Event.COMPLETE, (event:Event) -> {
+        // parse xml
         this.parse(Xml.parse(loader.data).firstElement());
         // set loaded to true
         this.mSourceLoaded = true;
@@ -184,6 +185,7 @@ class Tileset extends EventDispatcher {
           tmpTile.remove(tile);
           // continue loading when end was reached
           if (0 >= tmpTile.length) {
+            // set tile loaded flag
             this.mTileLoaded = true;
             // continue with load process
             this.load();
@@ -192,10 +194,13 @@ class Tileset extends EventDispatcher {
         // load tile
         tile.load();
       }
-    } else if (this.image != null) {
+    } else if (this.image != null && this.tileset == null) {
+      // set complete handler
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
+      // load image
       this.image.load();
     } else {
+      // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
   }
@@ -205,10 +210,12 @@ class Tileset extends EventDispatcher {
    * @param event
    */
   private function onImageCompleted(event:Event):Void {
+    // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
-    // parse tileset
+    // evaluate tx and ty length
     var txlen:Int = Std.int(this.image.width / this.tilewidth);
     var tylen:Int = Std.int(this.image.height / this.tileheight);
+    // prepare tileset rectangles
     var rect:Array<Rectangle> = new Array<Rectangle>();
     for (ty in 0...tylen) {
       for (tx in 0...txlen) {
@@ -216,8 +223,9 @@ class Tileset extends EventDispatcher {
           this.tileheight));
       }
     }
+    // generate tileset
     this.tileset = new openfl.display.Tileset(this.image.bitmap.bitmapData, rect);
-    // fire complete event
-    this.dispatchEvent(new Event(Event.COMPLETE));
+    // call load again to continue
+    this.load();
   }
 }

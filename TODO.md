@@ -10,7 +10,6 @@
 - [ ] Implement vertical flipping for objects and tiles
 - [ ] Implement diagonal flipping for objects and tiles
 - [ ] Implement flipped hexagonal 120 for objects and tiles
-- [ ] Get perspective_walls example to work
 
 ## Already done
 
@@ -27,3 +26,4 @@
 - [x] Implement image layers
 - [x] ~~Finish object group placement for isometric and hexagonal~~ Groups are absolute positioned not tile relative
 - [x] Implement collision handling with collision layer
+- [x] Get perspective_walls example to work

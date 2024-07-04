@@ -55,6 +55,13 @@ class Image extends EventDispatcher {
     }
     // create bitmap
     bitmap = new Bitmap(bitmapData);
+    // populate width and height if undefined
+    if (null == this.width) {
+      this.width = Std.int(bitmap.width);
+    }
+    if (null == this.height) {
+      this.height = Std.int(bitmap.height);
+    }
     // dispatch load complete
     this.dispatchEvent(new Event(Event.COMPLETE));
   }

@@ -16,6 +16,6 @@
   ],
   "classPath": "src",
   "dependencies": {
-    "openfl": "9.3.2"
+    "openfl": "9.3.3"
   }
 }
