@@ -88,13 +88,75 @@ class Layer implements openfl.tiled.Updatable {
     if (null == tileset) {
       return;
     }
+    var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset);
+    // add tile at position
+    if (this.mTilemapData.get(tileset.firstgid).getTileAt(id) == null) {
+      this.mTilemapData.get(tileset.firstgid).addTileAt(t, id);
+    }
+  }
+
+  /**
+   * Helper to render chunk to tilemap and return greatest global index
+   * @param chunk
+   * @param chunkIndex
+   * @return Void
+   */
+  private function renderChunk(chunk:openfl.tiled.layer.Chunk, chunkIndex:Int):Void {
+    for (y in 0...chunk.height) {
+      for (x in 0...chunk.width) {
+        var id:Int = x + y * chunk.width;
+        // get gid of current id
+        var gid:Int = chunk.tile[id].gid;
+        // handle invalid
+        if (0 == gid) {
+          continue;
+        }
+        // get tileset
+        var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+        if (null == tileset) {
+          continue;
+        }
+        // generate tile
+        var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
+        // add tile at position
+        if (this.mTilemapData.get(chunkIndex).getTileAt(id) == null) {
+          this.mTilemapData.get(chunkIndex).addTileAt(t, id);
+        }
+      }
+    }
+  }
+
+  /**
+   * Helper to generate a tile to add
+   * @param x
+   * @param y
+   * @param id
+   * @param gid
+   * @param tileset
+   * @param chunk
+   * @return openfl.tiled.helper.AnimatedTile
+   */
+  private function generateTile(x:Int, y:Int, id:Int, gid:Int, tileset:openfl.tiled.Tileset, chunk:openfl.tiled.layer.Chunk = null, chunkIndex:Int = -1):openfl.tiled.helper.AnimatedTile {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
-    if (null == this.mTilemapData.get(tileset.firstgid)) {
-      var tc:openfl.display.TileContainer = new openfl.display.TileContainer(this.x * tileset.tilewidth, this.y * tileset.tileheight);
+    if (null == this.mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid)) {
+      var tc:openfl.display.TileContainer = null;
+      if (chunk != null) {
+        if (this.mMap.orientation == MapOrientationIsometric || this.mMap.orientation == MapOrientationStaggered) {
+          tc = new openfl.display.TileContainer((x + chunk.x) * this.mMap.tilewidth, (y + chunk.y) * this.mMap.tileheight / 2,);
+        } else {
+          tc = new openfl.display.TileContainer((x + chunk.x) * tileset.tilewidth, (y + chunk.y) * tileset.tileheight,);
+        }
+      } else {
+        tc = new openfl.display.TileContainer(this.x * tileset.tilewidth, this.y * tileset.tileheight);
+      }
       tc.alpha = this.opacity;
       tc.visible = 1 == this.visible;
-      this.mTilemapData.set(tileset.firstgid, tc);
+      if (chunkIndex != -1) {
+        this.mTilemapData.set(chunkIndex, tc);
+      } else {
+        this.mTilemapData.set(tileset.firstgid, tc);
+      }
     }
     var ts:openfl.display.Tileset = tileset.tileset;
     var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
@@ -105,8 +167,8 @@ class Layer implements openfl.tiled.Updatable {
     var t:openfl.tiled.helper.AnimatedTile = null;
     switch (this.mMap.orientation) {
       case MapOrientationIsometric, MapOrientationStaggered:
-        if (mTilemapData.get(tileset.firstgid).getTileAt(id) != null) {
-          t = cast mTilemapData.get(tileset.firstgid).getTileAt(id);
+        if (mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id) != null) {
+          t = cast mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -153,8 +215,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
-        if (mTilemapData.get(tileset.firstgid).getTileAt(id) != null) {
-          t = cast mTilemapData.get(tileset.firstgid).getTileAt(id);
+        if (mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id) != null) {
+          t = cast mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -192,8 +254,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
-        if (mTilemapData.get(tileset.firstgid).getTileAt(id) != null) {
-          t = cast mTilemapData.get(tileset.firstgid).getTileAt(id);
+        if (mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id) != null) {
+          t = cast mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -240,191 +302,7 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
     }
-    // add tile at position
-    if (this.mTilemapData.get(tileset.firstgid).getTileAt(id) == null) {
-      this.mTilemapData.get(tileset.firstgid).addTileAt(t, id);
-    }
-  }
-
-  /**
-   * Helper to render chunk to tilemap and return greatest global index
-   * @param chunk
-   * @param chunkIndex
-   * @return Void
-   */
-  private function renderChunk(chunk:openfl.tiled.layer.Chunk, chunkIndex:Int):Void {
-    for (y in 0...chunk.height) {
-      for (x in 0...chunk.width) {
-        var id:Int = x + y * chunk.width;
-        // get gid of current id
-        var gid:Int = chunk.tile[id].gid;
-        // handle invalid
-        if (0 == gid) {
-          continue;
-        }
-        // get tileset
-        var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
-        if (null == tileset) {
-          continue;
-        }
-        // subtract firstgid
-        gid -= tileset.firstgid;
-        // create tilemap if necessary
-        if (null == this.mTilemapData.get(chunkIndex)) {
-          var tc:openfl.display.TileContainer = null;
-          if (this.mMap.orientation == MapOrientationIsometric || this.mMap.orientation == MapOrientationStaggered) {
-            tc = new openfl.display.TileContainer((x + chunk.x) * this.mMap.tilewidth, (y + chunk.y) * this.mMap.tileheight / 2,);
-          } else {
-            tc = new openfl.display.TileContainer((x + chunk.x) * tileset.tilewidth, (y + chunk.y) * tileset.tileheight,);
-          }
-          tc.alpha = this.opacity;
-          tc.visible = 1 == this.visible;
-          this.mTilemapData.set(chunkIndex, tc);
-        }
-        var ts:openfl.display.Tileset = tileset.tileset;
-        var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
-        if (tile?.tileset != null) {
-          ts = tile.tileset;
-        }
-        // generate tile
-        var t:openfl.tiled.helper.AnimatedTile = null;
-        switch (this.mMap.orientation) {
-          case MapOrientationIsometric, MapOrientationStaggered:
-            if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
-              t = cast mTilemapData.get(chunkIndex).getTileAt(id);
-              // gid
-              t.id = gid;
-              // x / y position
-              t.x = (x - y) * (tileset.tilewidth / 2);
-              t.y = (x + y) * (tileset.tileheight / 2);
-              // scaling depending on object size
-              t.scaleX = 1;
-              t.scaleY = 1;
-              t.rotation = 0;
-              t.animation = tileset.tile[gid]?.animation;
-              t.map = this.mMap;
-            } else {
-              t = new openfl.tiled.helper.AnimatedTile(gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1, 1, 0,
-                tileset.tile[gid]?.animation, this.mMap);
-            }
-            t.tileset = ts;
-            if (this.mMap.orientation == MapOrientationStaggered) {
-              t.x = x * tileset.tilewidth;
-              t.y = y * tileset.tileheight;
-              if (this.mMap.staggeraxis == MapStaggerAxisY) {
-                t.y = Std.int(t.y / 2);
-                if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-                  t.x += Std.int((y & 1) * tileset.tilewidth / 2);
-                } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
-                  t.x -= Std.int((y & 1) * tileset.tilewidth / 2);
-                }
-              } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
-                t.x = Std.int(t.x / 2);
-                if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-                  t.y += Std.int((x & 1) * tileset.tileheight / 2);
-                } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
-                  t.y -= Std.int((x & 1) * tileset.tileheight / 2);
-                }
-              }
-            } else {
-              t.x += this.mMap.width / 2 * tileset.tilewidth - tileset.tileoffset.x;
-            } // apply position correction when tileheight is greater than tilemap
-            if (tileset.tileheight > this.mMap.tileheight) {
-              t.y = Std.int(t.y / (tileset.tileheight / this.mMap.tileheight));
-            }
-            if (tileset.tilewidth > this.mMap.tilewidth) {
-              t.x = Std.int(t.x / (tileset.tilewidth / this.mMap.tilewidth));
-            } // apply tileoffset
-            t.x -= tileset.tileoffset.x;
-            t.y -= tileset.tileoffset.y;
-          case MapOrientationOrthogonal:
-            if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
-              t = cast mTilemapData.get(chunkIndex).getTileAt(id);
-              t.id = gid;
-              // x / y position
-              t.x = x * this.mMap.tilewidth - tileset.tileoffset.x;
-              t.y = y * this.mMap.tileheight - tileset.tileoffset.y;
-              // scaling depending on object size
-              t.scaleX = 1;
-              t.scaleY = 1;
-              t.rotation = 0;
-              t.animation = tileset.tile[gid]?.animation;
-              t.map = this.mMap;
-            } else {
-              t = new openfl.tiled.helper.AnimatedTile(gid, x * this.mMap.tilewidth - tileset.tileoffset.x, y * this.mMap.tileheight - tileset.tileoffset.y,
-                1, 1, 0, tileset.tile[gid]?.animation, this.mMap);
-            }
-            t.tileset = ts;
-            if (tile?.tileset != null) {
-              var rect:openfl.geom.Rectangle = ts.getRect(0);
-              if (rect.height > this.mMap.tileheight) {
-                t.y -= rect.height / Std.int(rect.height / this.mMap.tileheight);
-              }
-              /*if (rect.width > this.mMap.tilewidth) {
-                t.x -= rect.width / Std.int(rect.width / this.mMap.tilewidth);
-              }*/
-            } else {
-              // apply position correction when tileheight is greater than tilemap tileheight
-              if (tileset.tileheight > this.mMap.tileheight) {
-                t.y -= tileset.tileheight / Std.int(tileset.tileheight / this.mMap.tileheight);
-              }
-              /*if (tileset.tilewidth > this.mMap.tilewidth) {
-                t.x -= tileset.tilewidth / Std.int(tileset.tilewidth / this.mMap.tilewidth);
-              }*/
-            }
-          case MapOrientationHexagonal:
-            if (mTilemapData.get(chunkIndex).getTileAt(id) != null) {
-              t = cast mTilemapData.get(chunkIndex).getTileAt(id);
-              // gid
-              t.id = gid;
-              // x / y position
-              t.x = x * this.mMap.tilewidth - tileset.tileoffset.x;
-              t.y = y * this.mMap.tileheight - tileset.tileoffset.y;
-              // scaling depending on object size
-              t.scaleX = 1;
-              t.scaleY = 1;
-              t.rotation = 0;
-              t.animation = tileset.tile[gid]?.animation;
-              t.map = this.mMap;
-            } else {
-              t = new openfl.tiled.helper.AnimatedTile(gid, x * this.mMap.tilewidth - tileset.tileoffset.x, y * this.mMap.tileheight - tileset.tileoffset.y,
-                1, 1, 0, tileset.tile[gid]?.animation, this.mMap);
-            }
-            t.tileset = ts;
-            if (this.mMap.staggeraxis == MapStaggerAxisY) {
-              var adjustX:Int = 0;
-              if (this.mMap.staggerindex == MapStaggerIndexEven) {
-                if (0 != (y + 1) % 2) {
-                  adjustX = this.mMap.hexsidelength;
-                }
-              } else if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-                if (0 == (y + 1) % 2) {
-                  adjustX = this.mMap.hexsidelength;
-                }
-              }
-              t.y -= (this.mMap.hexsidelength / 2) * y;
-              t.x += adjustX;
-            } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
-              var adjustY:Int = 0;
-              if (this.mMap.staggerindex == MapStaggerIndexEven) {
-                if (0 != (y + 1) % 2) {
-                  adjustY = this.mMap.hexsidelength;
-                }
-              } else if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-                if (0 == (y + 1) % 2) {
-                  adjustY = this.mMap.hexsidelength;
-                }
-              }
-              t.y += adjustY;
-              t.x -= (this.mMap.hexsidelength / 2) * x;
-            }
-        }
-        // add tile at position
-        if (this.mTilemapData.get(chunkIndex).getTileAt(id) == null) {
-          this.mTilemapData.get(chunkIndex).addTileAt(t, id);
-        }
-      }
-    }
+    return t;
   }
 
   /**
@@ -559,10 +437,8 @@ class Layer implements openfl.tiled.Updatable {
       }
       // subtract first gid from tileset
       gid -= tileset.firstgid;
-      // get tile by gid
-      var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
-      // add tile if valid and not set
-      return tile;
+      // return tile by gid
+      return tileset.getTileByGid(gid);
     }
     // handle infinite maps
     for (chunk in this.data.chunk) {
@@ -590,10 +466,8 @@ class Layer implements openfl.tiled.Updatable {
       }
       // subtract first gid from tileset
       gid -= tileset.firstgid;
-      // get tile by gid
-      var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
-      // add tile if valid and not set
-      return tile;
+      // return tile by gid
+      return tileset.getTileByGid(gid);
     }
     // nothing found, return null
     return null;

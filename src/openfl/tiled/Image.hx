@@ -1,5 +1,6 @@
 package openfl.tiled;
 
+import openfl.errors.Error;
 import openfl.geom.Point;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
@@ -12,7 +13,7 @@ class Image extends EventDispatcher {
   public var trans(default, null):UInt;
   public var width(default, null):Int;
   public var height(default, null):Int;
-  public var data(default, null):openfl.tiled.layer.Data;
+  public var data(default, null):openfl.tiled.image.Data;
 
   public var bitmap(default, null):Bitmap;
 
@@ -35,12 +36,36 @@ class Image extends EventDispatcher {
     this.mTransSet = node.exists("trans");
     this.width = node.exists("width") ? Std.parseInt(node.get("width")) : -1;
     this.height = node.exists("height") ? Std.parseInt(node.get("height")) : -1;
+    // parse children
+    for (child in node) {
+      // skip non elements
+      if (child.nodeType != Xml.Element) {
+        continue;
+      }
+      // handle child
+      switch (child.nodeName) {
+        case "data":
+          this.data = new openfl.tiled.image.Data(child);
+      }
+    }
   }
 
   /**
    * Load method
    */
   public function load():Void {
+    // handle data set
+    if (this.data != null) {
+      // emit warning for not supported targets
+      #if (js && html5)
+      throw new Error("Embedded images are not supported in js html5 target!");
+      #end
+      // call on complete with BitmapData.fromBytes result
+      this.onLoadComplete(BitmapData.fromBytes(this.data.data));
+      // skip loading
+      return;
+    }
+    // load from file
     BitmapData.loadFromFile(Helper.joinPath(this.mMap.prefix, this.source)).onComplete(onLoadComplete);
   }
 
@@ -49,6 +74,7 @@ class Image extends EventDispatcher {
    * @param event
    */
   private function onLoadComplete(bitmapData:BitmapData) {
+    // apply transparency if necessary
     if (this.mTransSet) {
       // manipulate pixel once trans property is set
       bitmapData.threshold(bitmapData, bitmapData.rect, new Point(0, 0), "==", this.trans);

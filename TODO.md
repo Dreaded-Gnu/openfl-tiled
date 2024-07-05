@@ -27,3 +27,5 @@
 - [x] ~~Finish object group placement for isometric and hexagonal~~ Groups are absolute positioned not tile relative
 - [x] Implement collision handling with collision layer
 - [x] Get perspective_walls example to work
+- [x] Add support for embedded binary images within map format
+- [x] Implement rendering of objects when a gid is set
