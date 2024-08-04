@@ -66,7 +66,11 @@ class Image extends EventDispatcher {
       return;
     }
     // load from file
-    BitmapData.loadFromFile(Helper.joinPath(this.mMap.prefix, this.source)).onComplete(onLoadComplete);
+    #if openfl_asset
+      onLoadComplete(Assets.getBitmapData(Helper.joinPath(this.mMap.prefix, this.source)));
+    #else
+      BitmapData.loadFromFile(Helper.joinPath(this.mMap.prefix, this.source)).onComplete(onLoadComplete);
+    #end
   }
 
   /**
