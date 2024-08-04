@@ -211,10 +211,21 @@ class Map extends EventDispatcher {
    * Set load callback
    */
   public function load():Void {
-    var request:URLRequest = new URLRequest(mPath);
-    var loader:URLLoader = new URLLoader();
-    loader.addEventListener(Event.COMPLETE, onLoadComplete);
-    loader.load(request);
+    #if openfl_asset
+      // fake loader
+      var loader:URLLoader = new URLLoader();
+      loader.data = Assets.getText(mPath);
+      // fake target
+      var event:Event = new Event(Event.COMPLETE);
+      Reflect.setField(event, "target", loader);
+      // call on load complete
+      onLoadComplete(event);
+    #else
+      var request:URLRequest = new URLRequest(mPath);
+      var loader:URLLoader = new URLLoader();
+      loader.addEventListener(Event.COMPLETE, onLoadComplete);
+      loader.load(request);
+    #end
   }
 
   /**

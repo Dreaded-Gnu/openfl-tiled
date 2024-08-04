@@ -8,4 +8,6 @@
   <haxelib name="openfl" />
 
   <assets path="public" rename="" />
+
+  <!--<define name="openfl_asset" />-->
 </project>

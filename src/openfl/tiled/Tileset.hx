@@ -156,18 +156,28 @@ class Tileset extends EventDispatcher {
    */
   public function load():Void {
     if (!this.mSourceLoaded && this.source != null) {
-      var request:URLRequest = new URLRequest(Helper.joinPath(this.mMap.prefix, this.source));
-      var loader:URLLoader = new URLLoader();
-      // set load complete callback
-      loader.addEventListener(Event.COMPLETE, (event:Event) -> {
+      #if openfl_asset
+        var data:String = Assets.getText(Helper.joinPath(this.mMap.prefix, this.source));
         // parse xml
-        this.parse(Xml.parse(loader.data).firstElement());
+        this.parse(Xml.parse(data).firstElement());
         // set loaded to true
         this.mSourceLoaded = true;
         // continue loading
         this.load();
-      });
-      loader.load(request);
+      #else
+        var request:URLRequest = new URLRequest(Helper.joinPath(this.mMap.prefix, this.source));
+        var loader:URLLoader = new URLLoader();
+        // set load complete callback
+        loader.addEventListener(Event.COMPLETE, (event:Event) -> {
+          // parse xml
+          this.parse(Xml.parse(loader.data).firstElement());
+          // set loaded to true
+          this.mSourceLoaded = true;
+          // continue loading
+          this.load();
+        });
+        loader.load(request);
+      #end
     } else if (!this.mTileLoaded) {
       var tmpTile:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
       for (tile in this.tile) {
