@@ -88,6 +88,7 @@ class Layer implements openfl.tiled.Updatable {
     if (null == tileset) {
       return;
     }
+    // generate tile
     var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset);
     // add tile at position
     if (this.mTilemapData.get(tileset.firstgid).getTileAt(id) == null) {
@@ -102,26 +103,31 @@ class Layer implements openfl.tiled.Updatable {
    * @return Void
    */
   private function renderChunk(chunk:openfl.tiled.layer.Chunk, chunkIndex:Int):Void {
-    for (y in 0...chunk.height) {
-      for (x in 0...chunk.width) {
-        var id:Int = x + y * chunk.width;
-        // get gid of current id
-        var gid:Int = chunk.tile[id].gid;
-        // handle invalid
-        if (0 == gid) {
-          continue;
-        }
-        // get tileset
-        var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
-        if (null == tileset) {
-          continue;
-        }
-        // generate tile
-        var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
-        // add tile at position
-        if (this.mTilemapData.get(chunkIndex).getTileAt(id) == null) {
-          this.mTilemapData.get(chunkIndex).addTileAt(t, id);
-        }
+    // calculate max to iterate to
+    var max:Int = chunk.width * chunk.height;
+    // iterate from max to min
+    for (i in 0...max) {
+      // calculate x and y
+      var x:Int = Std.int(i % chunk.width);
+      var y:Int = Std.int(i / chunk.height);
+      // calculate id
+      var id:Int = x + y * chunk.width;
+      // get gid of current id
+      var gid:Int = chunk.tile[id].gid;
+      // handle invalid
+      if (0 == gid) {
+        continue;
+      }
+      // get tileset
+      var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
+      if (null == tileset) {
+        continue;
+      }
+      // generate tile
+      var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
+      // add tile at position
+      if (this.mTilemapData.get(chunkIndex).getTileAt(id) == null) {
+        this.mTilemapData.get(chunkIndex).addTileAt(t, id);
       }
     }
   }
@@ -136,7 +142,8 @@ class Layer implements openfl.tiled.Updatable {
    * @param chunk
    * @return openfl.tiled.helper.AnimatedTile
    */
-  private function generateTile(x:Int, y:Int, id:Int, gid:Int, tileset:openfl.tiled.Tileset, chunk:openfl.tiled.layer.Chunk = null, chunkIndex:Int = -1):openfl.tiled.helper.AnimatedTile {
+  private function generateTile(x:Int, y:Int, id:Int, gid:Int, tileset:openfl.tiled.Tileset, chunk:openfl.tiled.layer.Chunk = null,
+      chunkIndex:Int = -1):openfl.tiled.helper.AnimatedTile {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
     if (null == this.mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid)) {
@@ -485,19 +492,22 @@ class Layer implements openfl.tiled.Updatable {
     // array of tiles
     var tiles:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
-    // loop through width and height of sprite
-    for (tx in 0...width) {
-      for (ty in 0...height) {
-        // get tile at x/y coordinate
-        var tile:openfl.tiled.tileset.Tile = getTileAt(x + tx, y + ty);
-        var id:Int = getTileGidAt(x + tx, y + ty);
-        // push tile if not null and not yet existing
-        if (tile != null && -1 == tiles.indexOf(tile)) {
-          tiles.push(tile);
-        }
-        if (id != 0 && -1 == tileId.indexOf(id)) {
-          tileId.push(id);
-        }
+    // loop through whole size
+    var max:Int = width * height;
+    for (i in 0...max) {
+      // calculate tx and ty
+      var tx:Int = Std.int(i % width);
+      var ty:Int = Std.int(i / height);
+      // get tile at x/y coordinate
+      var tile:openfl.tiled.tileset.Tile = this.getTileAt(x + tx, y + ty);
+      var id:Int = this.getTileGidAt(x + tx, y + ty);
+      // push tile if not null and not yet existing
+      if (tile != null && -1 == Lambda.indexOf(tiles, tile)) {
+        tiles.push(tile);
+      }
+      // push tile id if set and not yet existing
+      if (id != 0 && -1 == tileId.indexOf(id)) {
+        tileId.push(id);
       }
     }
     // check for collision enabled on layer level
