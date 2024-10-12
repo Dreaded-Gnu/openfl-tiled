@@ -182,12 +182,14 @@ class Layer implements openfl.tiled.Updatable {
     if (tile?.tileset != null) {
       ts = tile.tileset;
     }
+    // get dynamic access for tile checking
+    var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
     switch (this.mMap.orientation) {
       case MapOrientationIsometric, MapOrientationStaggered:
-        if (mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id) != null) {
-          t = cast mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id);
+        if (da.get(Std.string(id)) != null) {
+          t = cast da.get(Std.string(id));
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -234,8 +236,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
-        if (mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id) != null) {
-          t = cast mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id);
+        if (da.get(Std.string(id)) != null) {
+          t = cast da.get(Std.string(id));
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -273,8 +275,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
-        if (mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id) != null) {
-          t = cast mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid).getTileAt(id);
+        if (da.get(Std.string(id)) != null) {
+          t = cast da.get(Std.string(id));
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
