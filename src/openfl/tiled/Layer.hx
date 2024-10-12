@@ -1,10 +1,8 @@
 package openfl.tiled;
 
-import openfl.geom.Matrix;
+import haxe.DynamicAccess;
 import openfl.errors.Error;
 import openfl.tiled.map.RenderOrder;
-import openfl.display.Tile;
-import openfl.display.Sprite;
 
 class Layer implements openfl.tiled.Updatable {
   public var id(default, null):Int;
@@ -25,6 +23,7 @@ class Layer implements openfl.tiled.Updatable {
   public var data(default, null):openfl.tiled.layer.Data;
 
   private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
+  private var mTileCheckContainer:std.Map<Int, Dynamic>;
   private var mMap:openfl.tiled.Map;
   private var mPreviousX:Int;
   private var mPreviousY:Int;
@@ -38,6 +37,7 @@ class Layer implements openfl.tiled.Updatable {
   public function new(node:Xml, map:openfl.tiled.Map, layerId:Int) {
     this.mMap = map;
     this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
+    this.mTileCheckContainer = new std.Map<Int, Dynamic>();
     this.mPreviousX = 0;
     this.mPreviousY = 0;
     // parse stuff
@@ -90,9 +90,14 @@ class Layer implements openfl.tiled.Updatable {
     }
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset);
+    // get dynamic access for checking
+    var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(tileset.firstgid);
     // add tile at position
-    if (this.mTilemapData.get(tileset.firstgid).getTileAt(id) == null) {
+    if (da.get(Std.string(id)) == null) {
+      // add tile
       this.mTilemapData.get(tileset.firstgid).addTileAt(t, id);
+      // set item
+      da.set(Std.string(id), t);
     }
   }
 
@@ -125,9 +130,14 @@ class Layer implements openfl.tiled.Updatable {
       }
       // generate tile
       var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
+      // get dynamic access for checking
+      var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
-      if (this.mTilemapData.get(chunkIndex).getTileAt(id) == null) {
+      if (da.get(Std.string(id)) == null) {
+        // add tile
         this.mTilemapData.get(chunkIndex).addTileAt(t, id);
+        // set item
+        da.set(Std.string(id), t);
       }
     }
   }
@@ -161,8 +171,10 @@ class Layer implements openfl.tiled.Updatable {
       tc.visible = 1 == this.visible;
       if (chunkIndex != -1) {
         this.mTilemapData.set(chunkIndex, tc);
+        this.mTileCheckContainer.set(chunkIndex, {});
       } else {
         this.mTilemapData.set(tileset.firstgid, tc);
+        this.mTileCheckContainer.set(tileset.firstgid, {});
       }
     }
     var ts:openfl.display.Tileset = tileset.tileset;
@@ -329,10 +341,13 @@ class Layer implements openfl.tiled.Updatable {
             chunkIdx++;
           }
         } else {
-          for (y in 0...this.height) {
-            for (x in 0...this.width) {
-              this.renderLayer(x, y);
-            }
+          var max:Int = this.width * this.height;
+          for (i in 0...max) {
+            // calculate x and y
+            var x:Int = Std.int(i % width);
+            var y:Int = Std.int(i / height);
+            // call render layer
+            this.renderLayer(x, y);
           }
         }
       case RenderOrder.MapRenderOrderRightUp:

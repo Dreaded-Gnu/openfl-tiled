@@ -1,5 +1,7 @@
 package openfl.tiled;
 
+import haxe.DynamicAccess;
+
 class ObjectGroup implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;
@@ -21,6 +23,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public var object(default, null):Array<openfl.tiled.Object>;
 
   private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
+  private var mTileCheckContainer:std.Map<Int, Dynamic>;
   private var mMap:openfl.tiled.Map;
   private var mPreviousX:Int;
   private var mPreviousY:Int;
@@ -33,6 +36,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
     this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
+    this.mTileCheckContainer = new std.Map<Int, Dynamic>();
     this.mPreviousX = 0;
     this.mPreviousY = 0;
     // parse properties
@@ -98,11 +102,12 @@ class ObjectGroup implements openfl.tiled.Updatable {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
     // create tilemap if not existing
-    if (null == mTilemapData.get(tileset.firstgid)) {
+    if (null == this.mTilemapData.get(tileset.firstgid)) {
       var tc:openfl.display.TileContainer = new openfl.display.TileContainer(0, 0);
       tc.alpha = this.opacity;
       tc.visible = 1 == this.visible;
-      mTilemapData.set(tileset.firstgid, tc);
+      this.mTilemapData.set(tileset.firstgid, tc);
+      this.mTileCheckContainer.set(tileset.firstgid, {});
     }
     var ts:openfl.display.Tileset = tileset.tileset;
     var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
@@ -111,8 +116,11 @@ class ObjectGroup implements openfl.tiled.Updatable {
     }
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
-    if (mTilemapData.get(tileset.firstgid).getTileAt(index) != null) {
-      t = cast mTilemapData.get(tileset.firstgid).getTileAt(index);
+    // get dynamic access for checking
+    var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(tileset.firstgid);
+    // handle already set
+    if (da.get(Std.string(index)) != null) {
+      t = cast da.get(Std.string(index));
       // gid
       t.id = tile?.tileset != null ? 0 : gid;
       // x / y position
@@ -135,8 +143,11 @@ class ObjectGroup implements openfl.tiled.Updatable {
       t.tileset = ts;
     }
     // add tile at position
-    if (mTilemapData.get(tileset.firstgid).getTileAt(index) == null) {
-      mTilemapData.get(tileset.firstgid).addTileAt(t, index);
+    if (da.get(Std.string(index)) == null) {
+      // add tile at index
+      this.mTilemapData.get(tileset.firstgid).addTileAt(t, index);
+      // add to check container
+      da.set(Std.string(index), t);
     }
   }
 
