@@ -6,9 +6,6 @@
 - [ ] Add example map with image layer
 - [ ] Add example map with groups, best with nested groups
 - [ ] Render only what is visible in tilemap instead of everything when it comes to chunks
-- [ ] Implement horizontal flipping for objects and tiles
-- [ ] Implement vertical flipping for objects and tiles
-- [ ] Implement diagonal flipping for objects and tiles
 - [ ] Implement flipped hexagonal 120 for objects and tiles
 
 ## Already done
@@ -29,3 +26,9 @@
 - [x] Get perspective_walls example to work
 - [x] Add support for embedded binary images within map format
 - [x] Implement rendering of objects when a gid is set
+- [x] Implement horizontal flipping for tiles
+- [x] Implement vertical flipping for tiles
+- [x] Implement diagonal flipping for tiles
+- [x] Implement horizontal flipping for objects
+- [x] Implement vertical flipping for objects
+- [x] Implement diagonal flipping for objects

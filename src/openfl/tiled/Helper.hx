@@ -108,8 +108,8 @@ class Helper {
    * @return Int
    */
   public static function extractGid(gid:Int):Int {
-    return
-      gid & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
+    return cast(gid,
+      UInt) & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
   }
 
   /**
@@ -118,7 +118,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidFlippedHorizontally(gid:Int):Bool {
-    return gid & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
+    return cast(gid, UInt) & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
   }
 
   /**
@@ -127,7 +127,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidFlippedVertically(gid:Int):Bool {
-    return gid & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
+    return cast(gid, UInt) & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
   }
 
   /**
@@ -136,7 +136,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidFlippedDiagonally(gid:Int):Bool {
-    return gid & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
+    return cast(gid, UInt) & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
   }
 
   /**
@@ -145,6 +145,116 @@ class Helper {
    * @return Bool
    */
   public static function isGidRotatedHexagonal120(gid:Int):Bool {
-    return gid & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+    return cast(gid, UInt) & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+  }
+
+  /**
+   * Helper to apply tile flipping to object
+   * @param t
+   * @param objectTile
+   * @param tileset
+   */
+  overload extern inline public static function applyTileFlipping(t:openfl.tiled.helper.AnimatedTile, objectTile:openfl.tiled.Object,
+      tileset:openfl.tiled.Tileset):Void {
+    // handle diagonal flipping
+    if (objectTile.flipped_diagonally) {
+      // handle combination of diagonally flipped and horizontal or vertical
+      if (objectTile.flipped_horizontally || objectTile.flipped_vertically) {
+        t.width = -1 * tileset.tilewidth;
+        t.x += tileset.tilewidth;
+        // handle only diagonally flipped
+      } else {
+        t.height = -1 * tileset.tileheight;
+      }
+      // rotate clockwise by 90 degree
+      t.rotation = 90;
+    }
+    // handle horizontally flipping
+    if (objectTile.flipped_horizontally) {
+      // handle not flipped diagonally
+      if (!objectTile.flipped_diagonally) {
+        t.width = -1 * tileset.tilewidth;
+        t.x += tileset.tilewidth;
+        // just flip horizontally
+      } else {
+        t.width = 1 * tileset.tilewidth;
+      }
+    }
+    // handle vertical flipping
+    if (objectTile.flipped_vertically) {
+      // handle diagonally not flipped
+      if (!objectTile.flipped_diagonally) {
+        t.height = -1 * tileset.tileheight;
+        t.y += tileset.tileheight;
+        // handle not flipped horizontally
+      } else if (!objectTile.flipped_horizontally) {
+        t.height = -1 * tileset.tilewidth;
+        t.x -= tileset.tilewidth;
+        t.y += tileset.tileheight;
+        // may be flipped diagonally and/or horizontally
+      } else {
+        t.width = -1 * tileset.tilewidth;
+        t.y += tileset.tileheight;
+      }
+    }
+    // handle rotated hexagonal 120
+    if (objectTile.rotated_hexagonal_120) {
+      throw new openfl.errors.Error("Hexagonal 120 rotate is not supported!");
+    }
+  }
+
+  /**
+   * Helper to apply tile flipping
+   * @param t
+   * @param layerTile
+   * @param tileset
+   */
+  overload extern inline public static function applyTileFlipping(t:openfl.tiled.helper.AnimatedTile, layerTile:openfl.tiled.layer.Tile,
+      tileset:openfl.tiled.Tileset):Void {
+    // handle diagonal flipping
+    if (layerTile.flipped_diagonally) {
+      // handle combination of diagonally flipped and horizontal or vertical
+      if (layerTile.flipped_horizontally || layerTile.flipped_vertically) {
+        t.width = -1 * tileset.tilewidth;
+        t.x += tileset.tilewidth;
+        // handle only diagonally flipped
+      } else {
+        t.height = -1 * tileset.tileheight;
+      }
+      // rotate clockwise by 90 degree
+      t.rotation = 90;
+    }
+    // handle horizontally flipping
+    if (layerTile.flipped_horizontally) {
+      // handle not flipped diagonally
+      if (!layerTile.flipped_diagonally) {
+        t.width = -1 * tileset.tilewidth;
+        t.x += tileset.tilewidth;
+        // just flip horizontally
+      } else {
+        t.width = 1 * tileset.tilewidth;
+      }
+    }
+    // handle vertical flipping
+    if (layerTile.flipped_vertically) {
+      // handle diagonally not flipped
+      if (!layerTile.flipped_diagonally) {
+        t.height = -1 * tileset.tileheight;
+        t.y += tileset.tileheight;
+        // handle not flipped horizontally
+      } else if (!layerTile.flipped_horizontally) {
+        t.height = -1 * tileset.tilewidth;
+        t.x -= tileset.tilewidth;
+        t.y += tileset.tileheight;
+        // may be flipped diagonally and/or horizontally
+      } else {
+        t.width = -1 * tileset.tilewidth;
+        t.y += tileset.tileheight;
+      }
+    }
+    // handle rotated hexagonal 120
+    if (layerTile.rotated_hexagonal_120) {
+      throw new openfl.errors.Error("Hexagonal 120 rotate is not supported!");
+    }
   }
 }

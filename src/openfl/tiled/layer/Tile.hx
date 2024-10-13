@@ -9,12 +9,14 @@ class Tile {
   public var flipped_diagonally(get, null):Bool;
   public var rotated_hexagonal_120(get, null):Bool;
 
+  private var mGid:Int;
+
   /**
    * Constructor
    * @param gid
    */
   public function new(gid:Int) {
-    this.gid = gid;
+    this.mGid = gid;
   }
 
   /**
@@ -22,7 +24,7 @@ class Tile {
    * @return Int
    */
   private function get_gid():Int {
-    return Helper.extractGid(this.gid);
+    return Helper.extractGid(this.mGid);
   }
 
   /**
@@ -30,7 +32,7 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_horizontally():Bool {
-    return Helper.isGidFlippedHorizontally(this.gid);
+    return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
   /**
@@ -38,7 +40,7 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_vertically():Bool {
-    return Helper.isGidFlippedVertically(this.gid);
+    return Helper.isGidFlippedVertically(this.mGid);
   }
 
   /**
@@ -46,7 +48,7 @@ class Tile {
    * @return Bool
    */
   private function get_flipped_diagonally():Bool {
-    return Helper.isGidFlippedDiagonally(this.gid);
+    return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
   /**
@@ -54,6 +56,6 @@ class Tile {
    * @return Bool
    */
   private function get_rotated_hexagonal_120():Bool {
-    return Helper.isGidRotatedHexagonal120(this.gid);
+    return Helper.isGidRotatedHexagonal120(this.mGid);
   }
 }

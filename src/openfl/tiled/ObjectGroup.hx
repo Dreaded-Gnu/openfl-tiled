@@ -133,6 +133,8 @@ class ObjectGroup implements openfl.tiled.Updatable {
       t.animation = tileset.tile[gid]?.animation;
       t.tileset = ts;
       t.map = this.mMap;
+      // apply flipping
+      openfl.tiled.Helper.applyTileFlipping(t, object, tileset);
     } else {
       t = new openfl.tiled.helper.AnimatedTile( // gid
         tile?.tileset != null ? 0 : gid, // x / y position
@@ -140,7 +142,10 @@ class ObjectGroup implements openfl.tiled.Updatable {
         object.y - tileset.tileoffset.y - object.height, // scaling depending on object size
         object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth), object.height / (tile?.tileset != null ? tile.height : tileset.tileheight),
         0, tileset.tile[gid]?.animation, this.mMap);
+      // set tileset
       t.tileset = ts;
+      // apply flipping
+      openfl.tiled.Helper.applyTileFlipping(t, object, tileset);
     }
     // add tile at position
     if (da.get(Std.string(index)) == null) {

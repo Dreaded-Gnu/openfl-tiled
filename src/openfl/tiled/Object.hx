@@ -26,6 +26,7 @@ class Object {
   public var rotated_hexagonal_120(get, null):Bool;
 
   private var mMap:openfl.tiled.Map;
+  private var mGid:Int;
 
   /**
    * Constructor
@@ -43,7 +44,7 @@ class Object {
     this.width = node.exists("width") ? Std.parseFloat(node.get("width")) : 0;
     this.height = node.exists("height") ? Std.parseFloat(node.get("height")) : 0;
     this.rotation = node.exists("rotation") ? Std.parseInt(node.get("rotation")) : 0;
-    this.gid = node.exists("gid") ? Std.parseInt(node.get("gid")) : 0;
+    this.mGid = node.exists("gid") ? Std.parseInt(node.get("gid")) : 0;
     this.visible = node.exists("visible") ? Std.parseInt(node.get("visible")) : 1;
     this.template = node.get("template");
     // loop through childs
@@ -74,7 +75,7 @@ class Object {
    * @return Int
    */
   private function get_gid():Int {
-    return Helper.extractGid(this.gid);
+    return Helper.extractGid(this.mGid);
   }
 
   /**
@@ -82,7 +83,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_horizontally():Bool {
-    return Helper.isGidFlippedHorizontally(this.gid);
+    return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
   /**
@@ -90,7 +91,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_vertically():Bool {
-    return Helper.isGidFlippedVertically(this.gid);
+    return Helper.isGidFlippedVertically(this.mGid);
   }
 
   /**
@@ -98,7 +99,7 @@ class Object {
    * @return Bool
    */
   private function get_flipped_diagonally():Bool {
-    return Helper.isGidFlippedDiagonally(this.gid);
+    return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
   /**
@@ -106,7 +107,7 @@ class Object {
    * @return Bool
    */
   private function get_rotated_hexagonal_120():Bool {
-    return Helper.isGidRotatedHexagonal120(this.gid);
+    return Helper.isGidRotatedHexagonal120(this.mGid);
   }
 
   /**

@@ -6,5 +6,6 @@
   "editor.rulers": [ 80, 120 ],
   "editor.fontSize": 12,
   "editor.tabSize": 2,
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
 }
