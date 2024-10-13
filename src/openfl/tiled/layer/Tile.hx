@@ -1,13 +1,7 @@
 package openfl.tiled.layer;
 
-class Tile {
+class Tile implements openfl.tiled.helper.Flippable {
   public var gid(get, null):Int;
-
-  // flip information
-  public var flipped_horizontally(get, null):Bool;
-  public var flipped_vertically(get, null):Bool;
-  public var flipped_diagonally(get, null):Bool;
-  public var rotated_hexagonal_120(get, null):Bool;
 
   private var mGid:Int;
 
@@ -31,7 +25,7 @@ class Tile {
    * Getter for flipped horizontally
    * @return Bool
    */
-  private function get_flipped_horizontally():Bool {
+  public function isFlippedHorizontally():Bool {
     return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
@@ -39,7 +33,7 @@ class Tile {
    * Getter for flipped vertically
    * @return Bool
    */
-  private function get_flipped_vertically():Bool {
+  public function isFlippedVertically():Bool {
     return Helper.isGidFlippedVertically(this.mGid);
   }
 
@@ -47,7 +41,7 @@ class Tile {
    * Getter for flipped diagonally
    * @return Bool
    */
-  private function get_flipped_diagonally():Bool {
+  public function isFlippedDiagonally():Bool {
     return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
@@ -55,7 +49,7 @@ class Tile {
    * Getter for flipped hexagonal 120
    * @return Bool
    */
-  private function get_rotated_hexagonal_120():Bool {
+  public function isRotatedHexagonal120():Bool {
     return Helper.isGidRotatedHexagonal120(this.mGid);
   }
 }

@@ -149,72 +149,16 @@ class Helper {
   }
 
   /**
-   * Helper to apply tile flipping to object
-   * @param t
-   * @param objectTile
-   * @param tileset
-   */
-  overload extern inline public static function applyTileFlipping(t:openfl.tiled.helper.AnimatedTile, objectTile:openfl.tiled.Object,
-      tileset:openfl.tiled.Tileset):Void {
-    // handle diagonal flipping
-    if (objectTile.flipped_diagonally) {
-      // handle combination of diagonally flipped and horizontal or vertical
-      if (objectTile.flipped_horizontally || objectTile.flipped_vertically) {
-        t.width = -1 * tileset.tilewidth;
-        t.x += tileset.tilewidth;
-        // handle only diagonally flipped
-      } else {
-        t.height = -1 * tileset.tileheight;
-      }
-      // rotate clockwise by 90 degree
-      t.rotation = 90;
-    }
-    // handle horizontally flipping
-    if (objectTile.flipped_horizontally) {
-      // handle not flipped diagonally
-      if (!objectTile.flipped_diagonally) {
-        t.width = -1 * tileset.tilewidth;
-        t.x += tileset.tilewidth;
-        // just flip horizontally
-      } else {
-        t.width = 1 * tileset.tilewidth;
-      }
-    }
-    // handle vertical flipping
-    if (objectTile.flipped_vertically) {
-      // handle diagonally not flipped
-      if (!objectTile.flipped_diagonally) {
-        t.height = -1 * tileset.tileheight;
-        t.y += tileset.tileheight;
-        // handle not flipped horizontally
-      } else if (!objectTile.flipped_horizontally) {
-        t.height = -1 * tileset.tilewidth;
-        t.x -= tileset.tilewidth;
-        t.y += tileset.tileheight;
-        // may be flipped diagonally and/or horizontally
-      } else {
-        t.width = -1 * tileset.tilewidth;
-        t.y += tileset.tileheight;
-      }
-    }
-    // handle rotated hexagonal 120
-    if (objectTile.rotated_hexagonal_120) {
-      throw new openfl.errors.Error("Hexagonal 120 rotate is not supported!");
-    }
-  }
-
-  /**
    * Helper to apply tile flipping
    * @param t
-   * @param layerTile
+   * @param flippable
    * @param tileset
    */
-  overload extern inline public static function applyTileFlipping(t:openfl.tiled.helper.AnimatedTile, layerTile:openfl.tiled.layer.Tile,
-      tileset:openfl.tiled.Tileset):Void {
+  public static function applyTileFlipping(t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable, tileset:openfl.tiled.Tileset):Void {
     // handle diagonal flipping
-    if (layerTile.flipped_diagonally) {
+    if (flippable.isFlippedDiagonally()) {
       // handle combination of diagonally flipped and horizontal or vertical
-      if (layerTile.flipped_horizontally || layerTile.flipped_vertically) {
+      if (flippable.isFlippedHorizontally() || flippable.isFlippedVertically()) {
         t.width = -1 * tileset.tilewidth;
         t.x += tileset.tilewidth;
         // handle only diagonally flipped
@@ -225,9 +169,9 @@ class Helper {
       t.rotation = 90;
     }
     // handle horizontally flipping
-    if (layerTile.flipped_horizontally) {
+    if (flippable.isFlippedHorizontally()) {
       // handle not flipped diagonally
-      if (!layerTile.flipped_diagonally) {
+      if (!flippable.isFlippedDiagonally()) {
         t.width = -1 * tileset.tilewidth;
         t.x += tileset.tilewidth;
         // just flip horizontally
@@ -236,13 +180,13 @@ class Helper {
       }
     }
     // handle vertical flipping
-    if (layerTile.flipped_vertically) {
+    if (flippable.isFlippedVertically()) {
       // handle diagonally not flipped
-      if (!layerTile.flipped_diagonally) {
+      if (!flippable.isFlippedDiagonally()) {
         t.height = -1 * tileset.tileheight;
         t.y += tileset.tileheight;
         // handle not flipped horizontally
-      } else if (!layerTile.flipped_horizontally) {
+      } else if (!flippable.isFlippedHorizontally()) {
         t.height = -1 * tileset.tilewidth;
         t.x -= tileset.tilewidth;
         t.y += tileset.tileheight;
@@ -253,7 +197,7 @@ class Helper {
       }
     }
     // handle rotated hexagonal 120
-    if (layerTile.rotated_hexagonal_120) {
+    if (flippable.isRotatedHexagonal120()) {
       throw new openfl.errors.Error("Hexagonal 120 rotate is not supported!");
     }
   }

@@ -1,6 +1,6 @@
 package openfl.tiled;
 
-class Object {
+class Object implements openfl.tiled.helper.Flippable {
   public var id(default, null):Int;
   public var name(default, null):String;
   public var type(default, null):String;
@@ -18,12 +18,6 @@ class Object {
   public var polygon(default, null):openfl.tiled.object.Polygon;
   public var polyline(default, null):openfl.tiled.object.Polyline;
   public var text(default, null):openfl.tiled.object.Text;
-
-  // flip information
-  public var flipped_horizontally(get, null):Bool;
-  public var flipped_vertically(get, null):Bool;
-  public var flipped_diagonally(get, null):Bool;
-  public var rotated_hexagonal_120(get, null):Bool;
 
   private var mMap:openfl.tiled.Map;
   private var mGid:Int;
@@ -82,7 +76,7 @@ class Object {
    * Getter for flipped horizontally
    * @return Bool
    */
-  private function get_flipped_horizontally():Bool {
+  public function isFlippedHorizontally():Bool {
     return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
@@ -90,7 +84,7 @@ class Object {
    * Getter for flipped vertically
    * @return Bool
    */
-  private function get_flipped_vertically():Bool {
+  public function isFlippedVertically():Bool {
     return Helper.isGidFlippedVertically(this.mGid);
   }
 
@@ -98,7 +92,7 @@ class Object {
    * Getter for flipped diagonally
    * @return Bool
    */
-  private function get_flipped_diagonally():Bool {
+  public function isFlippedDiagonally():Bool {
     return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
@@ -106,7 +100,7 @@ class Object {
    * Getter for flipped hexagonal 120
    * @return Bool
    */
-  private function get_rotated_hexagonal_120():Bool {
+  public function isRotatedHexagonal120():Bool {
     return Helper.isGidRotatedHexagonal120(this.mGid);
   }
 

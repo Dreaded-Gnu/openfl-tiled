@@ -1,6 +1,6 @@
 # openfl-tiled
 
-Implementation of tiled map parsing for openfl and haxe. Minimum needed haxe version is 4.2 since overloading is used
+Implementation of tiled map parsing for openfl and haxe.
 
 ## working examples
 
