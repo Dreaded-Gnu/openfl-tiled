@@ -1,5 +1,6 @@
 package openfl.tiled;
 
+import haxe.Int64;
 import haxe.crypto.Base64;
 import haxe.io.Path;
 import openfl.utils.ByteArray;
@@ -75,8 +76,8 @@ class Helper {
    * @return Int
    */
   public static function extractGid(gid:Int):Int {
-    return cast(gid,
-      UInt) & ~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
+    return
+      Int64.toInt(Int64.ofInt(gid) & Int64.ofInt(~(Helper.GID_FLIPPED_HORIZONTALLY_FLAG | Helper.GID_FLIPPED_VERTICALLY_FLAG | Helper.GID_FLIPPED_DIAGONALLY_FLAG | Helper.GID_ROTATED_HEXAGONAL_120_FLAG)));
   }
 
   /**
@@ -85,7 +86,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidFlippedHorizontally(gid:Int):Bool {
-    return cast(gid, UInt) & Helper.GID_FLIPPED_HORIZONTALLY_FLAG == Helper.GID_FLIPPED_HORIZONTALLY_FLAG;
+    return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_FLIPPED_HORIZONTALLY_FLAG) == Int64.ofInt(Helper.GID_FLIPPED_HORIZONTALLY_FLAG);
   }
 
   /**
@@ -94,7 +95,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidFlippedVertically(gid:Int):Bool {
-    return cast(gid, UInt) & Helper.GID_FLIPPED_VERTICALLY_FLAG == Helper.GID_FLIPPED_VERTICALLY_FLAG;
+    return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_FLIPPED_VERTICALLY_FLAG) == Int64.ofInt(Helper.GID_FLIPPED_VERTICALLY_FLAG);
   }
 
   /**
@@ -103,7 +104,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidFlippedDiagonally(gid:Int):Bool {
-    return cast(gid, UInt) & Helper.GID_FLIPPED_DIAGONALLY_FLAG == Helper.GID_FLIPPED_DIAGONALLY_FLAG;
+    return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_FLIPPED_DIAGONALLY_FLAG) == Int64.ofInt(Helper.GID_FLIPPED_DIAGONALLY_FLAG);
   }
 
   /**
@@ -112,7 +113,7 @@ class Helper {
    * @return Bool
    */
   public static function isGidRotatedHexagonal120(gid:Int):Bool {
-    return cast(gid, UInt) & Helper.GID_ROTATED_HEXAGONAL_120_FLAG == Helper.GID_ROTATED_HEXAGONAL_120_FLAG;
+    return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_ROTATED_HEXAGONAL_120_FLAG) == Int64.ofInt(Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
   }
 
   /**
@@ -122,7 +123,8 @@ class Helper {
    * @param flippable
    * @param tileset
    */
-  public static function applyTileFlipping(map:openfl.tiled.Map, t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable, tileset:openfl.tiled.Tileset):Void {
+  public static function applyTileFlipping(map:openfl.tiled.Map, t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable,
+      tileset:openfl.tiled.Tileset):Void {
     // handle hexagonal stuff
     if (map.orientation == MapOrientationHexagonal) {
       // handle flipped diagonally

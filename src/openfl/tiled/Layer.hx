@@ -76,7 +76,7 @@ class Layer implements openfl.tiled.Updatable {
    * @param y
    */
   private function renderLayer(x:Int, y:Int):Void {
-    var id:Int = x + y * this.mMap.width;
+    var id:Int = x + y * this.width;
     // get gid
     var gid:Int = this.data.tile[id].gid;
     // handle invalid
@@ -362,8 +362,8 @@ class Layer implements openfl.tiled.Updatable {
           var max:Int = this.width * this.height;
           for (i in 0...max) {
             // calculate x and y
-            var x:Int = Std.int(i % width);
-            var y:Int = Std.int(i / height);
+            var x:Int = Std.int(i % this.width);
+            var y:Int = Std.int(i / this.width);
             // call render layer
             this.renderLayer(x, y);
           }
