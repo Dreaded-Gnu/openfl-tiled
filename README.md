@@ -2,24 +2,6 @@
 
 Implementation of tiled map parsing for openfl and haxe.
 
-## working examples
-
-| map                                                                               |  state    |
-|-----------------------------------------------------------------------------------|:---------:|
-| tiled/sewers/sewers.tmx                                                           |  &check;  |
-| tiled/desert/desert.tmx                                                           |  &check;  |
-| tiled/desert_infinite/desert_infinite.tmx                                         |  &check;  |
-| tiled/hexagonal-mini/hexagonal-mini.tmx                                           |  &check;  |
-| tiled/isometric_grass_and_water/isometric_grass_and_water.tmx                     |  &check;  |
-| tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx |  &check;  |
-| tiled/rpg/island.tmx                                                              |  &check;  |
-| tiled/forest/forest.tmx                                                           |  &check;  |
-| tiled/perspective_walls/perspective_walls.tmx                                     |  &check;  |
-
-## Known issues
-
-- [x] tiled/sewers/sewers.tmx second layer looses transparency when "scrolling"
-
 ## Usage example
 
 ```haxe
