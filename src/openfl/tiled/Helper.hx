@@ -1,13 +1,14 @@
 package openfl.tiled;
 
+import haxe.crypto.Base64;
 import haxe.io.Path;
 import openfl.utils.ByteArray;
 
 class Helper {
-  public static inline var GID_FLIPPED_HORIZONTALLY_FLAG:UInt = 0x80000000;
-  public static inline var GID_FLIPPED_VERTICALLY_FLAG:UInt = 0x40000000;
-  public static inline var GID_FLIPPED_DIAGONALLY_FLAG:UInt = 0x20000000;
   public static inline var GID_ROTATED_HEXAGONAL_120_FLAG:UInt = 0x10000000;
+  public static inline var GID_FLIPPED_DIAGONALLY_FLAG:UInt = 0x20000000;
+  public static inline var GID_FLIPPED_VERTICALLY_FLAG:UInt = 0x40000000;
+  public static inline var GID_FLIPPED_HORIZONTALLY_FLAG:UInt = 0x80000000;
 
   public static inline var COLLISION_LAYER_NAME:String = "collision";
   public static inline var COLLISION_PROPERTY_NAME:String = "collides";
@@ -20,46 +21,12 @@ class Helper {
    * @return ByteArray
    */
   public static function base64ToByteArray(data:String):ByteArray {
-    var output:ByteArray = new ByteArray();
-    // initialize lookup table
-    var lookup:Array<Int> = new Array<Int>();
-    for (c in 0...BASE64_CHARS.length) {
-      lookup[BASE64_CHARS.charCodeAt(c)] = c;
-    }
-
-    var i:Int = 0;
-    var char:String = null;
-
-    while (i < data.length - 3) {
-      char = data.charAt(i);
-      // Ignore whitespace
-      if (char == " " || char == "\n" || char == '\r') {
-        i++;
-        continue;
-      }
-
-      // read 4 bytes and look them up in the table
-      var a0:Int = lookup[data.charCodeAt(i)];
-      var a1:Int = lookup[data.charCodeAt(i + 1)];
-      var a2:Int = lookup[data.charCodeAt(i + 2)];
-      var a3:Int = lookup[data.charCodeAt(i + 3)];
-
-      // convert to and write 3 bytes
-      if (a1 < 64) {
-        output.writeByte((a0 << 2) + ((a1 & 0x30) >> 4));
-      }
-      if (a2 < 64) {
-        output.writeByte(((a1 & 0x0f) << 4) + ((a2 & 0x3c) >> 2));
-      }
-      if (a3 < 64) {
-        output.writeByte(((a2 & 0x03) << 6) + a3);
-      }
-      i += 4;
-    }
-
-    // Rewind & return decoded data
-    output.position = 0;
-    return output;
+    // replace newlines and spaces as they are invalid
+    data = ~/\s/g.replace(data, '');
+    // decode using haxe crypto
+    var bytes:haxe.io.Bytes = haxe.crypto.Base64.decode(data);
+    // return byte array from bytes
+    return ByteArray.fromBytes(bytes);
   }
 
   /**
@@ -150,11 +117,25 @@ class Helper {
 
   /**
    * Helper to apply tile flipping
+   * @param map
    * @param t
    * @param flippable
    * @param tileset
    */
-  public static function applyTileFlipping(t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable, tileset:openfl.tiled.Tileset):Void {
+  public static function applyTileFlipping(map:openfl.tiled.Map, t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable, tileset:openfl.tiled.Tileset):Void {
+    // handle hexagonal stuff
+    if (map.orientation == MapOrientationHexagonal) {
+      // handle flipped diagonally
+      if (flippable.isFlippedDiagonally()) {
+        t.rotation += 60;
+      }
+      // handle rotated hexagonal
+      if (flippable.isRotatedHexagonal120()) {
+        t.rotation += 120;
+      }
+      // skip rest
+      return;
+    }
     // handle diagonal flipping
     if (flippable.isFlippedDiagonally()) {
       // handle combination of diagonally flipped and horizontal or vertical
@@ -195,10 +176,6 @@ class Helper {
         t.width = -1 * tileset.tilewidth;
         t.y += tileset.tileheight;
       }
-    }
-    // handle rotated hexagonal 120
-    if (flippable.isRotatedHexagonal120()) {
-      throw new openfl.errors.Error("Hexagonal 120 rotate is not supported!");
     }
   }
 }

@@ -4,3 +4,6 @@
 -cp src
 -D source-map
 -D commonjs
+--library openfl
+--library lime
+--library crypto

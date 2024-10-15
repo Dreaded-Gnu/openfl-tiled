@@ -134,7 +134,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
       t.tileset = ts;
       t.map = this.mMap;
       // apply flipping
-      openfl.tiled.Helper.applyTileFlipping(t, object, tileset);
+      openfl.tiled.Helper.applyTileFlipping(this.mMap, t, object, tileset);
     } else {
       t = new openfl.tiled.helper.AnimatedTile( // gid
         tile?.tileset != null ? 0 : gid, // x / y position
@@ -145,7 +145,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
       // set tileset
       t.tileset = ts;
       // apply flipping
-      openfl.tiled.Helper.applyTileFlipping(t, object, tileset);
+      openfl.tiled.Helper.applyTileFlipping(this.mMap, t, object, tileset);
     }
     // add tile at position
     if (da.get(Std.string(index)) == null) {

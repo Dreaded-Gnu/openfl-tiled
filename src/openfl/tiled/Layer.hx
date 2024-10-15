@@ -203,14 +203,14 @@ class Layer implements openfl.tiled.Updatable {
           t.animation = tileset.tile[gid]?.animation;
           t.map = this.mMap;
           // apply flipping
-          openfl.tiled.Helper.applyTileFlipping(t, layerTile, tileset);
+          openfl.tiled.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         } else {
           t = new openfl.tiled.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1,
             1, 0, tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping
-          openfl.tiled.Helper.applyTileFlipping(t, layerTile, tileset);
+          openfl.tiled.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (this.mMap.orientation == MapOrientationStaggered) {
           t.x = x * tileset.tilewidth;
@@ -256,14 +256,14 @@ class Layer implements openfl.tiled.Updatable {
           t.animation = tileset.tile[gid]?.animation;
           t.map = this.mMap;
           // apply flipping
-          openfl.tiled.Helper.applyTileFlipping(t, layerTile, tileset);
+          openfl.tiled.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         } else {
           t = new openfl.tiled.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping
-          openfl.tiled.Helper.applyTileFlipping(t, layerTile, tileset);
+          openfl.tiled.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (tile?.tileset != null) {
           var rect:openfl.geom.Rectangle = ts.getRect(0);
@@ -300,14 +300,14 @@ class Layer implements openfl.tiled.Updatable {
           t.animation = tileset.tile[gid]?.animation;
           t.map = this.mMap;
           // apply flipping
-          openfl.tiled.Helper.applyTileFlipping(t, layerTile, tileset);
+          openfl.tiled.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         } else {
           t = new openfl.tiled.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping
-          openfl.tiled.Helper.applyTileFlipping(t, layerTile, tileset);
+          openfl.tiled.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (this.mMap.staggeraxis == MapStaggerAxisY) {
           var adjustX:Int = 0;

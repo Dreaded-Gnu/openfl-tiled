@@ -6,6 +6,7 @@
   <source path="src" />
 
   <haxelib name="openfl" />
+  <haxelib name="crypto" />
 
   <assets path="public" rename="" />
 

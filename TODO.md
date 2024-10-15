@@ -6,7 +6,6 @@
 - [ ] Add example map with image layer
 - [ ] Add example map with groups, best with nested groups
 - [ ] Render only what is visible in tilemap instead of everything when it comes to chunks
-- [ ] Implement flipped hexagonal 120 for objects and tiles
 
 ## Already done
 
@@ -32,3 +31,4 @@
 - [x] Implement horizontal flipping for objects
 - [x] Implement vertical flipping for objects
 - [x] Implement diagonal flipping for objects
+- [x] Implement flipped hexagonal 120 for objects and tiles
