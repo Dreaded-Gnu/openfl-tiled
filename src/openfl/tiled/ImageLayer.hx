@@ -1,8 +1,8 @@
 package openfl.tiled;
 
-import openfl.geom.Rectangle;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
+import openfl.geom.Rectangle;
 
 class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   public var id(default, null):Int;
@@ -23,7 +23,10 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   public var image(default, null):openfl.tiled.Image;
 
   public var tileset(default, null):openfl.display.Tileset;
+  public var tile(default, null):openfl.tiled.helper.AnimatedTile;
 
+  private var mPreviousX:Int;
+  private var mPreviousY:Int;
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -35,6 +38,8 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
     super();
     // cache map
     this.mMap = map;
+    this.mPreviousX = 0;
+    this.mPreviousY = 0;
     // parse attributes
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
     this.name = node.exists("name") ? node.get("name") : "";
@@ -87,6 +92,10 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
     var rect:Array<Rectangle> = new Array<Rectangle>();
     rect.push(new Rectangle(0, 0, this.image.width, this.image.height));
     this.tileset = new openfl.display.Tileset(this.image.bitmap.bitmapData, rect);
+    // build tile
+    this.tile = new openfl.tiled.helper.AnimatedTile(0, this.x, this.y, 1, 1, 0, null, this.mMap);
+    // set tileset
+    this.tile.tileset = this.tileset;
     // fire complete event
     this.dispatchEvent(new Event(Event.COMPLETE));
   }
@@ -97,7 +106,22 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * @param offsetX
    * @param offsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {}
+  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {
+    // apply x / y offset
+    if (offsetX != this.mPreviousX) {
+      this.tile.x = this.tile.x + this.mPreviousX - offsetX;
+    }
+    if (offsetY != this.mPreviousY) {
+      this.tile.y = this.tile.y + this.mPreviousY - offsetY;
+    }
+    // add to tilemap
+    if (!tilemap.contains(this.tile)) {
+      tilemap.addTile(this.tile);
+    }
+    // set new previous
+    this.mPreviousX = offsetX;
+    this.mPreviousY = offsetY;
+  }
 
   /**
    * Check for collision

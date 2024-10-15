@@ -26,7 +26,7 @@ class Main extends Sprite {
     this.mTilemap = new openfl.display.Tilemap(stage.stageWidth, stage.stageHeight);
     addChild(this.mTilemap);
     // load map
-    this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/flipped tiles.tmx", this.mTilemap);
+    this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.mTilemap);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
