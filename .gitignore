@@ -3,6 +3,7 @@ dist/
 *.map
 .haxelib
 Export
+public/tiled
 public/phaser
 public/sprites
 out/
