@@ -1,7 +1,5 @@
 package openfl.tiled;
 
-import haxe.DynamicAccess;
-
 class ObjectGroup implements openfl.tiled.Updatable {
   public var id(default, null):Int;
   public var name(default, null):String;
