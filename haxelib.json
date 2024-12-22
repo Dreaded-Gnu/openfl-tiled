@@ -16,7 +16,7 @@
   ],
   "classPath": "src",
   "dependencies": {
-    "openfl": "9.4.0",
-    "crypto": "1.0.4"
+    "openfl": "",
+    "crypto": ""
   }
 }
