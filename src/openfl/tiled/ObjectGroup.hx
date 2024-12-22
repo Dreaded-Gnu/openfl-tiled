@@ -23,7 +23,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public var object(default, null):Array<openfl.tiled.Object>;
 
   private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
-  private var mTileCheckContainer:std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>;
+  private var mTileCheckContainer:std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>;
   private var mMap:openfl.tiled.Map;
   private var mPreviousX:Int;
   private var mPreviousY:Int;
@@ -36,7 +36,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
     this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
-    this.mTileCheckContainer = new std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>();
+    this.mTileCheckContainer = new std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>();
     this.mPreviousX = 0;
     this.mPreviousY = 0;
     // parse properties
@@ -107,7 +107,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
       tc.alpha = this.opacity;
       tc.visible = 1 == this.visible;
       this.mTilemapData.set(tileset.firstgid, tc);
-      this.mTileCheckContainer.set(tileset.firstgid, {});
+      this.mTileCheckContainer.set(tileset.firstgid, new std.Map<Int, openfl.tiled.helper.AnimatedTile>());
     }
     var ts:openfl.display.Tileset = tileset.tileset;
     var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
@@ -117,10 +117,10 @@ class ObjectGroup implements openfl.tiled.Updatable {
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
     // get tile container for checking
-    var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
+    var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
     // handle already set
-    if (da.get(Std.string(index)) != null) {
-      t = cast da.get(Std.string(index));
+    if (map.exists(index)) {
+      t = map.get(index);
       // gid
       t.id = tile?.tileset != null ? 0 : gid;
       // x / y position
@@ -148,11 +148,11 @@ class ObjectGroup implements openfl.tiled.Updatable {
       openfl.tiled.Helper.applyTileFlipping(this.mMap, t, object, tileset);
     }
     // add tile at position
-    if (da.get(Std.string(index)) == null) {
+    if (!map.exists(index)) {
       // add tile at index
       this.mTilemapData.get(tileset.firstgid).addTileAt(t, index);
       // add to check container
-      da.set(Std.string(index), t);
+      map.set(index, t);
     }
   }
 

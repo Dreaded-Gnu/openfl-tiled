@@ -1,6 +1,5 @@
 package openfl.tiled;
 
-import haxe.DynamicAccess;
 import openfl.errors.Error;
 import openfl.tiled.map.RenderOrder;
 
@@ -23,7 +22,7 @@ class Layer implements openfl.tiled.Updatable {
   public var data(default, null):openfl.tiled.layer.Data;
 
   private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
-  private var mTileCheckContainer:std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>;
+  private var mTileCheckContainer:std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>;
   private var mMap:openfl.tiled.Map;
   private var mPreviousX:Int;
   private var mPreviousY:Int;
@@ -37,7 +36,7 @@ class Layer implements openfl.tiled.Updatable {
   public function new(node:Xml, map:openfl.tiled.Map, layerId:Int) {
     this.mMap = map;
     this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
-    this.mTileCheckContainer = new std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>();
+    this.mTileCheckContainer = new std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>();
     this.mPreviousX = 0;
     this.mPreviousY = 0;
     // parse stuff
@@ -91,13 +90,13 @@ class Layer implements openfl.tiled.Updatable {
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset);
     // get tile container for checking
-    var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
+    var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
     // add tile at position
-    if (da.get(Std.string(id)) == null) {
+    if (!map.exists(id)) {
       // add tile
       this.mTilemapData.get(tileset.firstgid).addTileAt(t, id);
       // set item
-      da.set(Std.string(id), t);
+      map.set(id, t);
     }
   }
 
@@ -131,13 +130,13 @@ class Layer implements openfl.tiled.Updatable {
       // generate tile
       var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
       // get tile container for checking
-      var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
+      var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
-      if (da.get(Std.string(id)) == null) {
+      if (!map.exists(id)) {
         // add tile
         this.mTilemapData.get(chunkIndex).addTileAt(t, id);
         // set item
-        da.set(Std.string(id), t);
+        map.set(id, t);
       }
     }
   }
@@ -171,10 +170,10 @@ class Layer implements openfl.tiled.Updatable {
       tc.visible = 1 == this.visible;
       if (chunkIndex != -1) {
         this.mTilemapData.set(chunkIndex, tc);
-        this.mTileCheckContainer.set(chunkIndex, {});
+        this.mTileCheckContainer.set(chunkIndex, new std.Map<Int, openfl.tiled.helper.AnimatedTile>());
       } else {
         this.mTilemapData.set(tileset.firstgid, tc);
-        this.mTileCheckContainer.set(tileset.firstgid, {});
+        this.mTileCheckContainer.set(tileset.firstgid, new std.Map<Int, openfl.tiled.helper.AnimatedTile>());
       }
     }
     var ts:openfl.display.Tileset = tileset.tileset;
@@ -183,14 +182,14 @@ class Layer implements openfl.tiled.Updatable {
       ts = tile.tileset;
     }
     var layerTile:openfl.tiled.layer.Tile = chunk != null ? chunk.tile[id] : this.data.tile[id];
-    // get tile container for tile checking
-    var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
+    // get tile container for checking
+    var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
     switch (this.mMap.orientation) {
       case MapOrientationIsometric, MapOrientationStaggered:
-        if (da.get(Std.string(id)) != null) {
-          t = cast da.get(Std.string(id));
+        if (map.exists(id)) {
+          t = map.get(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -242,8 +241,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
-        if (da.get(Std.string(id)) != null) {
-          t = cast da.get(Std.string(id));
+        if (map.exists(id)) {
+          t = map.get(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -286,8 +285,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
-        if (da.get(Std.string(id)) != null) {
-          t = cast da.get(Std.string(id));
+        if (map.exists(id)) {
+          t = map.get(id);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
