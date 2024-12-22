@@ -23,7 +23,7 @@ class Layer implements openfl.tiled.Updatable {
   public var data(default, null):openfl.tiled.layer.Data;
 
   private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
-  private var mTileCheckContainer:std.Map<Int, Dynamic>;
+  private var mTileCheckContainer:std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>;
   private var mMap:openfl.tiled.Map;
   private var mPreviousX:Int;
   private var mPreviousY:Int;
@@ -37,7 +37,7 @@ class Layer implements openfl.tiled.Updatable {
   public function new(node:Xml, map:openfl.tiled.Map, layerId:Int) {
     this.mMap = map;
     this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
-    this.mTileCheckContainer = new std.Map<Int, Dynamic>();
+    this.mTileCheckContainer = new std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>();
     this.mPreviousX = 0;
     this.mPreviousY = 0;
     // parse stuff
@@ -90,8 +90,8 @@ class Layer implements openfl.tiled.Updatable {
     }
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset);
-    // get dynamic access for checking
-    var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(tileset.firstgid);
+    // get tile container for checking
+    var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
     // add tile at position
     if (da.get(Std.string(id)) == null) {
       // add tile
@@ -130,8 +130,8 @@ class Layer implements openfl.tiled.Updatable {
       }
       // generate tile
       var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
-      // get dynamic access for checking
-      var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(chunkIndex);
+      // get tile container for checking
+      var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
       if (da.get(Std.string(id)) == null) {
         // add tile
@@ -183,8 +183,8 @@ class Layer implements openfl.tiled.Updatable {
       ts = tile.tileset;
     }
     var layerTile:openfl.tiled.layer.Tile = chunk != null ? chunk.tile[id] : this.data.tile[id];
-    // get dynamic access for tile checking
-    var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
+    // get tile container for tile checking
+    var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
     switch (this.mMap.orientation) {

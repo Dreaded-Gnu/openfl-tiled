@@ -23,7 +23,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public var object(default, null):Array<openfl.tiled.Object>;
 
   private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
-  private var mTileCheckContainer:std.Map<Int, Dynamic>;
+  private var mTileCheckContainer:std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>;
   private var mMap:openfl.tiled.Map;
   private var mPreviousX:Int;
   private var mPreviousY:Int;
@@ -36,7 +36,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
     this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
-    this.mTileCheckContainer = new std.Map<Int, Dynamic>();
+    this.mTileCheckContainer = new std.Map<Int, DynamicAccess<openfl.tiled.helper.AnimatedTile>>();
     this.mPreviousX = 0;
     this.mPreviousY = 0;
     // parse properties
@@ -116,8 +116,8 @@ class ObjectGroup implements openfl.tiled.Updatable {
     }
     // generate tile
     var t:openfl.tiled.helper.AnimatedTile = null;
-    // get dynamic access for checking
-    var da:DynamicAccess<Dynamic> = this.mTileCheckContainer.get(tileset.firstgid);
+    // get tile container for checking
+    var da:DynamicAccess<openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
     // handle already set
     if (da.get(Std.string(index)) != null) {
       t = cast da.get(Std.string(index));
