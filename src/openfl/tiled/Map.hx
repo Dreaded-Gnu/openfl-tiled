@@ -46,6 +46,8 @@ class Map extends EventDispatcher {
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
   private var mRenderObjects:Array<openfl.tiled.Updatable>;
+  private var mPreviousOffsetX:Int = -1;
+  private var mPreviousOffsetY:Int = -1;
 
   /**
    * Constructor
@@ -337,6 +339,14 @@ class Map extends EventDispatcher {
    * @return openfl.display.Tilemap
    */
   public function render(offsetX:Int = 0, offsetY:Int = 0):openfl.display.Tilemap {
+    // handle no offset change
+    if (this.mPreviousOffsetX == offsetX && this.mPreviousOffsetY == offsetY) {
+      return this.mTileMap;
+    }
+    // set previous offset x and y
+    this.mPreviousOffsetX = offsetX;
+    this.mPreviousOffsetY = offsetY;
+    // update render objects
     for (renderObject in this.mRenderObjects) {
       renderObject.update(this.mTileMap, offsetX, offsetY);
     }
