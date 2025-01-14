@@ -156,11 +156,10 @@ class ObjectGroup implements openfl.tiled.Updatable {
 
   /**
    * Update / render object group
-   * @param tilemap
    * @param offsetX
    * @param offsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int):Void {
     var index:Int = 0;
     for (object in this.object) {
       this.renderObject(object, offsetX, offsetY, index++);
@@ -168,14 +167,14 @@ class ObjectGroup implements openfl.tiled.Updatable {
     // apply data to tilemap
     for (tm in this.mTilemapData) {
       if (offsetX != this.mPreviousX) {
-        tm.x = tm.x + this.mPreviousX - offsetX;
+        tm.x += this.mPreviousX - offsetX;
       }
       if (offsetY != this.mPreviousY) {
-        tm.y = tm.y + this.mPreviousY - offsetY;
+        tm.y += this.mPreviousY - offsetY;
       }
       // add to tilemap
-      if (!tilemap.contains(tm)) {
-        tilemap.addTile(tm);
+      if (!this.mMap.tilemap.contains(tm)) {
+        this.mMap.tilemap.addTile(tm);
       }
     }
     // set new previous

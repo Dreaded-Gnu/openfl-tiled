@@ -79,13 +79,12 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
 
   /**
    * Update method
-   * @param tilemap
    * @param offsetX
    * @param offsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int):Void {
     for (renderObject in this.mRenderObjects) {
-      renderObject.update(this.mMap.tilemap, offsetX, offsetY);
+      renderObject.update(offsetX, offsetY);
     }
   }
 

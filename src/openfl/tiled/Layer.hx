@@ -347,7 +347,7 @@ class Layer implements openfl.tiled.Updatable {
    * @param offsetX
    * @param offsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int):Void {
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
         if (this.mMap.infinite == 1) {
@@ -377,14 +377,14 @@ class Layer implements openfl.tiled.Updatable {
 
     for (tm in this.mTilemapData) {
       if (offsetX != this.mPreviousX) {
-        tm.x = tm.x + this.mPreviousX - offsetX;
+        tm.x += this.mPreviousX - offsetX;
       }
       if (offsetY != this.mPreviousY) {
-        tm.y = tm.y + this.mPreviousY - offsetY;
+        tm.y += this.mPreviousY - offsetY;
       }
       // add to tilemap
-      if (!tilemap.contains(tm)) {
-        tilemap.addTile(tm);
+      if (!this.mMap.tilemap.contains(tm)) {
+        this.mMap.tilemap.addTile(tm);
       }
     }
     // set new previous

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <meta title="openfl-tiled2" package="com.sample.openfl-tiled2" version="0.1.0" company="Company Name" />
-  <app main="Main" path="Export" file="openfl-tiled2" />
+  <app main="Main" path="export" file="openfl-tiled2" />
 
   <source path="src" />
 
@@ -10,5 +10,5 @@
 
   <assets path="public" rename="" />
 
-  <!--<define name="openfl_asset" />-->
+  <!--<define name="openfl_tiled_use_asset" />-->
 </project>

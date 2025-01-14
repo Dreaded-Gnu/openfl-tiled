@@ -3,7 +3,7 @@
 
 ## Still to be done
 
-- [ ] Render only what is visible in tilemap instead of everything when it comes to chunks
+- [ ] Render only what is visible in tilemap instead of everything
 
 ## Already done
 

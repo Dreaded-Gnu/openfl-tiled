@@ -2,7 +2,7 @@ node_modules/
 dist/
 *.map
 .haxelib
-Export
+export
 public/tiled
 public/phaser
 public/sprites

@@ -3,11 +3,10 @@ package openfl.tiled;
 interface Updatable {
   /**
    * Update method
-   * @param tilemap
    * @param offsetX
    * @param offsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void;
+  public function update(offsetX:Int, offsetY:Int):Void;
 
   /**
    * Helper to check for collision of "rectangle" with element

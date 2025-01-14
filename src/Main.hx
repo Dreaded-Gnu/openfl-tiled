@@ -11,7 +11,6 @@ import openfl.display.Stage;
 
 class Main extends Sprite {
   private var mMap:openfl.tiled.Map;
-  private var mTilemap:openfl.display.Tilemap;
   private var mPlayer:openfl.display.Sprite;
   private var mKeys = [];
   private var mOffsetX:Int = 0;
@@ -22,11 +21,10 @@ class Main extends Sprite {
    */
   public function new() {
     super();
-    // tilemap
-    this.mTilemap = new openfl.display.Tilemap(stage.stageWidth, stage.stageHeight);
-    addChild(this.mTilemap);
     // load map
-    this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.mTilemap);
+    // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx");
+    // this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx");
+    this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx");
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -43,8 +41,8 @@ class Main extends Sprite {
    */
   private function onMapLoadComplete(event:Event):Void {
     this.mMap.removeEventListener(Event.COMPLETE, onMapLoadComplete);
-    // render map
-    this.mMap.render();
+    // add as child
+    this.addChild(this.mMap.tilemap);
     // create and add player
     this.mPlayer = new openfl.display.Sprite();
     this.mPlayer.graphics.beginFill(0xFFCC00);

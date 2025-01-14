@@ -75,11 +75,15 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    */
   public function load():Void {
     if (this.image != null) {
+      // register event listener
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
+      // start loading
       this.image.load();
-    } else {
-      this.dispatchEvent(new Event(Event.COMPLETE));
+      // skip rest
+      return;
     }
+    // just dispatch complete event
+    this.dispatchEvent(new Event(Event.COMPLETE));
   }
 
   /**
@@ -87,6 +91,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * @param event
    */
   private function onImageCompleted(event:Event):Void {
+    // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // parse image to tileset
     var rect:Array<Rectangle> = new Array<Rectangle>();
@@ -102,21 +107,24 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
 
   /**
    * Render method
-   * @param tilemap
    * @param offsetX
    * @param offsetY
    */
-  public function update(tilemap:openfl.display.Tilemap, offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int):Void {
+    // handle null, which shouldn't happen at all
+    if (this.tile == null) {
+      return;
+    }
     // apply x / y offset
     if (offsetX != this.mPreviousX) {
-      this.tile.x = this.tile.x + this.mPreviousX - offsetX;
+      this.tile.x += this.mPreviousX - offsetX;
     }
     if (offsetY != this.mPreviousY) {
-      this.tile.y = this.tile.y + this.mPreviousY - offsetY;
+      this.tile.y += this.mPreviousY - offsetY;
     }
     // add to tilemap
-    if (!tilemap.contains(this.tile)) {
-      tilemap.addTile(this.tile);
+    if (!this.mMap.tilemap.contains(this.tile)) {
+      this.mMap.tilemap.addTile(this.tile);
     }
     // set new previous
     this.mPreviousX = offsetX;

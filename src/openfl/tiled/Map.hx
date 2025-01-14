@@ -9,6 +9,7 @@ import openfl.errors.Error;
 import openfl.net.URLLoader;
 import openfl.net.URLRequest;
 import openfl.events.Event;
+import openfl.Lib;
 
 class Map extends EventDispatcher {
   public var version(default, null):Float;
@@ -53,11 +54,12 @@ class Map extends EventDispatcher {
    * Constructor
    * @param prefix folder prefix used when loading additional assets internally
    * @param path full path to map
-   * @param width openfl stage width
-   * @param height openfl stage height
+   * @param tilemap tilemap to use if ommitted one is created with stage size including resize handling
    */
-  public function new(prefix:String, path:String, tilemap:openfl.display.Tilemap) {
+  public function new(prefix:String, path:String, ?tilemap:Null<openfl.display.Tilemap>) {
+    // call parent constructor
     super();
+    // set variables
     this.mPath = path;
     this.prefix = prefix;
     this.isLoaded = false;
@@ -65,6 +67,55 @@ class Map extends EventDispatcher {
     this.mTilesetLoaded = false;
     this.mImageLayerLoaded = false;
     this.mGroupLoaded = false;
+    // initialize tilemap if not passed
+    if (this.mTileMap == null) {
+      // initialize tilemap
+      this.mTileMap = new openfl.display.Tilemap(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
+      // set added to and removed from stage
+      this.mTileMap.addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
+      this.mTileMap.addEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    }
+  }
+
+  /**
+   * Added to stage handler
+   * @param event
+   */
+  private function onAddedToStage(event:Event):Void {
+    // set resize handler
+    this.mTileMap.stage.addEventListener(Event.RESIZE, this.onResize);
+    // initially render the map
+    this.render();
+    // dispatch added to stage event
+    this.dispatchEvent(new Event(Event.ADDED_TO_STAGE, false, false));
+  }
+
+  /**
+   * Removed from stage handler
+   * @param event
+   */
+  private function onRemovedFromStage(event:Event):Void {
+    // remove set event listeners from tilemap
+    this.mTileMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
+    this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    // remove resize event listener
+    this.mTileMap.stage.removeEventListener(Event.RESIZE, this.onResize);
+    // dispatch removed from stage event
+    this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE, false, false));
+  }
+
+  /**
+   * Resize handler
+   * @param event
+   */
+  private function onResize(event:Event):Void {
+    // set width and height
+    this.mTileMap.width = this.mTileMap.stage.stageWidth;
+    this.mTileMap.height = this.mTileMap.stage.stageHeight;
+    // render again
+    this.render();
+    // dispatch resize event
+    this.dispatchEvent(new Event(Event.RESIZE, false, false));
   }
 
   /**
@@ -213,7 +264,7 @@ class Map extends EventDispatcher {
    * Set load callback
    */
   public function load():Void {
-    #if openfl_asset
+    #if openfl_tiled_use_asset
     // fake loader
     var loader:URLLoader = new URLLoader();
     loader.data = Assets.getText(mPath);
@@ -336,22 +387,19 @@ class Map extends EventDispatcher {
    * Method renders map and returns tilemap to be added
    * @param offsetX
    * @param offsetY
-   * @return openfl.display.Tilemap
    */
-  public function render(offsetX:Int = 0, offsetY:Int = 0):openfl.display.Tilemap {
+  public function render(offsetX:Int = 0, offsetY:Int = 0):Void {
     // handle no offset change
     if (this.mPreviousOffsetX == offsetX && this.mPreviousOffsetY == offsetY) {
-      return this.mTileMap;
+      return;
     }
     // set previous offset x and y
     this.mPreviousOffsetX = offsetX;
     this.mPreviousOffsetY = offsetY;
     // update render objects
     for (renderObject in this.mRenderObjects) {
-      renderObject.update(this.mTileMap, offsetX, offsetY);
+      renderObject.update(offsetX, offsetY);
     }
-    // return display object
-    return this.mTileMap;
   }
 
   /**
