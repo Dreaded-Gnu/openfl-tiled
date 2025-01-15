@@ -5,8 +5,9 @@ interface Updatable {
    * Update method
    * @param offsetX
    * @param offsetY
+   * @param index
    */
-  public function update(offsetX:Int, offsetY:Int):Void;
+  public function update(offsetX:Int, offsetY:Int, index:Int):Int;
 
   /**
    * Helper to check for collision of "rectangle" with element

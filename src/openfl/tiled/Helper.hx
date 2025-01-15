@@ -170,7 +170,7 @@ class Helper {
         t.y += tileset.tileheight;
         // handle not flipped horizontally
       } else if (!flippable.isFlippedHorizontally()) {
-        t.height = -1 * tileset.tilewidth;
+        t.height = -1 * tileset.tileheight;
         t.x -= tileset.tilewidth;
         t.y += tileset.tileheight;
         // may be flipped diagonally and/or horizontally

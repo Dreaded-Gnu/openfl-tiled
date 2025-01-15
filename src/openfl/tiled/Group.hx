@@ -81,11 +81,19 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
    * Update method
    * @param offsetX
    * @param offsetY
+   * @param index
+   * @return Int
    */
-  public function update(offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+    // initialize total
+    var total:Int = 0;
+    // iterate through render objects and perform an update
     for (renderObject in this.mRenderObjects) {
-      renderObject.update(offsetX, offsetY);
+      // update render object and increment total
+      total += renderObject.update(offsetX, offsetY, index + total);
     }
+    // return total
+    return total;
   }
 
   /**

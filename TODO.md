@@ -3,7 +3,10 @@
 
 ## Still to be done
 
-- [ ] Render only what is visible in tilemap instead of everything
+- [ ] Evaluate whether collisions are working correctly and all kinds are supported
+- [ ] Flipped objects are not correctly checked whether they will be visible or not
+- [ ] Some tiles visibility check doesn't work correctly on mobile
+- [ ] Implement debug mode rendering also objects that have no tile
 
 ## Already done
 
@@ -32,3 +35,4 @@
 - [x] Implement flipped hexagonal 120 for objects and tiles
 - [x] Remove all sample maps
 - [x] Add support for image layers
+- [x] Render only what is visible in tilemap instead of everything

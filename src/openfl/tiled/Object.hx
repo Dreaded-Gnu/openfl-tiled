@@ -1,5 +1,7 @@
 package openfl.tiled;
 
+import openfl.geom.Point;
+
 class Object implements openfl.tiled.helper.Flippable {
   public var id(default, null):Int;
   public var name(default, null):String;
@@ -105,15 +107,27 @@ class Object implements openfl.tiled.helper.Flippable {
   }
 
   /**
-   * Wrapper to calculate distance between two points
-   * @param x1
-   * @param y1
-   * @param x2
-   * @param y2
-   * @return Float
+   * Simple debugging function to render an object
    */
-  private function pointDistance(x1:Float, y1:Float, x2:Float, y2:Float):Float {
-    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+  private function render():Void {
+    var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
+    if (this.polyline != null) {
+      // poly line collision check by checking each line
+      for (idx in 0...this.polyline.points.length - 1) {
+        // get line point 1 and translate it into global
+        var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x, this.y + this.polyline.points[idx].y);
+        linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
+        // get line point 2 and translate it into global
+        var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x, this.y + this.polyline.points[idx + 1].y);
+        linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
+        // generate shape
+        var shape:openfl.display.Shape = new openfl.display.Shape();
+        shape.graphics.lineStyle(2, 0xff0000, 1);
+        shape.graphics.moveTo(linePoint1.x - this.mMap.renderOffsetX, linePoint1.y - this.mMap.renderOffsetY);
+        shape.graphics.lineTo(linePoint2.x - this.mMap.renderOffsetX, linePoint2.y - this.mMap.renderOffsetY);
+        Lib.current.stage.addChild(shape);
+      }
+    }
   }
 
   /**
@@ -125,23 +139,35 @@ class Object implements openfl.tiled.helper.Flippable {
    * @return Bool
    */
   public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+    // cache tilemap locally
+    var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
+    // float buffer
+    var buffer:Float = .1;
+    // apply rendering offset for collision check
+    x += this.mMap.renderOffsetX;
+    y += this.mMap.renderOffsetY;
+    // loop through width and height
     for (tx in 0...width) {
       for (ty in 0...height) {
         if (this.polyline != null) {
           // poly line collision check by checking each line
           for (idx in 0...this.polyline.points.length - 1) {
-            // get line points
-            var x1:Float = this.x + this.polyline.points[idx].x;
-            var y1:Float = this.y + this.polyline.points[idx].y;
-            var x2:Float = this.x + this.polyline.points[idx + 1].x;
-            var y2:Float = this.y + this.polyline.points[idx + 1].y;
+            // get line point 1 and translate it into global
+            var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x, this.y + this.polyline.points[idx].y);
+            linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
+            // get line point 2 and translate it into global
+            var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x, this.y + this.polyline.points[idx + 1].y);
+            linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
+            // create checkpoint and translate it into global
+            var checkPoint:Point = new Point(x + tx, y + ty);
+            checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
             // get distances
-            var dist1:Float = pointDistance(x + tx, y + ty, x1, y1);
-            var dist2:Float = pointDistance(x + tx, y + ty, x2, y2);
+            var dist1:Float = Point.distance(checkPoint, linePoint1);
+            var dist2:Float = Point.distance(checkPoint, linePoint2);
             // get line length
-            var linelength:Float = pointDistance(x1, y1, x2, y2);
+            var linelength:Float = Point.distance(linePoint1, linePoint2);
             // handle collision
-            if (dist1 + dist2 == linelength) {
+            if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer) {
               return true;
             }
           }
@@ -150,13 +176,28 @@ class Object implements openfl.tiled.helper.Flippable {
         } else if (this.ellipse != null) {
           /// FIXME: ADD LOGIC
         } else if (this.point != null) {
+          // create checkpoint and translate it into global
+          var checkPoint:Point = new Point(x + tx, y + ty);
+          checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
+          // create point and translate into global
+          var point:Point = new Point(this.x, this.y);
+          point.copyFrom(tilemap.localToGlobal(point));
           // point collision check
-          if (this.x == x + tx && this.y == y + ty) {
+          if (point.x == checkPoint.x && point.y == checkPoint.y) {
             return true;
           }
         } else {
+          // create checkpoint and translate it into global
+          var checkPoint:Point = new Point(x + tx, y + ty);
+          checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
+          // create min point and translate into global
+          var minPoint:Point = new Point(this.x, this.y);
+          minPoint.copyFrom(tilemap.localToGlobal(minPoint));
+          // create max point and translate into global
+          var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
+          maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
           // regular rectangle collision check
-          if (tx + x >= this.x && tx + x <= this.x + this.width && ty + y >= this.y && ty + y <= this.y + this.height) {
+          if (checkPoint.x >= minPoint.x && checkPoint.x <= maxPoint.x && checkPoint.y >= minPoint.y && checkPoint.y <= maxPoint.y) {
             return true;
           }
         }

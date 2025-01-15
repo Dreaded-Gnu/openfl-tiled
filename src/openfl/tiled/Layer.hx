@@ -21,11 +21,8 @@ class Layer implements openfl.tiled.Updatable {
   public var properties(default, null):openfl.tiled.Properties;
   public var data(default, null):openfl.tiled.layer.Data;
 
-  private var mTilemapData:std.Map<Int, openfl.display.TileContainer>;
   private var mTileCheckContainer:std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>;
   private var mMap:openfl.tiled.Map;
-  private var mPreviousX:Int;
-  private var mPreviousY:Int;
 
   /**
    * Constructor
@@ -35,10 +32,7 @@ class Layer implements openfl.tiled.Updatable {
    */
   public function new(node:Xml, map:openfl.tiled.Map, layerId:Int) {
     this.mMap = map;
-    this.mTilemapData = new std.Map<Int, openfl.display.TileContainer>();
     this.mTileCheckContainer = new std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>();
-    this.mPreviousX = 0;
-    this.mPreviousY = 0;
     // parse stuff
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : layerId;
     this.name = node.get("name");
@@ -73,31 +67,56 @@ class Layer implements openfl.tiled.Updatable {
    * Internal helper to render layer
    * @param x
    * @param y
+   * @param offsetX
+   * @param offsetY
+   * @param index
+   * @return Int
    */
-  private function renderLayer(x:Int, y:Int):Void {
+  private function renderLayer(x:Int, y:Int, offsetX:Int, offsetY:Int, index:Int):Int {
     var id:Int = x + y * this.width;
     // get gid
     var gid:Int = this.data.tile[id].gid;
     // handle invalid
     if (0 == gid) {
-      return;
+      return 0;
     }
     // get tileset
     var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
     if (null == tileset) {
-      return;
+      return 0;
     }
     // generate tile
-    var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset);
-    // get tile container for checking
-    var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
+    var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, id);
+    // cache tilemap locally
+    var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
+    // adjust x and y of tile by offset
+    t.x -= offsetX;
+    t.y -= offsetY;
     // add tile at position
-    if (!map.exists(id)) {
-      // add tile
-      this.mTilemapData.get(tileset.firstgid).addTileAt(t, id);
+    if (!this.mTileCheckContainer.get(tileset.firstgid).exists(id)) {
       // set item
-      map.set(id, t);
+      this.mTileCheckContainer.get(tileset.firstgid).set(id, t);
     }
+    // skip coordinate if not visible
+    if (!this.mMap.willBeVisible(Std.int(t.x), Std.int(t.y), tileset.tilewidth, tileset.tileheight)) {
+      // check if it's displayed
+      if (tilemap.contains(t)) {
+        // just remove it from map
+        tilemap.removeTile(t);
+      }
+      // skip rest
+      return 0;
+    }
+    // check if tilmap is not in
+    if (!tilemap.contains(t)) {
+      // add tile to tilemap if not existing
+      tilemap.addTileAt(t, index);
+    } /*else if (tilemap.getTileIndex(t) != index) {
+      // ensure that index fits
+      tilemap.setTileIndex(t, index);
+    }*/
+    // return one added tile
+    return 1;
   }
 
   /**
@@ -106,9 +125,12 @@ class Layer implements openfl.tiled.Updatable {
    * @param chunkIndex
    * @return Void
    */
-  private function renderChunk(chunk:openfl.tiled.layer.Chunk, chunkIndex:Int):Void {
+  private function renderChunk(chunk:openfl.tiled.layer.Chunk, chunkIndex:Int, offsetX:Int, offsetY:Int, mapIndex:Int, index:Int):Int {
     // calculate max to iterate to
     var max:Int = chunk.width * chunk.height;
+    var count:Int = 0;
+    // cache tilemap locally
+    var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // iterate from max to min
     for (i in 0...max) {
       // calculate x and y
@@ -128,17 +150,41 @@ class Layer implements openfl.tiled.Updatable {
         continue;
       }
       // generate tile
-      var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, chunk, chunkIndex);
+      var t:openfl.tiled.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, mapIndex, chunk, chunkIndex);
+      // apply offset
+      t.x -= offsetX;
+      t.y -= offsetY;
       // get tile container for checking
       var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
-      if (!map.exists(id)) {
-        // add tile
-        this.mTilemapData.get(chunkIndex).addTileAt(t, id);
+      if (!map.exists(mapIndex)) {
         // set item
-        map.set(id, t);
+        map.set(mapIndex++, t);
+      } else {
+        // increment index to fake set item
+        mapIndex++;
       }
+      // skip coordinate if not visible
+      if (!this.mMap.willBeVisible(Std.int(t.x), Std.int(t.y), tileset.tilewidth, tileset.tileheight)) {
+        // check if it's displayed
+        if (tilemap.contains(t)) {
+          // just remove it from map
+          tilemap.removeTile(t);
+        }
+        // skip rest
+        continue;
+      }
+      // check if tilmap is not in
+      if (!tilemap.contains(t)) {
+        // add tile to tilemap if not existing
+        tilemap.addTileAt(t, index++);
+      } else if (tilemap.getTileIndex(t) != index) {
+        // ensure that index fits
+        tilemap.setTileIndex(t, index++);
+      }
+      count++;
     }
+    return count;
   }
 
   /**
@@ -148,31 +194,31 @@ class Layer implements openfl.tiled.Updatable {
    * @param id
    * @param gid
    * @param tileset
+   * @param mapIndex
    * @param chunk
+   * @param chunkIndex
    * @return openfl.tiled.helper.AnimatedTile
    */
-  private function generateTile(x:Int, y:Int, id:Int, gid:Int, tileset:openfl.tiled.Tileset, chunk:openfl.tiled.layer.Chunk = null,
+  private function generateTile(x:Int, y:Int, id:Int, gid:Int, tileset:openfl.tiled.Tileset, mapIndex:Int, chunk:openfl.tiled.layer.Chunk = null,
       chunkIndex:Int = -1):openfl.tiled.helper.AnimatedTile {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
-    if (null == this.mTilemapData.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid)) {
-      var tc:openfl.display.TileContainer = null;
-      if (chunk != null) {
-        if (this.mMap.orientation == MapOrientationIsometric || this.mMap.orientation == MapOrientationStaggered) {
-          tc = new openfl.display.TileContainer((x + chunk.x) * this.mMap.tilewidth, (y + chunk.y) * this.mMap.tileheight / 2,);
-        } else {
-          tc = new openfl.display.TileContainer((x + chunk.x) * tileset.tilewidth, (y + chunk.y) * tileset.tileheight,);
-        }
+    // adjust x / y for chunked maps
+    if (chunk != null) {
+      if (this.mMap.orientation == MapOrientationIsometric || this.mMap.orientation == MapOrientationStaggered) {
+        //// FIXME: IS THIS RIGHT THAT WAY?
+        x += chunk.x;
+        y += chunk.y;
       } else {
-        tc = new openfl.display.TileContainer(this.x * tileset.tilewidth, this.y * tileset.tileheight);
+        x += chunk.x;
+        y += chunk.y;
       }
-      tc.alpha = this.opacity;
-      tc.visible = 1 == this.visible;
+    }
+    // generate check container if necessary
+    if (null == this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid)) {
       if (chunkIndex != -1) {
-        this.mTilemapData.set(chunkIndex, tc);
         this.mTileCheckContainer.set(chunkIndex, new std.Map<Int, openfl.tiled.helper.AnimatedTile>());
       } else {
-        this.mTilemapData.set(tileset.firstgid, tc);
         this.mTileCheckContainer.set(tileset.firstgid, new std.Map<Int, openfl.tiled.helper.AnimatedTile>());
       }
     }
@@ -188,8 +234,8 @@ class Layer implements openfl.tiled.Updatable {
     var t:openfl.tiled.helper.AnimatedTile = null;
     switch (this.mMap.orientation) {
       case MapOrientationIsometric, MapOrientationStaggered:
-        if (map.exists(id)) {
-          t = map.get(id);
+        if (map.exists(mapIndex)) {
+          t = map.get(mapIndex);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -241,8 +287,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
-        if (map.exists(id)) {
-          t = map.get(id);
+        if (map.exists(mapIndex)) {
+          t = map.get(mapIndex);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -285,8 +331,8 @@ class Layer implements openfl.tiled.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
-        if (map.exists(id)) {
-          t = map.get(id);
+        if (map.exists(mapIndex)) {
+          t = map.get(mapIndex);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
           // x / y position
@@ -343,29 +389,36 @@ class Layer implements openfl.tiled.Updatable {
 
   /**
    * Render a layer to tilemap
-   * @param tilemap
    * @param offsetX
    * @param offsetY
+   * @param index
+   * @return Int
    */
-  public function update(offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
         if (this.mMap.infinite == 1) {
           var chunkIdx:Int = 0;
+          var total:Int = 0;
+          var mapIdx:Int = 0;
           // render chunk by chunk
           for (chunk in this.data.chunk) {
-            this.renderChunk(chunk, chunkIdx);
+            total += this.renderChunk(chunk, chunkIdx, offsetX, offsetY, mapIdx, index + total);
             chunkIdx++;
+            mapIdx += chunk.width * chunk.height;
           }
+          return total;
         } else {
           var max:Int = this.width * this.height;
+          var total:Int = 0;
           for (i in 0...max) {
             // calculate x and y
             var x:Int = Std.int(i % this.width);
             var y:Int = Std.int(i / this.width);
             // call render layer
-            this.renderLayer(x, y);
+            total += this.renderLayer(x, y, offsetX, offsetY, index + total);
           }
+          return total;
         }
       case RenderOrder.MapRenderOrderRightUp:
         throw new Error('Unsupported render order right-up');
@@ -374,22 +427,6 @@ class Layer implements openfl.tiled.Updatable {
       case RenderOrder.MapRenderOrderLeftUp:
         throw new Error('Unsupported render order left-up');
     }
-
-    for (tm in this.mTilemapData) {
-      if (offsetX != this.mPreviousX) {
-        tm.x += this.mPreviousX - offsetX;
-      }
-      if (offsetY != this.mPreviousY) {
-        tm.y += this.mPreviousY - offsetY;
-      }
-      // add to tilemap
-      if (!this.mMap.tilemap.contains(tm)) {
-        this.mMap.tilemap.addTile(tm);
-      }
-    }
-    // set new previous
-    this.mPreviousX = offsetX;
-    this.mPreviousY = offsetY;
   }
 
   /**

@@ -40,6 +40,8 @@ class Map extends EventDispatcher {
   public var isLoaded(default, null):Bool;
   public var prefix(default, null):String;
   public var tilemap(get, null):openfl.display.Tilemap;
+  public var renderOffsetX(get, null):Int;
+  public var renderOffsetY(get, null):Int;
 
   private var mTilesetLoaded:Bool;
   private var mImageLayerLoaded:Bool;
@@ -47,8 +49,8 @@ class Map extends EventDispatcher {
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
   private var mRenderObjects:Array<openfl.tiled.Updatable>;
-  private var mPreviousOffsetX:Int = -1;
-  private var mPreviousOffsetY:Int = -1;
+  private var mOffsetX:Int = -1;
+  private var mOffsetY:Int = -1;
 
   /**
    * Constructor
@@ -112,8 +114,14 @@ class Map extends EventDispatcher {
     // set width and height
     this.mTileMap.width = this.mTileMap.stage.stageWidth;
     this.mTileMap.height = this.mTileMap.stage.stageHeight;
+    // cache offsets
+    var previousOffsetX:Int = this.mOffsetX;
+    var previousOffsetY:Int = this.mOffsetY;
+    // reset to initial
+    this.mOffsetX = -1;
+    this.mOffsetY = -1;
     // render again
-    this.render();
+    this.render(previousOffsetX, previousOffsetY);
     // dispatch resize event
     this.dispatchEvent(new Event(Event.RESIZE, false, false));
   }
@@ -123,9 +131,13 @@ class Map extends EventDispatcher {
    * @param event
    */
   private function onLoadComplete(event:Event):Void {
+    // get url loader
     var loader:URLLoader = cast event.target;
+    // remove on load complete handler
     loader.removeEventListener(Event.COMPLETE, onLoadComplete);
+    // parse loaded data
     parseXml(loader.data);
+    // initiate loading process
     this.loadData();
   }
 
@@ -373,7 +385,7 @@ class Map extends EventDispatcher {
    * @param gid
    * @return openfl.tiled.Tileset
    */
-  public function tilesetByGid(gid:Int):openfl.tiled.Tileset {
+  @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):openfl.tiled.Tileset {
     var tileset:openfl.tiled.Tileset = null;
     for (ts in this.tileset) {
       if (gid >= ts.firstgid) {
@@ -390,15 +402,17 @@ class Map extends EventDispatcher {
    */
   public function render(offsetX:Int = 0, offsetY:Int = 0):Void {
     // handle no offset change
-    if (this.mPreviousOffsetX == offsetX && this.mPreviousOffsetY == offsetY) {
+    if (this.mOffsetX == offsetX && this.mOffsetY == offsetY) {
       return;
     }
     // set previous offset x and y
-    this.mPreviousOffsetX = offsetX;
-    this.mPreviousOffsetY = offsetY;
+    this.mOffsetX = offsetX;
+    this.mOffsetY = offsetY;
+    var index:Int = 0;
     // update render objects
     for (renderObject in this.mRenderObjects) {
-      renderObject.update(offsetX, offsetY);
+      // update render object
+      index += renderObject.update(offsetX, offsetY, index);
     }
   }
 
@@ -408,6 +422,22 @@ class Map extends EventDispatcher {
    */
   private function get_tilemap():openfl.display.Tilemap {
     return this.mTileMap;
+  }
+
+  /**
+   * Getter for render offset X
+   * @return Int
+   */
+  private function get_renderOffsetX():Int {
+    return this.mOffsetX;
+  }
+
+  /**
+   * Getter for render offset y
+   * @return Int
+   */
+  private function get_renderOffsetY():Int {
+    return this.mOffsetY;
   }
 
   /**
@@ -439,5 +469,35 @@ class Map extends EventDispatcher {
       }
     }
     return false;
+  }
+
+  /**
+   * Helper to check whether object is visible or not
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @return Bool
+   */
+  @:dox(hide) @:noCompletion public function willBeVisible(x:Int, y:Int, width:Int, height:Int):Bool {
+    // build min and max point
+    var maxPoint:openfl.geom.Point = new openfl.geom.Point(x + width, y + width);
+    var minPoint:openfl.geom.Point = new openfl.geom.Point(x, y);
+    // transform to global
+    var globalMaxPoint = this.mTileMap.localToGlobal(maxPoint);
+    var globalMinPoint = this.mTileMap.localToGlobal(minPoint);
+    // check whether it's in tilemap width range
+    return
+      (
+        globalMaxPoint.x >= 0
+        && globalMaxPoint.x <= this.mTileMap.width
+        && globalMaxPoint.y >= 0
+        && globalMaxPoint.y <= this.mTileMap.height
+      ) || (
+        globalMinPoint.x >= 0
+        && globalMinPoint.x <= this.mTileMap.width
+        && globalMinPoint.y >= 0
+        && globalMinPoint.y <= this.mTileMap.height
+      );
   }
 }

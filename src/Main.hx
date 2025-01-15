@@ -16,6 +16,8 @@ class Main extends Sprite {
   private var mOffsetX:Int = 0;
   private var mOffsetY:Int = 0;
 
+  private static inline var MOVE_SPEED:Int = 2;
+
   /**
    * Constructor
    */
@@ -23,8 +25,9 @@ class Main extends Sprite {
     super();
     // load map
     // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx");
-    // this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx");
-    this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx");
+    // this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx");
+    this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx");
+    // this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx");
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -83,29 +86,29 @@ class Main extends Sprite {
     var playerOffsetY:Int = Std.int(this.mPlayer?.y ?? 0);
     if (mKeys[Keyboard.UP]) {
       changeY = true;
-      newOffsetY = Std.int(Math.max(newOffsetY - 4, 0));
-      playerOffsetY = Std.int(Math.max(this.mPlayer.y - 4, 0));
+      newOffsetY = Std.int(Math.max(newOffsetY - MOVE_SPEED, 0));
+      playerOffsetY = Std.int(Math.max(this.mPlayer.y - MOVE_SPEED, 0));
     } else if (mKeys[Keyboard.DOWN]) {
       changeY = true;
       if (this.mMap.height * this.mMap.tileheight > this.stage.stageHeight) {
-        newOffsetY = Std.int(Math.min(newOffsetY + 4, this.mMap.height * this.mMap.tileheight - this.stage.stageHeight));
+        newOffsetY = Std.int(Math.min(newOffsetY + MOVE_SPEED, this.mMap.height * this.mMap.tileheight - this.stage.stageHeight));
       }
-      playerOffsetY = Std.int(Math.min(this.mPlayer.y + 4, this.stage.stageHeight - this.mPlayer.height));
+      playerOffsetY = Std.int(Math.min(this.mPlayer.y + MOVE_SPEED, this.stage.stageHeight - this.mPlayer.height));
     } else if (mKeys[Keyboard.LEFT]) {
       changeX = true;
-      newOffsetX = Std.int(Math.max(newOffsetX - 4, 0));
-      playerOffsetX = Std.int(Math.max(this.mPlayer.x - 4, 0));
+      newOffsetX = Std.int(Math.max(newOffsetX - MOVE_SPEED, 0));
+      playerOffsetX = Std.int(Math.max(this.mPlayer.x - MOVE_SPEED, 0));
     } else if (mKeys[Keyboard.RIGHT]) {
       changeX = true;
       if (this.mMap.width * this.mMap.tilewidth > this.stage.stageWidth) {
-        newOffsetX = Std.int(Math.min(newOffsetX + 4, this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth));
+        newOffsetX = Std.int(Math.min(newOffsetX + MOVE_SPEED, this.mMap.width * this.mMap.tilewidth - this.stage.stageWidth));
       }
-      playerOffsetX = Std.int(Math.min(this.mPlayer.x + 4, this.stage.stageWidth - this.mPlayer.width));
+      playerOffsetX = Std.int(Math.min(this.mPlayer.x + MOVE_SPEED, this.stage.stageWidth - this.mPlayer.width));
     }
     if (this.mMap.isLoaded && (changeX || changeY)) {
       if (this.mPlayer != null) {
-        var oldPlayerX:Float = this.mPlayer.x;
-        var oldPlayerY:Float = this.mPlayer.y;
+        var oldPlayerX:Float = Math.round(this.mPlayer.x);
+        var oldPlayerY:Float = Math.round(this.mPlayer.y);
         this.mPlayer.x = playerOffsetX;
         this.mPlayer.y = playerOffsetY;
         if (this.mPlayer.x - this.mPlayer.width / 2 < this.stage.stageWidth / 2 - this.mPlayer.width / 2
@@ -121,7 +124,7 @@ class Main extends Sprite {
           this.mPlayer.y = this.stage.stageHeight / 2 - this.mPlayer.height / 2;
         }
         // check for collision
-        if (this.mMap.collides(Std.int(this.mPlayer.x + newOffsetX), Std.int(this.mPlayer.y + newOffsetY), Std.int(this.mPlayer.width),
+        if (this.mMap.collides(Std.int(this.mPlayer.x), Std.int(this.mPlayer.y), Std.int(this.mPlayer.width),
           Std.int(this.mPlayer.height))) {
           this.mPlayer.x = oldPlayerX;
           this.mPlayer.y = oldPlayerY;

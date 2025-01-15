@@ -25,8 +25,6 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   public var tileset(default, null):openfl.display.Tileset;
   public var tile(default, null):openfl.tiled.helper.AnimatedTile;
 
-  private var mPreviousX:Int;
-  private var mPreviousY:Int;
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -38,8 +36,6 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
     super();
     // cache map
     this.mMap = map;
-    this.mPreviousX = 0;
-    this.mPreviousY = 0;
     // parse attributes
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
     this.name = node.exists("name") ? node.get("name") : "";
@@ -109,26 +105,38 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * Render method
    * @param offsetX
    * @param offsetY
+   * @param index
    */
-  public function update(offsetX:Int, offsetY:Int):Void {
+  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     // handle null, which shouldn't happen at all
     if (this.tile == null) {
-      return;
+      return 0;
     }
     // apply x / y offset
-    if (offsetX != this.mPreviousX) {
-      this.tile.x += this.mPreviousX - offsetX;
+    this.tile.x = this.x - offsetX;
+    this.tile.y = this.y - offsetY;
+    // cache tilemap locally
+    var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
+    // check if won't be visible
+    if (!this.mMap.willBeVisible(Std.int(this.tile.x), Std.int(this.tile.y), this.image.width, this.image.height)) {
+      // check if it was added
+      if (tilemap.contains(this.tile)) {
+        // remove it since it isn't visible any longer
+        tilemap.removeTile(this.tile);
+      }
+      // skip rest
+      return 0;
     }
-    if (offsetY != this.mPreviousY) {
-      this.tile.y += this.mPreviousY - offsetY;
-    }
-    // add to tilemap
-    if (!this.mMap.tilemap.contains(this.tile)) {
-      this.mMap.tilemap.addTile(this.tile);
-    }
-    // set new previous
-    this.mPreviousX = offsetX;
-    this.mPreviousY = offsetY;
+    // check if tilmap is not in
+    if (!tilemap.contains(this.tile)) {
+      // add tile to tilemap if not existing
+      tilemap.addTileAt(this.tile, index);
+    } /*else if (tilemap.getTileIndex(this.tile) != index) {
+      // ensure that index fits
+      tilemap.setTileIndex(this.tile, index);
+    }*/
+    // return total
+    return 1;
   }
 
   /**
