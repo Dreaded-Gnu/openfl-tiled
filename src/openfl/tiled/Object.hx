@@ -23,6 +23,7 @@ class Object implements openfl.tiled.helper.Flippable {
 
   private var mMap:openfl.tiled.Map;
   private var mGid:Int;
+  private var mShape:openfl.display.Shape;
 
   /**
    * Constructor
@@ -111,6 +112,12 @@ class Object implements openfl.tiled.helper.Flippable {
    */
   private function render():Void {
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
+    if (this.mShape != null) {
+      this.mShape.graphics.clear();
+    } else {
+      // generate shape
+      this.mShape = new openfl.display.Shape();
+    }
     if (this.polyline != null) {
       // poly line collision check by checking each line
       for (idx in 0...this.polyline.points.length - 1) {
@@ -120,13 +127,43 @@ class Object implements openfl.tiled.helper.Flippable {
         // get line point 2 and translate it into global
         var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x, this.y + this.polyline.points[idx + 1].y);
         linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
-        // generate shape
-        var shape:openfl.display.Shape = new openfl.display.Shape();
-        shape.graphics.lineStyle(2, 0xff0000, 1);
-        shape.graphics.moveTo(linePoint1.x - this.mMap.renderOffsetX, linePoint1.y - this.mMap.renderOffsetY);
-        shape.graphics.lineTo(linePoint2.x - this.mMap.renderOffsetX, linePoint2.y - this.mMap.renderOffsetY);
-        Lib.current.stage.addChild(shape);
+        this.mShape.graphics.lineStyle(2, 0xff0000, 1);
+        this.mShape.graphics.moveTo(linePoint1.x - this.mMap.renderOffsetX, linePoint1.y - this.mMap.renderOffsetY);
+        this.mShape.graphics.lineTo(linePoint2.x - this.mMap.renderOffsetX, linePoint2.y - this.mMap.renderOffsetY);
       }
+      Lib.current.stage.addChild(this.mShape);
+    } else if (this.polygon != null) {
+      /// FIXME: ADD LOGIC
+    } else if (this.ellipse != null) {
+      // create min point and translate into global
+      var minPoint:Point = new Point(this.x, this.y);
+      minPoint.copyFrom(tilemap.localToGlobal(minPoint));
+      // create max point and translate into global
+      var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
+      maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+      // generate shape
+      this.mShape.graphics.drawEllipse(this.mMap.renderOffsetX + minPoint.x, this.mMap.renderOffsetY + minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      Lib.current.stage.addChild(this.mShape);
+    } else if (this.point != null) {
+        // create min point and translate into global
+        var minPoint:Point = new Point(this.x, this.y);
+        minPoint.copyFrom(tilemap.localToGlobal(minPoint));
+        // create max point and translate into global
+        var maxPoint:Point = new Point(this.x + 1, this.y + 1);
+        maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+        // generate shape
+        this.mShape.graphics.drawRect(this.mMap.renderOffsetX + minPoint.x, this.mMap.renderOffsetY + minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+        Lib.current.stage.addChild(this.mShape);
+    } else {
+      // create min point and translate into global
+      var minPoint:Point = new Point(this.x, this.y);
+      minPoint.copyFrom(tilemap.localToGlobal(minPoint));
+      // create max point and translate into global
+      var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
+      maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+      // generate shape
+      this.mShape.graphics.drawRect(this.mMap.renderOffsetX + minPoint.x, this.mMap.renderOffsetY + minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      Lib.current.stage.addChild(this.mShape);
     }
   }
 
@@ -168,6 +205,9 @@ class Object implements openfl.tiled.helper.Flippable {
             var linelength:Float = Point.distance(linePoint1, linePoint2);
             // handle collision
             if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer) {
+              #if openfl_tiled_render_objects
+              this.render();
+              #end
               return true;
             }
           }
@@ -184,6 +224,9 @@ class Object implements openfl.tiled.helper.Flippable {
           point.copyFrom(tilemap.localToGlobal(point));
           // point collision check
           if (point.x == checkPoint.x && point.y == checkPoint.y) {
+            #if openfl_tiled_render_objects
+            this.render();
+            #end
             return true;
           }
         } else {
@@ -198,6 +241,9 @@ class Object implements openfl.tiled.helper.Flippable {
           maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
           // regular rectangle collision check
           if (checkPoint.x >= minPoint.x && checkPoint.x <= maxPoint.x && checkPoint.y >= minPoint.y && checkPoint.y <= maxPoint.y) {
+            #if openfl_tiled_render_objects
+            this.render();
+            #end
             return true;
           }
         }
