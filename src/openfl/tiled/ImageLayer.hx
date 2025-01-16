@@ -127,14 +127,8 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
       // skip rest
       return 0;
     }
-    // check if tilmap is not in
-    if (!tilemap.contains(this.tile)) {
-      // add tile to tilemap if not existing
-      tilemap.addTileAt(this.tile, index);
-    } /*else if (tilemap.getTileIndex(this.tile) != index) {
-      // ensure that index fits
-      tilemap.setTileIndex(this.tile, index);
-    }*/
+    // add tile to tilemap
+    tilemap.addTileAt(this.tile, index);
     // return total
     return 1;
   }

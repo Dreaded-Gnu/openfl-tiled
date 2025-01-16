@@ -25,8 +25,8 @@ class Main extends Sprite {
     super();
     // load map
     // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx");
-    this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx");
-    // this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx");
+    // this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx");
+    this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx");
     // this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx");
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
@@ -124,8 +124,7 @@ class Main extends Sprite {
           this.mPlayer.y = this.stage.stageHeight / 2 - this.mPlayer.height / 2;
         }
         // check for collision
-        if (this.mMap.collides(Std.int(this.mPlayer.x), Std.int(this.mPlayer.y), Std.int(this.mPlayer.width),
-          Std.int(this.mPlayer.height))) {
+        if (this.mMap.collides(Std.int(this.mPlayer.x), Std.int(this.mPlayer.y), Std.int(this.mPlayer.width), Std.int(this.mPlayer.height))) {
           this.mPlayer.x = oldPlayerX;
           this.mPlayer.y = oldPlayerY;
           changeX = changeY = false;

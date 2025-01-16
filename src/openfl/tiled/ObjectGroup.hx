@@ -157,14 +157,8 @@ class ObjectGroup implements openfl.tiled.Updatable {
       // skip rest
       return 0;
     }
-    // check if tilmap is not in
-    if (!tilemap.contains(t)) {
-      // add tile to tilemap if not existing
-      tilemap.addTileAt(t, tileIndex);
-    } /*else if (tilemap.getTileIndex(t) != tileIndex) {
-      // ensure that index fits
-      tilemap.setTileIndex(t, tileIndex);
-    }*/
+    // add tile to tilemap
+    tilemap.addTileAt(t, tileIndex);
     // return one added tile
     return 1;
   }

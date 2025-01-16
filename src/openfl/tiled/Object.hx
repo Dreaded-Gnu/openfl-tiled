@@ -142,18 +142,28 @@ class Object implements openfl.tiled.helper.Flippable {
       var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
       // generate shape
-      this.mShape.graphics.drawEllipse(this.mMap.renderOffsetX + minPoint.x, this.mMap.renderOffsetY + minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      this.mShape.graphics.drawEllipse(this.mMap.renderOffsetX
+        + minPoint.x, this.mMap.renderOffsetY
+        + minPoint.y, maxPoint.x
+        - minPoint.x,
+        maxPoint.y
+        - minPoint.y);
       Lib.current.stage.addChild(this.mShape);
     } else if (this.point != null) {
-        // create min point and translate into global
-        var minPoint:Point = new Point(this.x, this.y);
-        minPoint.copyFrom(tilemap.localToGlobal(minPoint));
-        // create max point and translate into global
-        var maxPoint:Point = new Point(this.x + 1, this.y + 1);
-        maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
-        // generate shape
-        this.mShape.graphics.drawRect(this.mMap.renderOffsetX + minPoint.x, this.mMap.renderOffsetY + minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
-        Lib.current.stage.addChild(this.mShape);
+      // create min point and translate into global
+      var minPoint:Point = new Point(this.x, this.y);
+      minPoint.copyFrom(tilemap.localToGlobal(minPoint));
+      // create max point and translate into global
+      var maxPoint:Point = new Point(this.x + 1, this.y + 1);
+      maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+      // generate shape
+      this.mShape.graphics.drawRect(this.mMap.renderOffsetX
+        + minPoint.x, this.mMap.renderOffsetY
+        + minPoint.y, maxPoint.x
+        - minPoint.x,
+        maxPoint.y
+        - minPoint.y);
+      Lib.current.stage.addChild(this.mShape);
     } else {
       // create min point and translate into global
       var minPoint:Point = new Point(this.x, this.y);
@@ -162,7 +172,12 @@ class Object implements openfl.tiled.helper.Flippable {
       var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
       // generate shape
-      this.mShape.graphics.drawRect(this.mMap.renderOffsetX + minPoint.x, this.mMap.renderOffsetY + minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      this.mShape.graphics.drawRect(this.mMap.renderOffsetX
+        + minPoint.x, this.mMap.renderOffsetY
+        + minPoint.y, maxPoint.x
+        - minPoint.x,
+        maxPoint.y
+        - minPoint.y);
       Lib.current.stage.addChild(this.mShape);
     }
   }

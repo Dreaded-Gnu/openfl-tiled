@@ -107,14 +107,8 @@ class Layer implements openfl.tiled.Updatable {
       // skip rest
       return 0;
     }
-    // check if tilmap is not in
-    if (!tilemap.contains(t)) {
-      // add tile to tilemap if not existing
-      tilemap.addTileAt(t, index);
-    } /*else if (tilemap.getTileIndex(t) != index) {
-      // ensure that index fits
-      tilemap.setTileIndex(t, index);
-    }*/
+    // add tile to tilemap
+    tilemap.addTileAt(t, index);
     // return one added tile
     return 1;
   }
@@ -174,14 +168,9 @@ class Layer implements openfl.tiled.Updatable {
         // skip rest
         continue;
       }
-      // check if tilmap is not in
-      if (!tilemap.contains(t)) {
-        // add tile to tilemap if not existing
-        tilemap.addTileAt(t, index++);
-      } else if (tilemap.getTileIndex(t) != index) {
-        // ensure that index fits
-        tilemap.setTileIndex(t, index++);
-      }
+      // add tile to tilemap
+      tilemap.addTileAt(t, index++);
+      // increment count added
       count++;
     }
     return count;
