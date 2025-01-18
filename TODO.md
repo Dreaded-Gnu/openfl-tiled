@@ -5,7 +5,6 @@
 
 - [ ] Test collision with applied scale to work correctly
 - [ ] Flipped objects are not correctly checked whether they will be visible or not
-- [ ] Fix rendering of objects without tile id so that they are considered also by scrollrect
 
 ## Already done
 
@@ -38,3 +37,4 @@
 - [x] Some tiles visibility check doesn't work correctly on mobile
 - [x] Evaluate whether collisions are working correctly and all kinds are supported
 - [x] Implement debug mode rendering also objects that have no tile
+- [x] Fix rendering of objects without tile id so that they are considered also by scrollrect
