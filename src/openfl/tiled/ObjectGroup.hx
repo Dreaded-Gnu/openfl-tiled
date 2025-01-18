@@ -20,7 +20,6 @@ class ObjectGroup implements openfl.tiled.Updatable {
   public var properties(default, null):openfl.tiled.Properties;
   public var object(default, null):Array<openfl.tiled.Object>;
 
-  private var mTileCheckContainer:std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>;
   private var mMap:openfl.tiled.Map;
 
   /**
@@ -30,7 +29,6 @@ class ObjectGroup implements openfl.tiled.Updatable {
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
-    this.mTileCheckContainer = new std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>();
     // parse properties
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
     this.name = node.exists("name") ? node.get("name") : "";
@@ -74,96 +72,6 @@ class ObjectGroup implements openfl.tiled.Updatable {
   }
 
   /**
-   * Helper to render object
-   * @param object
-   * @param offsetX
-   * @param offsetY
-   * @param tileIndex
-   * @param mapIndex
-   * @return Int
-   */
-  private function renderObject(object:openfl.tiled.Object, offsetX:Int, offsetY:Int, tileIndex:Int, mapIndex:Int):Int {
-    var gid:Int = object.gid;
-    // handle invalid
-    if (0 == gid) {
-      return 0;
-    }
-    // get tileset
-    var tileset:openfl.tiled.Tileset = this.mMap.tilesetByGid(gid);
-    if (null == tileset) {
-      return 0;
-    }
-    // subtract first gid from tileset
-    gid -= tileset.firstgid;
-    // create tilemap if not existing
-    if (null == this.mTileCheckContainer.get(tileset.firstgid)) {
-      this.mTileCheckContainer.set(tileset.firstgid, new std.Map<Int, openfl.tiled.helper.AnimatedTile>());
-    }
-    var ts:openfl.display.Tileset = tileset.tileset;
-    var tile:openfl.tiled.tileset.Tile = tileset.getTileByGid(gid);
-    if (tile?.tileset != null) {
-      ts = tile.tileset;
-    }
-    // generate tile
-    var t:openfl.tiled.helper.AnimatedTile = null;
-    // get tile container for checking
-    var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(tileset.firstgid);
-    // handle already set
-    if (map.exists(mapIndex)) {
-      t = map.get(mapIndex);
-      // gid
-      t.id = tile?.tileset != null ? 0 : gid;
-      // x / y position
-      t.x = object.x - tileset.tileoffset.x;
-      t.y = object.y - tileset.tileoffset.y - object.height;
-      // scaling depending on object size
-      t.scaleX = object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth);
-      t.scaleY = object.height / (tile?.tileset != null ? tile.height : tileset.tileheight);
-      t.rotation = 0;
-      t.animation = tileset.tile[gid]?.animation;
-      t.tileset = ts;
-      t.map = this.mMap;
-      // apply flipping
-      openfl.tiled.Helper.applyTileFlipping(this.mMap, t, object, tileset);
-    } else {
-      t = new openfl.tiled.helper.AnimatedTile( // gid
-        tile?.tileset != null ? 0 : gid, // x / y position
-        object.x - tileset.tileoffset.x,
-        object.y - tileset.tileoffset.y - object.height, // scaling depending on object size
-        object.width / (tile?.tileset != null ? tile.width : tileset.tilewidth), object.height / (tile?.tileset != null ? tile.height : tileset.tileheight),
-        0, tileset.tile[gid]?.animation, this.mMap);
-      // set tileset
-      t.tileset = ts;
-      // apply flipping
-      openfl.tiled.Helper.applyTileFlipping(this.mMap, t, object, tileset);
-    }
-    // cache tilemap locally
-    var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
-    // adjust x and y of tile
-    t.x -= offsetX;
-    t.y -= offsetY;
-    // add tile at position
-    if (!map.exists(mapIndex)) {
-      // add to check container
-      map.set(mapIndex, t);
-    }
-    // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(t.x), Std.int(t.y), Std.int(object.width * t.scaleX), Std.int(object.height * t.scaleY))) {
-      // check if it's displayed
-      if (tilemap.contains(t)) {
-        // just remove it from map
-        tilemap.removeTile(t);
-      }
-      // skip rest
-      return 0;
-    }
-    // add tile to tilemap
-    tilemap.addTileAt(t, tileIndex);
-    // return one added tile
-    return 1;
-  }
-
-  /**
    * Update / render object group
    * @param offsetX
    * @param offsetY
@@ -175,8 +83,8 @@ class ObjectGroup implements openfl.tiled.Updatable {
     var total:Int = 0;
     // iterate through objects
     for (object in this.object) {
-      // try to render and increment total
-      this.renderObject(object, offsetX, offsetY, index + total, total++);
+      // call update of object method
+      total += object.update(offsetX, offsetY, index + total);
     }
     // return total
     return total;

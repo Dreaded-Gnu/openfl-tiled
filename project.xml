@@ -11,5 +11,5 @@
   <assets path="public" rename="" />
 
   <!--<define name="openfl_tiled_use_asset" />-->
-  <!-- <define name="openfl_tiled_render_objects" /> -->
+  <!--<define name="openfl_tiled_render_objects" />-->
 </project>
