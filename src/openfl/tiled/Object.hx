@@ -158,8 +158,8 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
         tile?.tileset != null ? 0 : gid, // x / y position
         this.x - tileset.tileoffset.x,
         this.y - tileset.tileoffset.y - this.height, // scaling depending on object size
-        this.width / (tile?.tileset != null ? tile.width : tileset.tilewidth), this.height / (tile?.tileset != null ? tile.height : tileset.tileheight),
-        0, tileset.tile[gid]?.animation, this.mMap);
+        this.width / (tile?.tileset != null ? tile.width : tileset.tilewidth),
+        this.height / (tile?.tileset != null ? tile.height : tileset.tileheight), 0, tileset.tile[gid]?.animation, this.mMap);
       // set tileset
       t.tileset = ts;
       // apply flipping
@@ -193,7 +193,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
   /**
    * Simple debugging function to render an object
    */
-  private function renderCollisionObject(offsetX:Int, offsetY:Int, tileIndex:Int):Void {
+  private function renderObject(offsetX:Int, offsetY:Int, tileIndex:Int):Void {
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     if (this.mShape != null) {
       tilemap.stage.removeChild(this.mShape);
@@ -206,12 +206,10 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // polyline rendering rendering line from point to point
       for (idx in 0...this.polyline.points.length - 1) {
         // get line point 1 and translate it into global
-        var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x + offsetX,
-          this.y + this.polyline.points[idx].y + offsetY);
+        var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x + offsetX, this.y + this.polyline.points[idx].y + offsetY);
         linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
         // get line point 2 and translate it into global
-        var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x + offsetX,
-          this.y + this.polyline.points[idx + 1].y + offsetY);
+        var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x + offsetX, this.y + this.polyline.points[idx + 1].y + offsetY);
         linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
         // set line stile
         this.mShape.graphics.lineStyle(2, 0xff0000, 1);
@@ -223,17 +221,16 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // apply offset x and y
       this.mShape.x += offsetX;
       this.mShape.y += offsetY;
+      // add shape
       tilemap.stage.addChild(this.mShape); // FIXME: ADD TO TILEMAP AND NOT TO STAGE
     } else if (this.polygon != null) {
       // polygon rendering rendering line from point to point
       for (idx in 0...this.polygon.points.length - 1) {
         // get line point 1 and translate it into global
-        var linePoint1:Point = new Point(this.x + this.polygon.points[idx].x + offsetX,
-          this.y + this.polygon.points[idx].y + offsetY);
+        var linePoint1:Point = new Point(this.x + this.polygon.points[idx].x + offsetX, this.y + this.polygon.points[idx].y + offsetY);
         linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
         // get line point 2 and translate it into global
-        var linePoint2:Point = new Point(this.x + this.polygon.points[idx + 1].x + offsetX,
-          this.y + this.polygon.points[idx + 1].y + offsetY);
+        var linePoint2:Point = new Point(this.x + this.polygon.points[idx + 1].x + offsetX, this.y + this.polygon.points[idx + 1].y + offsetY);
         linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
         // set line stile
         this.mShape.graphics.lineStyle(2, 0xff0000, 1);
@@ -245,6 +242,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // apply offset x and y
       this.mShape.x += offsetX;
       this.mShape.y += offsetY;
+      // add shape
       tilemap.stage.addChild(this.mShape); // FIXME: ADD TO TILEMAP AND NOT TO STAGE
     } else if (this.ellipse != null) {
       // create min point and translate into global
@@ -253,11 +251,14 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // create max point and translate into global
       var maxPoint:Point = new Point(this.x + this.width + offsetX, this.y + this.height + offsetY);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+      // set line stile
+      this.mShape.graphics.lineStyle(2, 0xff0000, 1);
       // generate shape
       this.mShape.graphics.drawEllipse(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
       // apply offset x and y
       this.mShape.x += offsetX;
       this.mShape.y += offsetY;
+      // add shape
       tilemap.stage.addChild(this.mShape); // FIXME: ADD TO TILEMAP AND NOT TO STAGE
     } else if (this.point != null) {
       // create min point and translate into global
@@ -266,11 +267,14 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // create max point and translate into global
       var maxPoint:Point = new Point(this.x + 1 + offsetX, this.y + 1 + offsetY);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+      // set line stile
+      this.mShape.graphics.lineStyle(2, 0xff0000, 1);
       // generate shape
       this.mShape.graphics.drawRect(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
       // apply offset x and y
       this.mShape.x += offsetX;
       this.mShape.y += offsetY;
+      // add shape
       tilemap.stage.addChild(this.mShape); // FIXME: ADD TO TILEMAP AND NOT TO STAGE
     } else {
       // create min point and translate into global
@@ -279,11 +283,14 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // create max point and translate into global
       var maxPoint:Point = new Point(this.x + this.width + offsetX, this.y + this.height + offsetY);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+      // set line stile
+      this.mShape.graphics.lineStyle(2, 0xff0000, 1);
       // generate shape
       this.mShape.graphics.drawRect(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
       // apply offset x and y
       this.mShape.x += offsetX;
       this.mShape.y += offsetY;
+      // add shape
       tilemap.stage.addChild(this.mShape); // FIXME: ADD TO TILEMAP AND NOT TO STAGE
     }
   }
@@ -393,7 +400,9 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
   public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     // render collision object if set
     #if openfl_tiled_render_objects
-    this.renderCollisionObject(offsetX, offsetY, index);
+    if (this.gid == 0) {
+      this.renderObject(offsetX, offsetY, index);
+    }
     #end
     // render tile object if set
     return this.renderTileObject(offsetX, offsetY, index);
