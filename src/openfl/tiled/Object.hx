@@ -22,10 +22,12 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
   public var text(default, null):openfl.tiled.object.Text;
 
   private var mTile:openfl.tiled.helper.AnimatedTile;
-  private var mTileset:openfl.display.Tileset;
   private var mMap:openfl.tiled.Map;
   private var mGid:Int;
+  #if openfl_tiled_debug_render_objects
   private var mShape:openfl.display.Shape;
+  private var mTileset:openfl.display.Tileset;
+  #end
 
   /**
    * Constructor
@@ -34,7 +36,9 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
+    #if openfl_tiled_debug_render_objects
     this.mShape = new openfl.display.Shape();
+    #end
     // parse properties
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
     this.name = node.exists("name") ? node.get("name") : "";
@@ -192,6 +196,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     return 1;
   }
 
+  #if openfl_tiled_debug_render_objects
   /**
    * Wrapper to transform generated shape into tile with tileset
    */
@@ -223,7 +228,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     // clear shape
     this.mShape.graphics.clear();
     // set line stile
-    this.mShape.graphics.lineStyle(1, 0xff0000, 1);
+    this.mShape.graphics.lineStyle(1, this.mMap.debugRenderObjectColor, 1);
     // prepare shape offset x and y
     var shapeOffsetX:Float = 0;
     var shapeOffsetY:Float = 0;
@@ -306,6 +311,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     // return one object added
     return 1;
   }
+  #end
 
   /**
    * Checks for collision
@@ -412,7 +418,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
   public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     var added:Int = 0;
     // render collision object if set
-    #if openfl_tiled_render_objects
+    #if openfl_tiled_debug_render_objects
     if (this.gid == 0) {
       added += this.renderObject(offsetX, offsetY, index);
     }

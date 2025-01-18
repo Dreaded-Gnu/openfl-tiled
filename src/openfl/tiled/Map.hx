@@ -15,6 +15,9 @@ import openfl.net.URLRequest;
 class Map extends EventDispatcher {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
+  #if openfl_tiled_debug_render_objects
+  private static inline var TILEMAP_DEFAULT_DEBUG_RENDER_COLOR:Int = 0xff0000;
+  #end
 
   public var version(default, null):Float;
   public var tiledversion(default, null):Float;
@@ -46,6 +49,9 @@ class Map extends EventDispatcher {
   public var tilemap(get, null):openfl.display.Tilemap;
   public var renderOffsetX(get, null):Int;
   public var renderOffsetY(get, null):Int;
+  #if openfl_tiled_debug_render_objects
+  public var debugRenderObjectColor(default, default):Int;
+  #end
 
   private var mTilesetLoaded:Bool;
   private var mImageLayerLoaded:Bool;
@@ -85,6 +91,10 @@ class Map extends EventDispatcher {
     this.mRenderOffsetX = 0;
     this.mRenderOffsetY = 0;
     this.mRendered = false;
+    // set public properties if needed
+    #if openfl_tiled_debug_render_objects
+    this.debugRenderObjectColor = TILEMAP_DEFAULT_DEBUG_RENDER_COLOR;
+    #end
     // initialize tilemap
     this.mTileMap = new openfl.display.Tilemap(width * TILEMAP_RENDER_OFFSET_FACTOR, height * TILEMAP_RENDER_OFFSET_FACTOR);
     // set added to and removed from stage

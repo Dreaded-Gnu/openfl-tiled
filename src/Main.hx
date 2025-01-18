@@ -58,8 +58,13 @@ class Main extends Sprite {
     this.mPlayer.scaleX = SCALE;
     this.mPlayer.scaleY = SCALE;
     addChild(this.mPlayer);
-    // add fps counter
-    addChild(new FPS(10, 10, 0xffffff));
+    // create fps counter
+    var fps:FPS = new FPS(10 * SCALE, 10 * SCALE, 0);
+    // apply scale
+    fps.scaleX = SCALE;
+    fps.scaleY = SCALE;
+    // add as child
+    addChild(fps);
   }
 
   /**
