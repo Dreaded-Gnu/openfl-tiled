@@ -3,6 +3,8 @@
 
 ## Still to be done
 
+- [ ] Generate and improve code documentation
+
 ## Already done
 
 - [x] Move map files into subfolder
