@@ -177,12 +177,14 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     // adjust x and y of tile
     t.x -= offsetX;
     t.y -= offsetY;
+    t.realX -= offsetX;
+    t.realY -= offsetY;
     // cahce tile if not cached
     if (this.mTile == null) {
       this.mTile = t;
     }
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(t.x), Std.int(t.y), Std.int(this.width * t.scaleX), Std.int(this.height * t.scaleY))) {
+    if (!this.mMap.willBeVisible(Std.int(t.realX), Std.int(t.realY), Std.int(this.width * t.scaleX), Std.int(this.height * t.scaleY))) {
       // check if it's displayed
       if (tilemap.contains(t)) {
         // just remove it from map
@@ -296,8 +298,10 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     // apply offset x and y
     this.mTile.x -= offsetX;
     this.mTile.y -= offsetY;
+    this.mTile.realX -= offsetX;
+    this.mTile.realY -= offsetY;
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(this.mTile.x), Std.int(this.mTile.y), this.mTileset.bitmapData.width, this.mTileset.bitmapData.height)) {
+    if (!this.mMap.willBeVisible(Std.int(this.mTile.realX), Std.int(this.mTile.realY), this.mTileset.bitmapData.width, this.mTileset.bitmapData.height)) {
       // check if it's displayed
       if (tilemap.contains(this.mTile)) {
         // just remove it from map

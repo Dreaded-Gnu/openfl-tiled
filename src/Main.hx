@@ -13,7 +13,7 @@ class Main extends Sprite {
   private var mOffsetX:Int = 0;
   private var mOffsetY:Int = 0;
 
-  private static inline var SCALE:Float = 2;
+  private static inline var SCALE:Float = 1;
   private static inline var MOVE_SPEED:Float = 2;
 
   /**
@@ -22,12 +22,11 @@ class Main extends Sprite {
   public function new() {
     super();
     // load map
-    // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
     this.mMap.tilemap.scaleX = SCALE;
     this.mMap.tilemap.scaleY = SCALE;
-    this.mMap.debugRenderObjectColor = 0x0000ff;
     // this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
@@ -35,8 +34,17 @@ class Main extends Sprite {
     this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
     this.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
     this.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+    this.stage.addEventListener(Event.RESIZE, this.onResize);
     // kickstart map loading
     this.mMap.load();
+  }
+
+  /**
+   * Resize event handler
+   * @param event
+   */
+  private function onResize(event:Event):Void {
+    this.mMap.resize(this.stage.stageWidth, this.stage.stageHeight);
   }
 
   /**

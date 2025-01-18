@@ -4,6 +4,8 @@ import openfl.events.Event;
 
 class AnimatedTile extends openfl.display.Tile {
   public var animation(get, set):openfl.tiled.tileset.Animation;
+  public var realX(default, default):Float;
+  public var realY(default, default):Float;
   public var map(get, set):openfl.tiled.Map;
 
   private var mAnimation:openfl.tiled.tileset.Animation;
@@ -30,6 +32,9 @@ class AnimatedTile extends openfl.display.Tile {
     this.mAnimation = animation;
     this.mMaxAnimation = animation != null ? animation.frame.length : 0;
     this.mMap = map;
+    // save real x and y
+    this.realX = this.x;
+    this.realY = this.y;
     // set initial timer
     if (this.mAnimation != null && this.mAnimation.frame.length > 0) {
       // set current animation and id
@@ -110,8 +115,7 @@ class AnimatedTile extends openfl.display.Tile {
    * @return openfl.tiled.Map
    */
   private function set_map(map:openfl.tiled.Map):openfl.tiled.Map {
-    this.mMap = map;
-    return this.mMap;
+    return this.mMap = map;
   }
 
   /**

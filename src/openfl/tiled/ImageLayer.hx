@@ -115,10 +115,12 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
     // apply x / y offset
     this.tile.x = this.x - offsetX;
     this.tile.y = this.y - offsetY;
+    this.tile.realX = this.x - offsetX;
+    this.tile.realY = this.y - offsetY;
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // check if won't be visible
-    if (!this.mMap.willBeVisible(Std.int(this.tile.x), Std.int(this.tile.y), this.image.width, this.image.height)) {
+    if (!this.mMap.willBeVisible(Std.int(this.tile.realX), Std.int(this.tile.realY), this.image.width, this.image.height)) {
       // check if it was added
       if (tilemap.contains(this.tile)) {
         // remove it since it isn't visible any longer

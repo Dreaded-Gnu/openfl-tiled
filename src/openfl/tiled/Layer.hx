@@ -92,13 +92,15 @@ class Layer implements openfl.tiled.Updatable {
     // adjust x and y of tile by offset
     t.x -= offsetX;
     t.y -= offsetY;
+    t.realX -= offsetX;
+    t.realY -= offsetY;
     // add tile at position
     if (!this.mTileCheckContainer.get(tileset.firstgid).exists(id)) {
       // set item
       this.mTileCheckContainer.get(tileset.firstgid).set(id, t);
     }
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(t.x), Std.int(t.y), tileset.tilewidth, tileset.tileheight)) {
+    if (!this.mMap.willBeVisible(Std.int(t.realX), Std.int(t.realY), tileset.tilewidth, tileset.tileheight)) {
       // check if it's displayed
       if (tilemap.contains(t)) {
         // just remove it from map
@@ -148,6 +150,8 @@ class Layer implements openfl.tiled.Updatable {
       // apply offset
       t.x -= offsetX;
       t.y -= offsetY;
+      t.realX -= offsetX;
+      t.realY -= offsetY;
       // get tile container for checking
       var map:std.Map<Int, openfl.tiled.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
@@ -159,7 +163,7 @@ class Layer implements openfl.tiled.Updatable {
         mapIndex++;
       }
       // skip coordinate if not visible
-      if (!this.mMap.willBeVisible(Std.int(t.x), Std.int(t.y), tileset.tilewidth, tileset.tileheight)) {
+      if (!this.mMap.willBeVisible(Std.int(t.realX), Std.int(t.realY), tileset.tilewidth, tileset.tileheight)) {
         // check if it's displayed
         if (tilemap.contains(t)) {
           // just remove it from map

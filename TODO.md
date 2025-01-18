@@ -3,8 +3,6 @@
 
 ## Still to be done
 
-- [ ] Flipped objects are not correctly checked whether they will be visible or not
-
 ## Already done
 
 - [x] Move map files into subfolder
@@ -39,3 +37,4 @@
 - [x] Fix rendering of objects without tile id so that they are considered also by scrollrect
 - [x] Prepare example to be capable to handle scale correctly
 - [x] Test collision with applied scale to work correctly
+- [x] Flipped objects are not correctly checked whether they will be visible or not

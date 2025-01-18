@@ -125,6 +125,8 @@ class Helper {
    */
   public static function applyTileFlipping(map:openfl.tiled.Map, t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable,
       tileset:openfl.tiled.Tileset):Void {
+    var x:Float = t.x;
+    var y:Float = t.y;
     // handle hexagonal stuff
     if (map.orientation == MapOrientationHexagonal) {
       // handle flipped diagonally
@@ -179,5 +181,8 @@ class Helper {
         t.y += tileset.tileheight;
       }
     }
+    // set real x and y manually
+    t.realX = x;
+    t.realY = y;
   }
 }
