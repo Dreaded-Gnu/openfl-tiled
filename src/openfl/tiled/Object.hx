@@ -1,5 +1,6 @@
 package openfl.tiled;
 
+import openfl.geom.Rectangle;
 import openfl.geom.Point;
 
 class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Updatable {
@@ -205,8 +206,8 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     var bmd:openfl.display.BitmapData = new openfl.display.BitmapData(Std.int(this.mShape.width), Std.int(this.mShape.height), true, 0);
     bmd.draw(this.mShape);
     // parse bitmapdata to tileset
-    var rect:Array<openfl.geom.Rectangle> = new Array<openfl.geom.Rectangle>();
-    rect.push(new openfl.geom.Rectangle(this.mShape.x, this.mShape.y, bmd.width, bmd.height));
+    var rect:Array<Rectangle> = new Array<Rectangle>();
+    rect.push(new Rectangle(this.mShape.x, this.mShape.y, bmd.width, bmd.height));
     this.mTileset = new openfl.display.Tileset(bmd, rect);
     // build tile if not built
     if (this.mTile == null) {
@@ -397,7 +398,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
           var point:Point = new Point(this.x, this.y);
           point.copyFrom(tilemap.localToGlobal(point));
           // point collision check
-          if (point.x == checkPoint.x && point.y == checkPoint.y) {
+          if (point.equals(checkPoint)) {
             return true;
           }
         } else {
@@ -410,8 +411,10 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
           // create max point and translate into global
           var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
           maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
-          // regular rectangle collision check
-          if (checkPoint.x >= minPoint.x && checkPoint.x <= maxPoint.x && checkPoint.y >= minPoint.y && checkPoint.y <= maxPoint.y) {
+          // create rectangle
+          var rect:Rectangle = new Rectangle(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+          // check if point contains rectangle
+          if (rect.containsPoint(checkPoint)) {
             return true;
           }
         }

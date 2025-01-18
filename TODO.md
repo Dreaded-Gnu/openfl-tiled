@@ -3,7 +3,6 @@
 
 ## Still to be done
 
-- [ ] Test collision with applied scale to work correctly
 - [ ] Flipped objects are not correctly checked whether they will be visible or not
 
 ## Already done
@@ -38,3 +37,5 @@
 - [x] Evaluate whether collisions are working correctly and all kinds are supported
 - [x] Implement debug mode rendering also objects that have no tile
 - [x] Fix rendering of objects without tile id so that they are considered also by scrollrect
+- [x] Prepare example to be capable to handle scale correctly
+- [x] Test collision with applied scale to work correctly
