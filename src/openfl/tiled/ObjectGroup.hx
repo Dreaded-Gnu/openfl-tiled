@@ -99,10 +99,11 @@ class ObjectGroup implements openfl.tiled.Updatable {
    * @return Bool
    */
   public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
-    if (this.name != Helper.COLLISION_LAYER_NAME) {
-      return false;
-    }
     for (object in this.object) {
+      // handle no collision layer and not collidable object
+      if (this.name != Helper.COLLISION_LAYER_NAME && object.type != Helper.COLLISION_LAYER_NAME) {
+        continue;
+      }
       // check for collision
       if (object.collides(x, y, width, height)) {
         return true;

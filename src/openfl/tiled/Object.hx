@@ -325,9 +325,6 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // float buffer
     var buffer:Float = .1;
-    // apply rendering offset for collision check
-    x += this.mMap.renderOffsetX;
-    y += this.mMap.renderOffsetY;
     // loop through width and height
     for (tx in 0...width) {
       for (ty in 0...height) {
@@ -341,7 +338,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
             var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x, this.y + this.polyline.points[idx + 1].y);
             linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
             // create checkpoint and translate it into global
-            var checkPoint:Point = new Point(x + tx, y + ty);
+            var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
             checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
             // get distances
             var dist1:Float = Point.distance(checkPoint, linePoint1);
@@ -363,7 +360,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
             var linePoint2:Point = new Point(this.x + this.polygon.points[idx + 1].x, this.y + this.polygon.points[idx + 1].y);
             linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
             // create checkpoint and translate it into global
-            var checkPoint:Point = new Point(x + tx, y + ty);
+            var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
             checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
             // get distances
             var dist1:Float = Point.distance(checkPoint, linePoint1);
@@ -376,10 +373,25 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
             }
           }
         } else if (this.ellipse != null) {
-          /// FIXME: ADD LOGIC
+          // create checkpoint and translate it into global
+          var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
+          checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
+          // get min point and translate into global
+          var minPoint:Point = new Point(this.x, this.y);
+          minPoint.copyFrom(tilemap.localToGlobal(minPoint));
+          // get max point and translate into global
+          var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
+          maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
+          // calculate width and height
+          var width:Float = maxPoint.x - minPoint.x;
+          var height:Float = maxPoint.y - minPoint.y;
+          // calculate collision
+          if (Math.pow(checkPoint.x - minPoint.x, 2) / Math.pow(width / 2, 2) + Math.pow(checkPoint.y - minPoint.y, 2) / Math.pow(height / 2, 2) <= 1) {
+            return true;
+          }
         } else if (this.point != null) {
           // create checkpoint and translate it into global
-          var checkPoint:Point = new Point(x + tx, y + ty);
+          var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
           checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
           // create point and translate into global
           var point:Point = new Point(this.x, this.y);
@@ -390,7 +402,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
           }
         } else {
           // create checkpoint and translate it into global
-          var checkPoint:Point = new Point(x + tx, y + ty);
+          var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
           checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
           // create min point and translate into global
           var minPoint:Point = new Point(this.x, this.y);
