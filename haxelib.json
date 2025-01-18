@@ -1,14 +1,18 @@
 {
-  "name": "openfl-tiled2",
+  "name": "openfl-tiled",
   "url": "https://github.com/Dreaded-Gnu/openfl-tiled",
   "license": "MIT",
   "tags": [
-    "openfl",
-    "tiled",
+    "cross",
+    "game",
     "map",
-    "tilemap"
+    "openfl",
+    "tile",
+    "tiled",
+    "tilemap",
+    "tilesheet"
   ],
-  "description": "openfl-tiled2 is a library, which gives openfl developers the ability to use the TILED map editor.",
+  "description": "openfl-tiled is a library, which gives openfl developers the ability to use the TILED map editor.",
   "version": "1.0.0",
   "releasenote": "Initial release",
   "contributors": [

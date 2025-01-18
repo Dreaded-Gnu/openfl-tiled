@@ -550,6 +550,9 @@ class Layer implements openfl.tiled.Updatable {
     // array of tiles
     var tiles:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
+    // apply rendering offset for collision check
+    x += this.mMap.renderOffsetX;
+    y += this.mMap.renderOffsetY;
     // loop through whole size
     var max:Int = width * height;
     for (i in 0...max) {
@@ -570,14 +573,12 @@ class Layer implements openfl.tiled.Updatable {
     }
     // check for collision enabled on layer level
     if (this.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME) != null && tileId.length > 0) {
-      trace('collision at ${x}/${y}');
       return true;
     }
     // iterate tiles
     for (tile in tiles) {
       // handle possible collision by tile properties
       if (tile.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME)?.value == "true") {
-        trace('collision at ${tile.x}/${tile.y}');
         return true;
       }
     }

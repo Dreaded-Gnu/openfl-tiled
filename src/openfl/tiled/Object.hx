@@ -122,10 +122,12 @@ class Object implements openfl.tiled.helper.Flippable {
       // poly line collision check by checking each line
       for (idx in 0...this.polyline.points.length - 1) {
         // get line point 1 and translate it into global
-        var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x, this.y + this.polyline.points[idx].y);
+        var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x + this.mMap.renderOffsetX,
+          this.y + this.polyline.points[idx].y + this.mMap.renderOffsetY);
         linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
         // get line point 2 and translate it into global
-        var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x, this.y + this.polyline.points[idx + 1].y);
+        var linePoint2:Point = new Point(this.x + this.polyline.points[idx + 1].x + this.mMap.renderOffsetX,
+          this.y + this.polyline.points[idx + 1].y + this.mMap.renderOffsetY);
         linePoint2.copyFrom(tilemap.localToGlobal(linePoint2));
         this.mShape.graphics.lineStyle(2, 0xff0000, 1);
         this.mShape.graphics.moveTo(linePoint1.x - this.mMap.renderOffsetX, linePoint1.y - this.mMap.renderOffsetY);
@@ -136,48 +138,33 @@ class Object implements openfl.tiled.helper.Flippable {
       /// FIXME: ADD LOGIC
     } else if (this.ellipse != null) {
       // create min point and translate into global
-      var minPoint:Point = new Point(this.x, this.y);
+      var minPoint:Point = new Point(this.x + this.mMap.renderOffsetX, this.y + this.mMap.renderOffsetY);
       minPoint.copyFrom(tilemap.localToGlobal(minPoint));
       // create max point and translate into global
-      var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
+      var maxPoint:Point = new Point(this.x + this.width + this.mMap.renderOffsetX, this.y + this.height + this.mMap.renderOffsetY);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
       // generate shape
-      this.mShape.graphics.drawEllipse(this.mMap.renderOffsetX
-        + minPoint.x, this.mMap.renderOffsetY
-        + minPoint.y, maxPoint.x
-        - minPoint.x,
-        maxPoint.y
-        - minPoint.y);
+      this.mShape.graphics.drawEllipse(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
       Lib.current.stage.addChild(this.mShape);
     } else if (this.point != null) {
       // create min point and translate into global
-      var minPoint:Point = new Point(this.x, this.y);
+      var minPoint:Point = new Point(this.x + this.mMap.renderOffsetX, this.y + this.mMap.renderOffsetY);
       minPoint.copyFrom(tilemap.localToGlobal(minPoint));
       // create max point and translate into global
-      var maxPoint:Point = new Point(this.x + 1, this.y + 1);
+      var maxPoint:Point = new Point(this.x + 1 + this.mMap.renderOffsetX, this.y + 1 + this.mMap.renderOffsetY);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
       // generate shape
-      this.mShape.graphics.drawRect(this.mMap.renderOffsetX
-        + minPoint.x, this.mMap.renderOffsetY
-        + minPoint.y, maxPoint.x
-        - minPoint.x,
-        maxPoint.y
-        - minPoint.y);
+      this.mShape.graphics.drawRect(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
       Lib.current.stage.addChild(this.mShape);
     } else {
       // create min point and translate into global
-      var minPoint:Point = new Point(this.x, this.y);
+      var minPoint:Point = new Point(this.x + this.mMap.renderOffsetX, this.y + this.mMap.renderOffsetY);
       minPoint.copyFrom(tilemap.localToGlobal(minPoint));
       // create max point and translate into global
-      var maxPoint:Point = new Point(this.x + this.width, this.y + this.height);
+      var maxPoint:Point = new Point(this.x + this.width + this.mMap.renderOffsetX, this.y + this.height + this.mMap.renderOffsetY);
       maxPoint.copyFrom(tilemap.localToGlobal(maxPoint));
       // generate shape
-      this.mShape.graphics.drawRect(this.mMap.renderOffsetX
-        + minPoint.x, this.mMap.renderOffsetY
-        + minPoint.y, maxPoint.x
-        - minPoint.x,
-        maxPoint.y
-        - minPoint.y);
+      this.mShape.graphics.drawRect(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
       Lib.current.stage.addChild(this.mShape);
     }
   }
