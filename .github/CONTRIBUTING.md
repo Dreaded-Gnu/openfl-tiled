@@ -28,7 +28,8 @@ To setup for making changes you'll need to take a few steps, we've outlined belo
 6. Run `haxelib install openfl`
 7. Run `haxelib install crypto`
 8. Run `haxelib install formatter`
-9. Run `openfl setup`
+9. Run `haxelib install dox`
+10. Run `openfl setup`
 
 ### Making a change
 

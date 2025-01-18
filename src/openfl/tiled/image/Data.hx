@@ -3,14 +3,28 @@ package openfl.tiled.image;
 import openfl.utils.ByteArray;
 import openfl.errors.Error;
 
+/**
+ * Image data handling
+ */
 class Data {
+  /**
+   * Used encoding of data
+   */
   public var encoding(default, null):String;
+
+  /**
+   * Used compression of data
+   */
   public var compression(default, null):String;
+
+  /**
+   * Data that may be encoded and compressed
+   */
   public var data(default, null):ByteArray;
 
   /**
    * Constructor
-   * @param node
+   * @param node data node to parse
    */
   public function new(node:Xml) {
     this.encoding = node.get("encoding");

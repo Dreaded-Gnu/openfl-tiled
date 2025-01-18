@@ -1,27 +1,30 @@
 package openfl.tiled.helper;
 
+/**
+ * Flippable interface
+ */
 interface Flippable {
   /**
-   * Getter for flipped horizontally
-   * @return Bool
+   * Helper for flipped horizontally checks
+   * @return True if flipped horizontally, else false
    */
   public function isFlippedHorizontally():Bool;
 
   /**
-   * Getter for flipped vertically
-   * @return Bool
+   * Helper for flipped vertically checks
+   * @return True if flipped vertically, else false
    */
   public function isFlippedVertically():Bool;
 
   /**
-   * Getter for flipped diagonally
-   * @return Bool
+   * Helper for flipped diagonally checks
+   * @return True if flipped diagonally, else false
    */
   public function isFlippedDiagonally():Bool;
 
   /**
-   * Getter for flipped hexagonal 120
-   * @return Bool
+   * Helper for flipped hexagonal 120 checks
+   * @return True if rotated hexagonal by 120, else false
    */
   public function isRotatedHexagonal120():Bool;
 }

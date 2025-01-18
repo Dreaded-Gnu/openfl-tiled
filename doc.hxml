@@ -1,0 +1,12 @@
+-cp src
+-D doc-gen
+--macro include('openfl.tiled')
+--no-output
+--xml export/types.xml
+-lib lime
+-lib crypto
+-lib openfl
+--cpp export/cpp
+--next
+
+-cmd haxelib run dox --output-path ./docs --input-path export --include openfl.tiled --title "API Reference" --define website "https://github.com/Dreaded-Gnu/openfl-tiled" --define source-path "https://github.com/Dreaded-Gnu/openfl-tiled/tree/main/src/" --define version 1.0.0 --define logo "https://placehold.it/300x75/3c4db7" --define textColor 0x777777 --toplevel-package openfl.tiled

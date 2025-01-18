@@ -2,10 +2,28 @@ package openfl.tiled.helper;
 
 import openfl.events.Event;
 
+/**
+ * Animated tile implementation extending openfl.display.Tile
+ */
 class AnimatedTile extends openfl.display.Tile {
+  /**
+   * Animation data used for this tile
+   */
   public var animation(get, set):openfl.tiled.tileset.Animation;
+
+  /**
+   * Real x value which might differ to x because of possible tile flipping
+   */
   public var realX(default, default):Float;
+
+  /**
+   * Real y value which might differ to y because of possible tile flipping
+   */
   public var realY(default, default):Float;
+
+  /**
+   * Map this animated tile belongs to
+   */
   public var map(get, set):openfl.tiled.Map;
 
   private var mAnimation:openfl.tiled.tileset.Animation;
@@ -17,14 +35,14 @@ class AnimatedTile extends openfl.display.Tile {
 
   /**
    * Constructor
-   * @param id
-   * @param x
-   * @param y
-   * @param scaleX
-   * @param scaleY
-   * @param rotation
-   * @param animation
-   * @param map
+   * @param id tile id
+   * @param x x position
+   * @param y y position
+   * @param scaleX scale x
+   * @param scaleY scale y
+   * @param rotation rotation
+   * @param animation animation data
+   * @param map map instance
    */
   public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:openfl.tiled.tileset.Animation, map:openfl.tiled.Map) {
     super(id, x, y, scaleX, scaleY, rotation);
