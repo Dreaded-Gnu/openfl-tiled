@@ -570,12 +570,14 @@ class Layer implements openfl.tiled.Updatable {
     }
     // check for collision enabled on layer level
     if (this.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME) != null && tileId.length > 0) {
+      trace('collision at ${x}/${y}');
       return true;
     }
     // iterate tiles
     for (tile in tiles) {
       // handle possible collision by tile properties
       if (tile.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME)?.value == "true") {
+        trace('collision at ${tile.x}/${tile.y}');
         return true;
       }
     }

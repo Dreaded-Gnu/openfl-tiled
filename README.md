@@ -5,18 +5,12 @@ Implementation of tiled map parsing for openfl and haxe.
 ## Usage example
 
 ```haxe
-// create new tilemap
-var tilemap:openfl.display.Tilemap = new openfl.display.Tilemap(
-  stage.stageWidth,
-  stage.stageHeight
-);
-// add child to stage (necessary for animations)
-stage.addChild(tilemap);
 // load map
 var map:openfl.tiled.Map = new openfl.tiled.Map(
   "/tiled/rpg/",
   "/tiled/rpg/island.tmx",
-  tilemap
+  stage.stageWidth,
+  stage.stageHeight
 );
 map.addEventListener(Event.COMPLETE, onMapLoadComplete);
 
@@ -24,6 +18,8 @@ map.addEventListener(Event.COMPLETE, onMapLoadComplete);
 
 function onMapLoadComplete(event:Event):Void {
   map.removeEventListener(Event.COMPLETE, onMapLoadComplete);
+  // add child to stage (necessary for animations)
+  stage.addChild(tilemap);
   // render map
   map.render();
 }
