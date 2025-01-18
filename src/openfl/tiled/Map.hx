@@ -11,7 +11,6 @@ import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.net.URLLoader;
 import openfl.net.URLRequest;
-import openfl.Lib;
 
 class Map extends EventDispatcher {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
@@ -58,22 +57,24 @@ class Map extends EventDispatcher {
   private var mOffsetY:Int;
   private var mPreviousOffsetX:Int;
   private var mPreviousOffsetY:Int;
+  private var mRenderOffsetX:Int;
+  private var mRenderOffsetY:Int;
   private var mRendered:Bool;
 
   /**
    * Constructor
    * @param prefix folder prefix used when loading additional assets internally
    * @param path full path to map
-   * @param tilemap tilemap to use if ommitted one is created with stage size including resize handling
+   * @param width tilemap width
+   * @param height tilemap height
    */
-  public function new(prefix:String, path:String, ?tilemap:Null<openfl.display.Tilemap>) {
+  public function new(prefix:String, path:String, width:Int, height:Int) {
     // call parent constructor
     super();
     // set variables
     this.mPath = path;
     this.prefix = prefix;
     this.isLoaded = false;
-    this.mTileMap = tilemap;
     this.mTilesetLoaded = false;
     this.mImageLayerLoaded = false;
     this.mGroupLoaded = false;
@@ -81,20 +82,16 @@ class Map extends EventDispatcher {
     this.mOffsetY = 0;
     this.mPreviousOffsetX = 0;
     this.mPreviousOffsetY = 0;
+    this.mRenderOffsetX = 0;
+    this.mRenderOffsetY = 0;
     this.mRendered = false;
-    // initialize tilemap if not passed
-    if (this.mTileMap == null) {
-      var stageWidth:Int = Lib.current.stage.stageWidth;
-      var stageHeight:Int = Lib.current.stage.stageHeight;
-      // initialize tilemap
-      this.mTileMap = new openfl.display.Tilemap(stageWidth * TILEMAP_RENDER_OFFSET_FACTOR, stageHeight * TILEMAP_RENDER_OFFSET_FACTOR);
-      // set added to and removed from stage
-      this.mTileMap.addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
-      this.mTileMap.addEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
-      // set cache as bitmap flag and a scroll rectangle
-      this.mTileMap.cacheAsBitmap = true;
-      this.mTileMap.scrollRect = new Rectangle(0, 0, stageWidth, stageHeight);
-    }
+    // initialize tilemap
+    this.mTileMap = new openfl.display.Tilemap(width * TILEMAP_RENDER_OFFSET_FACTOR, height * TILEMAP_RENDER_OFFSET_FACTOR);
+    // set added to and removed from stage
+    this.mTileMap.addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
+    this.mTileMap.addEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    // set cache as bitmap flag and a scroll rectangle
+    this.mTileMap.scrollRect = new Rectangle(0, 0, width, height);
   }
 
   /**
@@ -102,8 +99,6 @@ class Map extends EventDispatcher {
    * @param event
    */
   private function onAddedToStage(event:Event):Void {
-    // set resize handler
-    this.mTileMap.stage.addEventListener(Event.RESIZE, this.onResize);
     // initially render the map
     this.render();
     // dispatch added to stage event
@@ -118,35 +113,24 @@ class Map extends EventDispatcher {
     // remove set event listeners from tilemap
     this.mTileMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
     this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
-    // remove resize event listener
-    this.mTileMap.stage.removeEventListener(Event.RESIZE, this.onResize);
     // dispatch removed from stage event
     this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE, false, false));
   }
 
   /**
-   * Resize handler
-   * @param event
+   * Resize function
+   * @param width
+   * @param height
    */
-  private function onResize(event:Event):Void {
-    var stageWidth:Int = this.mTileMap.stage.stageWidth;
-    var stageHeight:Int = this.mTileMap.stage.stageHeight;
-    // set width and height
-    this.mTileMap.width = stageWidth * TILEMAP_RENDER_OFFSET_FACTOR;
-    this.mTileMap.height = stageHeight * TILEMAP_RENDER_OFFSET_FACTOR;
-    // recreate scroll rect
-    this.mTileMap.cacheAsBitmap = true;
-    this.mTileMap.scrollRect = new Rectangle(0, 0, stageWidth, stageHeight);
-    // cache offsets
-    var previousOffsetX:Int = this.mOffsetX;
-    var previousOffsetY:Int = this.mOffsetY;
-    // reset to initial
-    this.mOffsetX = 0;
-    this.mOffsetY = 0;
-    // set render flag again
-    this.mRendered = false;
+  public function resize(width:Int, height:Int):Void {
+    // resize tilemap
+    this.mTileMap.width = width * TILEMAP_RENDER_OFFSET_FACTOR;
+    this.mTileMap.height = height * TILEMAP_RENDER_OFFSET_FACTOR;
+    // setup new scroll rect
+    this.mTileMap.scrollRect = new Rectangle(0, 0, width, height);
     // render again
-    this.render(previousOffsetX, previousOffsetY);
+    this.mRendered = false;
+    this.render();
     // dispatch resize event
     this.dispatchEvent(new Event(Event.RESIZE, false, false));
   }
@@ -443,30 +427,66 @@ class Map extends EventDispatcher {
     var minHeightPos:Float = this.mTileMap.height / TILEMAP_RENDER_OFFSET_FACTOR * TILEMAP_RENDER_MIN_FACTOR;
     // update render objects if it wasn't rendered yet or some threshold is reached
     if (!this.mRendered || rect.x > minWidthPos || rect.y > minHeightPos || rect.x < 0 || rect.y < 0) {
-      // get half of previous rect x and y
-      var halfRectX:Float = rect.x / 2;
-      var halfRectY:Float = rect.y / 2;
-      // handle case of smaller than 0
-      if (halfRectX < 0) {
-        halfRectX = minWidthPos / 2;
+      // new rect x and y will by default be the one set
+      var newRectX:Float = rect.x;
+      var newRectY:Float = rect.y;
+      // determine new render offsets
+      if (!this.mRendered) {
+        // handle not rendered by using offset minus min width divided by two
+        this.mRenderOffsetX = Std.int(Math.max(this.mOffsetX - minWidthPos / 2, 0));
+        // adjust rect x position
+        newRectX /= 2;
+      } else if (rect.x > minWidthPos) {
+        // increment render offset
+        this.mRenderOffsetX += Std.int(rect.x / 2);
+        // adjust rect x position
+        newRectX /= 2;
+      } else if (rect.x < 0) {
+        // determine new rect x
+        newRectX = minWidthPos / 2;
+        // calculate new render offset
+        var newRenderOffsetX = Std.int(Math.max(this.mRenderOffsetX - minWidthPos / 2, 0));
+        // handle offset turns to 0
+        if (newRenderOffsetX == 0) {
+          // adjust new rect x by adding difference
+          newRectX += (this.mRenderOffsetX - minWidthPos / 2);
+        }
+        // set new render offset
+        this.mRenderOffsetX = newRenderOffsetX;
       }
-      // handle case of smaller than 0
-      if (halfRectY < 0) {
-        halfRectX = minHeightPos / 2;
+      if (!this.mRendered) {
+        // handle not rendered by using offset minus min height divided by two
+        this.mRenderOffsetY = Std.int(Math.max(this.mOffsetY - minHeightPos / 2, 0));
+        // adjust rect x position
+        newRectY /= 2;
+      } else if (rect.y > minHeightPos) {
+        // increment render offset
+        this.mRenderOffsetY += Std.int(rect.y / 2);
+        // adjust rect x position
+        newRectY /= 2;
+      } else if (rect.y < 0) {
+        // determine new rect x
+        newRectY = minHeightPos / 2;
+        // calculate new render offset
+        var newRenderOffsetY = Std.int(Math.max(this.mRenderOffsetY - minHeightPos / 2, 0));
+        // handle offset turns to 0
+        if (newRenderOffsetY == 0) {
+          // adjust new rect y by adding difference
+          newRectY += (this.mRenderOffsetY - minHeightPos / 2);
+        }
+        // set new render offset
+        this.mRenderOffsetY = newRenderOffsetY;
       }
-      // reset rect
-      rect.x = 0;
-      rect.y = 0;
       // setup index for render object update to keep the render order from tiled
       var index:Int = 0;
       // iterate over render objects
       for (renderObject in this.mRenderObjects) {
         // update render object
-        index += renderObject.update(Std.int(Math.max(this.mOffsetX - halfRectX, 0)), Std.int(Math.max(this.mOffsetY - halfRectY, 0)), index);
+        index += renderObject.update(this.mRenderOffsetX, this.mRenderOffsetY, index);
       }
-      // set to half rect
-      rect.x = Math.max(halfRectX, 0);
-      rect.y = Math.max(halfRectY, 0);
+      // set to new rect positions
+      rect.x = newRectX;
+      rect.y = newRectY;
     }
     // write back scroll rect
     this.mTileMap.scrollRect = rect;
@@ -542,16 +562,11 @@ class Map extends EventDispatcher {
    */
   @:dox(hide) @:noCompletion public function willBeVisible(x:Int, y:Int, width:Int, height:Int):Bool {
     // build min and max point
-    var maxPoint:Point = new Point(x + width, y + width);
-    var minPoint:Point = new Point(x, y);
+    var maxPoint:Point = new Point(x + width + this.mTileMap.scrollRect.x, y + width + this.mTileMap.scrollRect.y);
+    var minPoint:Point = new Point(x + this.mTileMap.scrollRect.x, y + this.mTileMap.scrollRect.y);
     // transform to global
     maxPoint.copyFrom(this.mTileMap.localToGlobal(maxPoint));
     minPoint.copyFrom(this.mTileMap.localToGlobal(minPoint));
-    // apply scroll rect
-    maxPoint.x += this.mTileMap.scrollRect.x;
-    maxPoint.y += this.mTileMap.scrollRect.y;
-    minPoint.x += this.mTileMap.scrollRect.x;
-    minPoint.y += this.mTileMap.scrollRect.y;
     // calculate width and height with offset
     var width:Float = this.mTileMap.width;
     var height:Float = this.mTileMap.height;

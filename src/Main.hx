@@ -17,6 +17,7 @@ class Main extends Sprite {
   private var mOffsetY:Int = 0;
 
   private static inline var MOVE_SPEED:Int = 2;
+  private static inline var SCALE:Int = 1;
 
   /**
    * Constructor
@@ -24,10 +25,12 @@ class Main extends Sprite {
   public function new() {
     super();
     // load map
-    // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx");
-    // this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx");
-    this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx");
-    // this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx");
+    // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    this.mMap.tilemap.scaleX = SCALE;
+    this.mMap.tilemap.scaleY = SCALE;
+    // this.mMap = new openfl.tiled.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -50,8 +53,10 @@ class Main extends Sprite {
     this.mPlayer = new openfl.display.Sprite();
     this.mPlayer.graphics.beginFill(0xFFCC00);
     this.mPlayer.graphics.drawRect(0, 0, this.mMap.tilewidth - 1, this.mMap.tileheight - 1);
-    this.mPlayer.x = this.mMap.tilewidth;
-    this.mPlayer.y = this.mMap.tileheight;
+    this.mPlayer.x = this.mMap.tilewidth * SCALE;
+    this.mPlayer.y = this.mMap.tileheight * SCALE;
+    this.mPlayer.scaleX = SCALE;
+    this.mPlayer.scaleY = SCALE;
     addChild(this.mPlayer);
     // add fps counter
     addChild(new FPS(10, 10, 0xffffff));
