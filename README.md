@@ -5,23 +5,25 @@ Implementation of tiled map parsing for openfl and haxe.
 ## Usage example
 
 ```haxe
-// load map
+// initialize map
 var map:openfl.tiled.Map = new openfl.tiled.Map(
   "/tiled/rpg/",
   "/tiled/rpg/island.tmx",
   stage.stageWidth,
   stage.stageHeight
 );
+// set load complete handler
 map.addEventListener(Event.COMPLETE, onMapLoadComplete);
+// start loading the map
+map.load();
 
 ...
 
 function onMapLoadComplete(event:Event):Void {
+  // remove event listener again
   map.removeEventListener(Event.COMPLETE, onMapLoadComplete);
   // add child to stage (necessary for animations)
   stage.addChild(map.tilemap);
-  // render map
-  map.render();
 }
 ```
 
@@ -32,3 +34,15 @@ openfl-tiled2 is currently not published to haxelib, so to install you've to use
 ```bash
 haxelib git openfl-tiled2 https://github.com/Dreaded-Gnu/openfl-tiled
 ```
+
+## Configuration options
+
+Following configuration options are possible via defines.
+
+### openfl_tiled_use_asset
+
+When defined via `project.xml` implementation uses openfl `Assets` class to fetch all the necessary data.
+
+### openfl_tiled_debug_render_objects
+
+When defined tiled mapeditor objects are rendered by default with red color. This color can be changed by manipulating property `debugRenderObjectColor` of map instance.
