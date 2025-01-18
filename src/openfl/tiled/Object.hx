@@ -398,14 +398,16 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
    * @param index
    */
   public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+    var added:Int = 0;
     // render collision object if set
     #if openfl_tiled_render_objects
     if (this.gid == 0) {
-      this.renderObject(offsetX, offsetY, index);
+      this.renderObject(offsetX, offsetY, index++);
+      added++;
     }
     #end
     // render tile object if set
-    return this.renderTileObject(offsetX, offsetY, index);
+    return this.renderTileObject(offsetX, offsetY, index) + added;
   }
 
   /**

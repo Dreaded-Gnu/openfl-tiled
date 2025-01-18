@@ -3,9 +3,9 @@
 
 ## Still to be done
 
-- [ ] Evaluate whether collisions are working correctly and all kinds are supported
+- [ ] Test collision with applied scale to work correctly
 - [ ] Flipped objects are not correctly checked whether they will be visible or not
-- [ ] Implement debug mode rendering also objects that have no tile
+- [ ] Fix rendering of objects without tile id so that they are considered also by scrollrect
 
 ## Already done
 
@@ -36,3 +36,5 @@
 - [x] Add support for image layers
 - [x] Render only what is visible in tilemap instead of everything
 - [x] Some tiles visibility check doesn't work correctly on mobile
+- [x] Evaluate whether collisions are working correctly and all kinds are supported
+- [x] Implement debug mode rendering also objects that have no tile
