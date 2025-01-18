@@ -1,9 +1,6 @@
-node_modules/
-dist/
 *.map
 .haxelib
 export
-public/tiled
-public/phaser
-public/sprites
+public/*
+!public/.gitkeep
 out/

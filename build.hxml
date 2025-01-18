@@ -1,9 +1,0 @@
--main Main
--js dist/app.js
--cp node_modules/openfl/lib
--cp src
--D source-map
--D commonjs
---library openfl
---library lime
---library crypto

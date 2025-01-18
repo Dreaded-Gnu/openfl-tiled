@@ -5,9 +5,6 @@ import openfl.events.KeyboardEvent;
 import openfl.display.FPS;
 import openfl.events.Event;
 import openfl.display.Sprite;
-#if commonjs
-import openfl.display.Stage;
-#end
 
 class Main extends Sprite {
   private var mMap:openfl.tiled.Map;
@@ -170,14 +167,4 @@ class Main extends Sprite {
       }
     }
   }
-
-  #if commonjs
-  /**
-   * main function
-   */
-  public static function main():Void {
-    var stage:Stage = new Stage(640, 480, 0x000000, Main);
-    js.Browser.document.body.appendChild(stage.element);
-  }
-  #end
 }
