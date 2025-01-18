@@ -242,7 +242,6 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
       // transform to absolute
       shapeOffsetX = Math.abs(shapeOffsetX);
       shapeOffsetY = Math.abs(shapeOffsetY);
-      for (idx in 0...this.polyline.points.length)
       // polyline rendering rendering line from point to point
       for (idx in 0...this.polyline.points.length - 1) {
         // get line point 1 and 2
