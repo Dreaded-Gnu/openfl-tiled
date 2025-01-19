@@ -1,24 +1,70 @@
 package openfl.tiled.object;
 
+/**
+ * Tiled text object
+ */
 class Text {
+  /**
+   * Font family to be used
+   */
   public var fontfamily(default, null):String;
+
+  /**
+   * Pixel size
+   */
   public var pixelsize(default, null):Int;
+
+  /**
+   * Wrap text
+   */
   public var wrap(default, null):Int;
+
+  /**
+   * Text color
+   */
   public var color(default, null):String;
+
+  /**
+   * Bold flag
+   */
   public var bold(default, null):Int;
+
+  /**
+   * Italic flag
+   */
   public var italic(default, null):Int;
+
+  /**
+   * Underline flag
+   */
   public var underline(default, null):Int;
+
+  /**
+   * Strikeout flag
+   */
   public var strikeout(default, null):Int;
+
+  /**
+   * Kerning
+   */
   public var kerning(default, null):Int;
+
+  /**
+   * Horizontal align
+   */
   public var halign(default, null):String;
+
+  /**
+   * Vertical align
+   */
   public var valign(default, null):String;
 
   private var object:openfl.tiled.Object;
 
   /**
    * Constructor
-   * @param node
-   * @param object
+   * @param node node data to parse
+   * @param object object instance this object belongs to
    */
   public function new(node:Xml, object:openfl.tiled.Object) {
     this.object = object;

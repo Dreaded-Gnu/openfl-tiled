@@ -1,21 +1,27 @@
 package openfl.tiled.tileset;
 
+/**
+ * Tileset animation class
+ */
 class Animation {
-  public var frame(default, null):Array<openfl.tiled.tileset.Frame>;
+  /**
+   * Array of frames of the animation
+   */
+  public var frame(default, null):Array<Frame>;
 
   /**
    * Constructor
-   * @param node
+   * @param node xml representation to parse
    */
   public function new(node:Xml) {
-    this.frame = new Array<openfl.tiled.tileset.Frame>();
+    this.frame = new Array<Frame>();
     for (child in node) {
       if (child.nodeType != Xml.Element) {
         continue;
       }
       switch (child.nodeName) {
         case "frame":
-          this.frame.push(new openfl.tiled.tileset.Frame(child));
+          this.frame.push(new Frame(child));
       }
     }
   }

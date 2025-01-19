@@ -1,20 +1,25 @@
 package openfl.tiled.tileset;
 
+/**
+ * Tile offset representation
+ */
 class TileOffset {
+  /**
+   * Offset on x axis
+   */
   public var x(default, null):Int;
+
+  /**
+   * Offset on y axis
+   */
   public var y(default, null):Int;
 
   /**
    * Constructor
-   * @param node
+   * @param node xml representation to parse
    */
   public function new(node:Xml) {
-    if (null != node) {
-      this.x = Std.parseInt(node.get("x"));
-      this.y = Std.parseInt(node.get("y"));
-    } else {
-      this.x = 0;
-      this.y = 0;
-    }
+    this.x = node != null ? Std.parseInt(node.get("x")) : 0;
+    this.y = node != null ? Std.parseInt(node.get("y")) : 0;
   }
 }

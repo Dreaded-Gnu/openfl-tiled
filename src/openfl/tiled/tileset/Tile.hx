@@ -4,28 +4,81 @@ import openfl.geom.Rectangle;
 import openfl.events.EventDispatcher;
 import openfl.events.Event;
 
+/**
+ * Tiled tile representation
+ */
 class Tile extends EventDispatcher {
+  /**
+   * Tile id
+   */
   public var id(default, null):Int;
+
+  /**
+   * Tile type
+   */
   public var type(default, null):String;
+
+  /**
+   * Tile terrain
+   */
   public var terrain(default, null):String;
+
+  /**
+   * Tile probability
+   */
   public var probability(default, null):Float;
+
+  /**
+   * Tile x coordinate
+   */
   public var x(default, null):Int;
+
+  /**
+   * Tile y coordinate
+   */
   public var y(default, null):Int;
+
+  /**
+   * Tile width
+   */
   public var width(default, null):Int;
+
+  /**
+   * Tile height
+   */
   public var height(default, null):Int;
+
+  /**
+   * Tile properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+
+  /**
+   * Image of the tile
+   */
   public var image(default, null):openfl.tiled.Image;
+
+  /**
+   * Object group
+   */
   public var objectgroup(default, null):openfl.tiled.ObjectGroup;
+
+  /**
+   * Animation
+   */
   public var animation(default, null):openfl.tiled.tileset.Animation;
 
+  /**
+   * Used and created openfl tileset
+   */
   public var tileset(default, null):openfl.display.Tileset;
 
   private var mMap:openfl.tiled.Map;
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node xml representation to parse
+   * @param map map the tile belongs to
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     super();
@@ -58,9 +111,9 @@ class Tile extends EventDispatcher {
   }
 
   /**
-   * Load async necessary stuff
+   * Load async image if necessary stuff
    */
-  public function load():Void {
+  @:noCompletion public function load():Void {
     if (this.image != null) {
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       this.image.load();

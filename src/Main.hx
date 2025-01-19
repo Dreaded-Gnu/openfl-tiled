@@ -22,7 +22,8 @@ class Main extends Sprite {
   public function new() {
     super();
     // load map
-    this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new openfl.tiled.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    this.mMap = new openfl.tiled.Map("tiled/rpg/", "tiled/rpg/island.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new openfl.tiled.Map("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new openfl.tiled.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
     this.mMap.tilemap.scaleX = SCALE;
