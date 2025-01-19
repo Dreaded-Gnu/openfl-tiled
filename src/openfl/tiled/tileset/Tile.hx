@@ -113,7 +113,7 @@ class Tile extends EventDispatcher {
   /**
    * Load async image if necessary stuff
    */
-  @:noCompletion public function load():Void {
+  @:dox(hide) @:noCompletion public function load():Void {
     if (this.image != null) {
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       this.image.load();

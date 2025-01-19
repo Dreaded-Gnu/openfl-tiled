@@ -128,9 +128,9 @@ class Map extends EventDispatcher {
   }
 
   /**
-   * Resize function
-   * @param width
-   * @param height
+   * Resize function. Emits resize event after resize and scroll rect generation
+   * @param width width to resize tilemap to
+   * @param height height to resize tilemap to
    */
   public function resize(width:Int, height:Int):Void {
     // resize tilemap
@@ -292,7 +292,7 @@ class Map extends EventDispatcher {
   }
 
   /**
-   * Set load callback
+   * Method to start loading process of map
    */
   public function load():Void {
     #if openfl_tiled_use_asset
@@ -415,9 +415,9 @@ class Map extends EventDispatcher {
   }
 
   /**
-   * Method renders map and returns tilemap to be added
-   * @param offsetX
-   * @param offsetY
+   * Method to render tilemap
+   * @param offsetX x offset to be considered
+   * @param offsetY y offset to be considered
    */
   public function render(offsetX:Int = 0, offsetY:Int = 0):Void {
     // handle no offset change
@@ -533,8 +533,8 @@ class Map extends EventDispatcher {
 
   /**
    * Helper to get objectgroup by name, e.g. for collision layer
-   * @param name
-   * @return openfl.tiled.ObjectGroup
+   * @param name object group name to lookup
+   * @return Object group with the name or null if not found
    */
   public function objectgroupByName(name:String):openfl.tiled.ObjectGroup {
     for (objectgroup in this.objectgroup) {
@@ -546,12 +546,12 @@ class Map extends EventDispatcher {
   }
 
   /**
-   * Helper to check for collision
-   * @param x global x coordinate start
-   * @param y global y coordinate start
+   * Helper to check for collision. Coordinates, width and height need to be scale less
+   * @param x display x coordinate
+   * @param y display y coordinate
    * @param width width
    * @param height height
-   * @return Bool
+   * @return True if collision was detected, else false
    */
   public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     for (renderObject in this.mRenderObjects) {

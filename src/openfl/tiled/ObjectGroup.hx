@@ -78,7 +78,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
    * @param index
    * @return Int
    */
-  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     // initialize total
     var total:Int = 0;
     // iterate through objects
@@ -98,7 +98,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
    * @param height
    * @return Bool
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     for (object in this.object) {
       // handle no collision layer and not collidable object
       if (this.name != Helper.COLLISION_LAYER_NAME && object.type != Helper.COLLISION_LAYER_NAME) {
@@ -116,7 +116,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
     return 0;
   }
 
@@ -124,7 +124,7 @@ class ObjectGroup implements openfl.tiled.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
     return 0;
   }
 }

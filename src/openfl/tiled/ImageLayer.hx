@@ -4,33 +4,106 @@ import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.geom.Rectangle;
 
+/**
+ * Image layer representation
+ */
 class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
+  /**
+   * Id
+   */
   public var id(default, null):Int;
+
+  /**
+   * Name
+   */
   public var name(default, null):String;
+
+  /**
+   * Class
+   */
   public var klass(default, null):String;
+
+  /**
+   * X offset
+   */
   public var offsetx(default, null):Int;
+
+  /**
+   * Y offset
+   */
   public var offsety(default, null):Int;
+
+  /**
+   * Parallax X
+   */
   public var parallaxx(default, null):Int;
+
+  /**
+   * Parallax Y
+   */
   public var parallaxy(default, null):Int;
+
+  /**
+   * X position
+   */
   public var x(default, null):Int;
+
+  /**
+   * Y position
+   */
   public var y(default, null):Int;
+
+  /**
+   * Opacity
+   */
   public var opacity(default, null):Float;
+
+  /**
+   * Visible flag
+   */
   public var visible(default, null):Int;
+
+  /**
+   * tint color
+   */
   public var tintcolor(default, null):String;
+
+  /**
+   * Repeat x
+   */
   public var repeatx(default, null):Int;
+
+  /**
+   * Repeat y
+   */
   public var repeaty(default, null):Int;
+
+  /**
+   * Image layer properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+
+  /**
+   * Linked image of image layer
+   */
   public var image(default, null):openfl.tiled.Image;
 
+  /**
+   * Tileset
+   */
   public var tileset(default, null):openfl.display.Tileset;
+
+  /**
+   * Tile
+   */
   public var tile(default, null):openfl.tiled.helper.AnimatedTile;
 
   private var mMap:openfl.tiled.Map;
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node xml representation to parse
+   * @param map map the image lyer belongs to
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     super();
@@ -69,7 +142,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
   /**
    * Load method
    */
-  public function load():Void {
+  @:dox(hide) @:noCompletion public function load():Void {
     if (this.image != null) {
       // register event listener
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
@@ -107,7 +180,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * @param offsetY
    * @param index
    */
-  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     // handle null, which shouldn't happen at all
     if (this.tile == null) {
       return 0;
@@ -143,7 +216,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * @param height
    * @return Bool
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     return false;
   }
 
@@ -151,7 +224,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
     return 0;
   }
 
@@ -159,7 +232,7 @@ class ImageLayer extends EventDispatcher implements openfl.tiled.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
     return 0;
   }
 }

@@ -1,24 +1,31 @@
 package openfl.tiled;
 
 import haxe.Int64;
-import haxe.crypto.Base64;
 import haxe.io.Path;
 import openfl.utils.ByteArray;
 
+/**
+ * Class with some helpers
+ */
 class Helper {
-  public static inline var GID_ROTATED_HEXAGONAL_120_FLAG:UInt = 0x10000000;
-  public static inline var GID_FLIPPED_DIAGONALLY_FLAG:UInt = 0x20000000;
-  public static inline var GID_FLIPPED_VERTICALLY_FLAG:UInt = 0x40000000;
-  public static inline var GID_FLIPPED_HORIZONTALLY_FLAG:UInt = 0x80000000;
+  private static inline var GID_ROTATED_HEXAGONAL_120_FLAG:UInt = 0x10000000;
+  private static inline var GID_FLIPPED_DIAGONALLY_FLAG:UInt = 0x20000000;
+  private static inline var GID_FLIPPED_VERTICALLY_FLAG:UInt = 0x40000000;
+  private static inline var GID_FLIPPED_HORIZONTALLY_FLAG:UInt = 0x80000000;
 
+  /**
+   * Name a layer has to have when wanting to be considered for collision
+   */
   public static inline var COLLISION_LAYER_NAME:String = "collision";
-  public static inline var COLLISION_PROPERTY_NAME:String = "collides";
 
-  private static inline var BASE64_CHARS:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  /**
+   * Collision property type to be set when wanting to be considered for collision
+   */
+  public static inline var COLLISION_PROPERTY_NAME:String = "collides";
 
   /**
    * Helper to convert base64 to openfl byte array
-   * @param data
+   * @param data base64 data string to convert to byte array
    * @return ByteArray
    */
   public static function base64ToByteArray(data:String):ByteArray {
@@ -32,8 +39,8 @@ class Helper {
 
   /**
    * Helper to convert csv data to array of integer
-   * @param input
-   * @return Array<Int>
+   * @param input csv input data to convert to array of integer
+   * @return Array of integer
    */
   public static function csvToArray(input:String):Array<Int> {
     var result:Array<Int> = new Array<Int>();
@@ -62,18 +69,18 @@ class Helper {
 
   /**
    * Helper to join two path parts
-   * @param path1
-   * @param path2
-   * @return String
+   * @param path1 first part of path to join
+   * @param path2 second part of path to join
+   * @return Joined path
    */
   public static function joinPath(path1:String, path2:String):String {
-    return Path.normalize(Path.join([path1 ?? "", path2 ?? ""]));
+    return Path.normalize(Path.join([path1 ?? "", path2 ?? "",]));
   }
 
   /**
    * Helper to extract gid
-   * @param gid
-   * @return Int
+   * @param gid gid to extract
+   * @return gid without flipping or rotation flags
    */
   public static function extractGid(gid:Int):Int {
     return
@@ -82,8 +89,8 @@ class Helper {
 
   /**
    * Helper to check if gid is flipped horizontally
-   * @param gid
-   * @return Bool
+   * @param gid gid to check
+   * @return True if flipped horizontally, else false
    */
   public static function isGidFlippedHorizontally(gid:Int):Bool {
     return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_FLIPPED_HORIZONTALLY_FLAG) == Int64.ofInt(Helper.GID_FLIPPED_HORIZONTALLY_FLAG);
@@ -91,8 +98,8 @@ class Helper {
 
   /**
    * Helper to check if gid is flipped vertically
-   * @param gid
-   * @return Bool
+   * @param gid gid to check
+   * @return True if flipped vertically, else false
    */
   public static function isGidFlippedVertically(gid:Int):Bool {
     return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_FLIPPED_VERTICALLY_FLAG) == Int64.ofInt(Helper.GID_FLIPPED_VERTICALLY_FLAG);
@@ -100,8 +107,8 @@ class Helper {
 
   /**
    * Helper to check if gid is flipped diagonally
-   * @param gid
-   * @return Bool
+   * @param gid gid to check
+   * @return True if flipped diagonally, else false
    */
   public static function isGidFlippedDiagonally(gid:Int):Bool {
     return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_FLIPPED_DIAGONALLY_FLAG) == Int64.ofInt(Helper.GID_FLIPPED_DIAGONALLY_FLAG);
@@ -109,8 +116,8 @@ class Helper {
 
   /**
    * Helper to check if gid is flipped hexagonal 120
-   * @param gid
-   * @return Bool
+   * @param gid gid to check
+   * @return True if rotated hexagonal, else false
    */
   public static function isGidRotatedHexagonal120(gid:Int):Bool {
     return Int64.ofInt(gid) & Int64.ofInt(Helper.GID_ROTATED_HEXAGONAL_120_FLAG) == Int64.ofInt(Helper.GID_ROTATED_HEXAGONAL_120_FLAG);
@@ -118,10 +125,10 @@ class Helper {
 
   /**
    * Helper to apply tile flipping
-   * @param map
-   * @param t
-   * @param flippable
-   * @param tileset
+   * @param map map instance
+   * @param t animated tile
+   * @param flippable Flippable implementation
+   * @param tileset tileset
    */
   public static function applyTileFlipping(map:openfl.tiled.Map, t:openfl.tiled.helper.AnimatedTile, flippable:openfl.tiled.helper.Flippable,
       tileset:openfl.tiled.Tileset):Void {

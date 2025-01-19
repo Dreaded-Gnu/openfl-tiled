@@ -1,6 +1,6 @@
 package openfl.tiled;
 
-interface Updatable {
+@:dox(hide) interface Updatable {
   /**
    * Update method
    * @param offsetX

@@ -325,7 +325,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
    * @param height
    * @return Bool
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // float buffer
@@ -433,7 +433,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
    * @param offsetY
    * @param index
    */
-  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     var added:Int = 0;
     // render collision object if set
     #if openfl_tiled_debug_render_objects
@@ -449,7 +449,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
     return 0;
   }
 
@@ -457,7 +457,7 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
     return 0;
   }
 }

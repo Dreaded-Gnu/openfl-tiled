@@ -3,22 +3,73 @@ package openfl.tiled;
 import openfl.errors.Error;
 import openfl.tiled.map.RenderOrder;
 
+/**
+ * Layer representation
+ */
 class Layer implements openfl.tiled.Updatable {
+  /**
+   * Id
+   */
   public var id(default, null):Int;
+  /**
+   * Name
+   */
   public var name(default, null):String;
+  /**
+   * Class
+   */
   public var klass(default, null):String;
+  /**
+   * X position
+   */
   public var x(default, null):Int;
+  /**
+   * Y position
+   */
   public var y(default, null):Int;
+  /**
+   * Width
+   */
   public var width(default, null):Int;
+  /**
+   * Height
+   */
   public var height(default, null):Int;
+  /**
+   * Opacity
+   */
   public var opacity(default, null):Float;
+  /**
+   * Visible flag
+   */
   public var visible(default, null):Int;
+  /**
+   * Tint color
+   */
   public var tintcolor(default, null):String;
+  /**
+   * Offset x
+   */
   public var offsetx(default, null):Int;
+  /**
+   * Offset y
+   */
   public var offsety(default, null):Int;
+  /**
+   * Parallax x
+   */
   public var parallaxx(default, null):Int;
+  /**
+   * Parallax y
+   */
   public var parallaxy(default, null):Int;
+  /**
+   * Layer properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+  /**
+   * Embedded layer data
+   */
   public var data(default, null):openfl.tiled.layer.Data;
 
   private var mTileCheckContainer:std.Map<Int, std.Map<Int, openfl.tiled.helper.AnimatedTile>>;
@@ -26,9 +77,9 @@ class Layer implements openfl.tiled.Updatable {
 
   /**
    * Constructor
-   * @param node
-   * @param map
-   * @param layerId
+   * @param node xml representation to parse
+   * @param map map this layer belongs to
+   * @param layerId layer id
    */
   public function new(node:Xml, map:openfl.tiled.Map, layerId:Int) {
     this.mMap = map;
@@ -387,7 +438,7 @@ class Layer implements openfl.tiled.Updatable {
    * @param index
    * @return Int
    */
-  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
         if (this.mMap.infinite == 1) {
@@ -550,7 +601,7 @@ class Layer implements openfl.tiled.Updatable {
    * @param height
    * @return Bool
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     // array of tiles
     var tiles:Array<openfl.tiled.tileset.Tile> = new Array<openfl.tiled.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
@@ -594,7 +645,7 @@ class Layer implements openfl.tiled.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
     if (0 == this.data.chunk.length) {
       return this.width;
     }
@@ -613,7 +664,7 @@ class Layer implements openfl.tiled.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
     if (0 == this.data.chunk.length) {
       return this.height;
     }

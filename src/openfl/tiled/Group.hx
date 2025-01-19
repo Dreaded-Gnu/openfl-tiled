@@ -3,19 +3,73 @@ package openfl.tiled;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 
+/**
+ * Tiled group representation
+ */
 class Group extends EventDispatcher implements openfl.tiled.Updatable {
+  /**
+   * Group id
+   */
   public var id(default, null):Int;
+
+  /**
+   * Group name
+   */
   public var name(default, null):String;
+
+  /**
+   * Class
+   */
   public var klass(default, null):String;
+
+  /**
+   * Offset on x axis
+   */
   public var offsetx(default, null):Int;
+
+  /**
+   * Offset on y axis
+   */
   public var offsety(default, null):Int;
+
+  /**
+   * Opacity
+   */
   public var opacity(default, null):Float;
+
+  /**
+   * Visible flag
+   */
   public var visible(default, null):Int;
+
+  /**
+   * Tint color
+   */
   public var tintcolor(default, null):String;
+
+  /**
+   * Object properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+
+  /**
+   * Object layer
+   */
   public var layer(default, null):Array<openfl.tiled.Layer>;
+
+  /**
+   * Object group
+   */
   public var objectgroup(default, null):Array<openfl.tiled.ObjectGroup>;
+
+  /**
+   * Image layer
+   */
   public var imagelayer(default, null):Array<openfl.tiled.ImageLayer>;
+
+  /**
+   * Nested groups
+   */
   public var group(default, null):Array<openfl.tiled.Group>;
 
   private var mMap:openfl.tiled.Map;
@@ -25,8 +79,8 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node xml representation to parse
+   * @param map map this group belongs to
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     super();
@@ -84,7 +138,7 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
    * @param index
    * @return Int
    */
-  public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     // initialize total
     var total:Int = 0;
     // iterate through render objects and perform an update
@@ -104,7 +158,7 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
    * @param height
    * @return Bool
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
     for (renderObject in this.mRenderObjects) {
       if (renderObject.collides(x, y, width, height)) {
         return true;
@@ -117,7 +171,7 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
     var width:Int = 0;
     for (renderObject in this.mRenderObjects) {
       width = Std.int(Math.max(width, renderObject.evaluateWidth()));
@@ -129,7 +183,7 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
     var height:Int = 0;
     for (renderObject in this.mRenderObjects) {
       height = Std.int(Math.max(height, renderObject.evaluateHeight()));
@@ -140,7 +194,7 @@ class Group extends EventDispatcher implements openfl.tiled.Updatable {
   /**
    * Load method
    */
-  public function load():Void {
+  @:dox(hide) @:noCompletion public function load():Void {
     if (!this.mImageLayerLoaded) {
       var tmpImageLayer:Array<openfl.tiled.ImageLayer> = new Array<openfl.tiled.ImageLayer>();
       for (imagelayer in this.imagelayer) {

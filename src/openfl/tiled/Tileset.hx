@@ -142,7 +142,7 @@ class Tileset extends EventDispatcher {
    * @param gid
    * @return openfl.tiled.tileset.Tile
    */
-  public function getTileByGid(gid:Int):openfl.tiled.tileset.Tile {
+  @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):openfl.tiled.tileset.Tile {
     for (tile in this.tile) {
       if (tile.id == gid) {
         return tile;
@@ -154,7 +154,7 @@ class Tileset extends EventDispatcher {
   /**
    * Load callback
    */
-  public function load():Void {
+  @:dox(hide) @:noCompletion public function load():Void {
     if (!this.mSourceLoaded && this.source != null) {
       #if openfl_tiled_use_asset
       var data:String = Assets.getText(Helper.joinPath(this.mMap.prefix, this.source));

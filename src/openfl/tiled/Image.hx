@@ -7,14 +7,43 @@ import openfl.display.Bitmap;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 
+/**
+ * Image representation
+ */
 class Image extends EventDispatcher {
+  /**
+   * Format
+   */
   public var format(default, null):String;
+
+  /**
+   * Source image
+   */
   public var source(default, null):String;
+
+  /**
+   * Transparent color
+   */
   public var trans(default, null):UInt;
+
+  /**
+   * Width
+   */
   public var width(default, null):Int;
+
+  /**
+   * Height
+   */
   public var height(default, null):Int;
+
+  /**
+   * Possible embedded data
+   */
   public var data(default, null):openfl.tiled.image.Data;
 
+  /**
+   * Loaded bitmap
+   */
   public var bitmap(default, null):Bitmap;
 
   private var mTransSet:Bool;
@@ -53,7 +82,7 @@ class Image extends EventDispatcher {
   /**
    * Load method
    */
-  public function load():Void {
+  @:dox(hide) @:noCompletion public function load():Void {
     // handle data set
     if (this.data != null) {
       // emit warning for not supported targets
