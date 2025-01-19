@@ -217,7 +217,7 @@ class Map extends EventDispatcher {
     this.debugRenderObjectColor = TILEMAP_DEFAULT_DEBUG_RENDER_COLOR;
     #end
     // initialize tilemap
-    this.mTileMap = new openfl.display.Tilemap(width * TILEMAP_RENDER_OFFSET_FACTOR, height * TILEMAP_RENDER_OFFSET_FACTOR);
+    this.mTileMap = new openfl.display.Tilemap(width * TILEMAP_RENDER_OFFSET_FACTOR, height * TILEMAP_RENDER_OFFSET_FACTOR, null, false);
     // set added to and removed from stage
     this.mTileMap.addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
     this.mTileMap.addEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);

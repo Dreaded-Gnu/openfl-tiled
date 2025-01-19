@@ -4,7 +4,6 @@
 ## Still to be done
 
 - [ ] Improve code documentation
-- [ ] Fix annoying borders around tiles when it comes to scaling
 
 ## Already done
 
@@ -42,3 +41,4 @@
 - [x] Test collision with applied scale to work correctly
 - [x] Flipped objects are not correctly checked whether they will be visible or not
 - [x] Generate code documentation
+- [x] Fix annoying borders around tiles when it comes to scaling
