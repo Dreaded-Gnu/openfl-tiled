@@ -4,6 +4,7 @@
 ## Still to be done
 
 - [ ] Improve code documentation
+- [ ] Publish to haxelib
 
 ## Already done
 
