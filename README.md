@@ -1,4 +1,4 @@
-# openfl-tiled
+# TiledFL
 
 Implementation of tiled map parsing for openfl and haxe.
 
