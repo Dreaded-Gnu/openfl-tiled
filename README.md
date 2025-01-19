@@ -39,10 +39,10 @@ haxelib git TiledFL https://github.com/Dreaded-Gnu/openfl-tiled
 
 Following configuration options are possible via defines.
 
-### openfl_tiled_use_asset
+### TiledFL_use_asset
 
 When defined via `project.xml` implementation uses openfl `Assets` class to fetch all the necessary data.
 
-### openfl_tiled_debug_render_objects
+### TiledFL_debug_render_object
 
 When defined tiled mapeditor objects are rendered by default with red color. This color can be changed by manipulating property `debugRenderObjectColor` of map instance.

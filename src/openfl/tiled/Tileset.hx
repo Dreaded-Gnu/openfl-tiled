@@ -245,7 +245,7 @@ class Tileset extends EventDispatcher {
    */
   @:dox(hide) @:noCompletion public function load():Void {
     if (!this.mSourceLoaded && this.source != null) {
-      #if openfl_tiled_use_asset
+      #if TiledFL_debug_render_object
       var data:String = Assets.getText(Helper.joinPath(this.mMap.prefix, this.source));
       // parse xml
       this.parse(Xml.parse(data).firstElement());
