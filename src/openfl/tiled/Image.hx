@@ -1,11 +1,11 @@
 package openfl.tiled;
 
-import openfl.errors.Error;
-import openfl.geom.Point;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
+import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
+import openfl.geom.Point;
 
 /**
  * Image representation

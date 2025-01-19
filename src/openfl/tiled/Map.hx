@@ -1,16 +1,16 @@
 package openfl.tiled;
 
-import openfl.events.EventDispatcher;
-import openfl.tiled.map.StaggerIndex;
-import openfl.tiled.map.StaggerAxis;
-import openfl.tiled.map.RenderOrder;
-import openfl.tiled.map.Orientation;
-import openfl.errors.Error;
 import openfl.events.Event;
+import openfl.events.EventDispatcher;
+import openfl.errors.Error;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.net.URLLoader;
 import openfl.net.URLRequest;
+import openfl.tiled.map.StaggerIndex;
+import openfl.tiled.map.StaggerAxis;
+import openfl.tiled.map.RenderOrder;
+import openfl.tiled.map.Orientation;
 
 /**
  * Map class for loading and rendering tilemap

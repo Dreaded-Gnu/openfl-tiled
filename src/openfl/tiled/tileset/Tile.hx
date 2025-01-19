@@ -1,8 +1,8 @@
 package openfl.tiled.tileset;
 
-import openfl.geom.Rectangle;
-import openfl.events.EventDispatcher;
 import openfl.events.Event;
+import openfl.events.EventDispatcher;
+import openfl.geom.Rectangle;
 
 /**
  * Tiled tile representation

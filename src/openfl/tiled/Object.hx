@@ -1,7 +1,7 @@
 package openfl.tiled;
 
-import openfl.geom.Rectangle;
 import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 /**
  * Tiled object

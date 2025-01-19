@@ -1,10 +1,10 @@
 package;
 
-import openfl.ui.Keyboard;
-import openfl.events.KeyboardEvent;
 import openfl.display.FPS;
-import openfl.events.Event;
 import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.events.KeyboardEvent;
+import openfl.ui.Keyboard;
 
 class Main extends Sprite {
   private var mMap:openfl.tiled.Map;

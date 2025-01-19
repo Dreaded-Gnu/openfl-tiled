@@ -1,7 +1,7 @@
 package openfl.tiled.image;
 
-import openfl.utils.ByteArray;
 import openfl.errors.Error;
+import openfl.utils.ByteArray;
 
 /**
  * Image data handling

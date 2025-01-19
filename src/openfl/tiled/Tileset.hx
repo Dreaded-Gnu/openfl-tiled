@@ -1,14 +1,14 @@
 package openfl.tiled;
 
-import openfl.net.URLRequest;
-import openfl.net.URLLoader;
-import openfl.geom.Rectangle;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
+import openfl.geom.Rectangle;
+import openfl.net.URLRequest;
+import openfl.net.URLLoader;
+import openfl.tiled.map.Orientation;
 import openfl.tiled.tileset.FillMode;
 import openfl.tiled.tileset.TileRenderSize;
 import openfl.tiled.tileset.ObjectAlignment;
-import openfl.tiled.map.Orientation;
 
 /**
  * Tileset representation
