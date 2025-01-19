@@ -1,13 +1,19 @@
 package openfl.tiled.layer;
 
+/**
+ * Tile representation
+ */
 class Tile implements openfl.tiled.helper.Flippable {
+  /**
+   * Gid property
+   */
   public var gid(get, null):Int;
 
   private var mGid:Int;
 
   /**
    * Constructor
-   * @param gid
+   * @param gid gid the tile is representing
    */
   public function new(gid:Int) {
     this.mGid = gid;
@@ -22,32 +28,32 @@ class Tile implements openfl.tiled.helper.Flippable {
   }
 
   /**
-   * Getter for flipped horizontally
-   * @return Bool
+   * Helper for flipped horizontally checks
+   * @return True if flipped horizontally, else false
    */
   public function isFlippedHorizontally():Bool {
     return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
   /**
-   * Getter for flipped vertically
-   * @return Bool
+   * Helper for flipped vertically checks
+   * @return True if flipped vertically, else false
    */
   public function isFlippedVertically():Bool {
     return Helper.isGidFlippedVertically(this.mGid);
   }
 
   /**
-   * Getter for flipped diagonally
-   * @return Bool
+   * Helper for flipped diagonally checks
+   * @return True if flipped diagonally, else false
    */
   public function isFlippedDiagonally():Bool {
     return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
   /**
-   * Getter for flipped hexagonal 120
-   * @return Bool
+   * Helper for flipped hexagonal 120 checks
+   * @return True if rotated hexagonal by 120, else false
    */
   public function isRotatedHexagonal120():Bool {
     return Helper.isGidRotatedHexagonal120(this.mGid);

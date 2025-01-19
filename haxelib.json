@@ -1,5 +1,5 @@
 {
-  "name": "openfl-tiled",
+  "name": "TiledFL",
   "url": "https://github.com/Dreaded-Gnu/openfl-tiled",
   "license": "MIT",
   "tags": [
@@ -12,7 +12,7 @@
     "tilemap",
     "tilesheet"
   ],
-  "description": "openfl-tiled is a library, which gives openfl developers the ability to use the TILED map editor.",
+  "description": "TiledFL is a library, which gives openfl developers the ability to use the TILED map editor.",
   "version": "1.0.0",
   "releasenote": "Initial release",
   "contributors": [

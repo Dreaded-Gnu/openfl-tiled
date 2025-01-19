@@ -3,17 +3,39 @@ package openfl.tiled.layer;
 import openfl.errors.Error;
 import openfl.utils.ByteArray;
 
+/**
+ * Chunk layer implementation
+ */
 class Chunk {
+  /**
+   * X coordinate the chunk starts
+   */
   public var x(default, null):Int;
+
+  /**
+   * Y coordinate the chunk starts
+   */
   public var y(default, null):Int;
+
+  /**
+   * Chunk width
+   */
   public var width(default, null):Int;
+
+  /**
+   * Chunk height
+   */
   public var height(default, null):Int;
+
+  /**
+   * Array of tiles in chunk
+   */
   public var tile(default, null):Array<openfl.tiled.layer.Tile>;
 
   /**
    * Constructor
-   * @param node
-   * @param data
+   * @param node chunk xml representation
+   * @param data layer data handling
    */
   public function new(node:Xml, data:openfl.tiled.layer.Data) {
     this.x = Std.parseInt(node.get("x"));

@@ -29,10 +29,10 @@ function onMapLoadComplete(event:Event):Void {
 
 ## Installation
 
-openfl-tiled2 is currently not published to haxelib, so to install you've to use git install.
+TiledFL is currently not published to haxelib, so to install you've to use git install.
 
 ```bash
-haxelib git openfl-tiled2 https://github.com/Dreaded-Gnu/openfl-tiled
+haxelib git TiledFL https://github.com/Dreaded-Gnu/openfl-tiled
 ```
 
 ## Configuration options

@@ -3,15 +3,33 @@ package openfl.tiled.layer;
 import openfl.errors.Error;
 import openfl.utils.ByteArray;
 
+/**
+ * Layer data handling
+ */
 class Data {
+  /**
+   * Used encoding of data
+   */
   public var encoding(default, null):String;
+
+  /**
+   * Used compression of data
+   */
   public var compression(default, null):String;
+
+  /**
+   * Array of tiles represented in data
+   */
   public var tile(default, null):Array<openfl.tiled.layer.Tile>;
+
+  /**
+   * Array of chunks represented in data
+   */
   public var chunk(default, null):Array<openfl.tiled.layer.Chunk>;
 
   /**
    * Constructor
-   * @param node
+   * @param node xml representation of data
    */
   public function new(node:Xml) {
     this.encoding = node.get("encoding");
