@@ -4,6 +4,7 @@
 ## Still to be done
 
 - [ ] Improve code documentation
+- [ ] Fix annoying borders around tiles when it comes to scaling
 
 ## Already done
 

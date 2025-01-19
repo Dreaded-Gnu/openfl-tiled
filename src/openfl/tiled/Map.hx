@@ -541,6 +541,10 @@ class Map extends EventDispatcher {
    * @param offsetY y offset to be considered
    */
   public function render(offsetX:Int = 0, offsetY:Int = 0):Void {
+    // skip render if not loaded!
+    if (!this.isLoaded) {
+      return;
+    }
     // handle no offset change
     if (this.mOffsetX == offsetX && this.mOffsetY == offsetY && this.mRendered) {
       return;
@@ -675,11 +679,18 @@ class Map extends EventDispatcher {
    * @return True if collision was detected, else false
    */
   public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+    // skip render if not loaded!
+    if (!this.isLoaded) {
+      return false;
+    }
+    // loop through render objects
     for (renderObject in this.mRenderObjects) {
+      // check for collision
       if (renderObject.collides(x, y, width, height)) {
         return true;
       }
     }
+    // no collision detected
     return false;
   }
 

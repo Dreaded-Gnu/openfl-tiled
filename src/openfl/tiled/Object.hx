@@ -345,23 +345,14 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
         this.mShape.graphics.lineTo(linePoint2.x, linePoint2.y);
       }
     } else if (this.ellipse != null) {
-      // create min and max point
-      var minPoint:Point = new Point();
-      var maxPoint:Point = new Point(this.width, this.height);
       // generate shape
-      this.mShape.graphics.drawEllipse(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      this.mShape.graphics.drawEllipse(0, 0, this.width, this.height);
     } else if (this.point != null) {
-      // create min and max point
-      var minPoint:Point = new Point();
-      var maxPoint:Point = new Point(1, 1);
       // generate shape
-      this.mShape.graphics.drawRect(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      this.mShape.graphics.drawRect(0, 0, 1, 1);
     } else {
-      // create min and max point
-      var minPoint:Point = new Point();
-      var maxPoint:Point = new Point(this.width, this.height);
       // generate shape
-      this.mShape.graphics.drawRect(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+      this.mShape.graphics.drawRect(0, 0, this.width, this.height);
     }
     // transform shape to tile
     this.transformShapToTile(shapeOffsetX, shapeOffsetY);
