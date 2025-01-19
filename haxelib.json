@@ -13,7 +13,7 @@
     "tilesheet"
   ],
   "description": "TiledFL is a library, which gives openfl developers the ability to use the TILED map editor.",
-  "version": "1.0.0-rc.0",
+  "version": "0.1.0",
   "releasenote": "Initial release",
   "contributors": [
     "DreadedGnu"

@@ -3,7 +3,7 @@
 
 ## Still to be done
 
-- [ ] Generate and improve code documentation
+- [ ] Improve code documentation
 
 ## Already done
 
@@ -40,3 +40,4 @@
 - [x] Prepare example to be capable to handle scale correctly
 - [x] Test collision with applied scale to work correctly
 - [x] Flipped objects are not correctly checked whether they will be visible or not
+- [x] Generate code documentation

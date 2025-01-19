@@ -11,62 +11,77 @@ class Layer implements openfl.tiled.Updatable {
    * Id
    */
   public var id(default, null):Int;
+
   /**
    * Name
    */
   public var name(default, null):String;
+
   /**
    * Class
    */
   public var klass(default, null):String;
+
   /**
    * X position
    */
   public var x(default, null):Int;
+
   /**
    * Y position
    */
   public var y(default, null):Int;
+
   /**
    * Width
    */
   public var width(default, null):Int;
+
   /**
    * Height
    */
   public var height(default, null):Int;
+
   /**
    * Opacity
    */
   public var opacity(default, null):Float;
+
   /**
    * Visible flag
    */
   public var visible(default, null):Int;
+
   /**
    * Tint color
    */
   public var tintcolor(default, null):String;
+
   /**
    * Offset x
    */
   public var offsetx(default, null):Int;
+
   /**
    * Offset y
    */
   public var offsety(default, null):Int;
+
   /**
    * Parallax x
    */
   public var parallaxx(default, null):Int;
+
   /**
    * Parallax y
    */
   public var parallaxy(default, null):Int;
+
   /**
    * Layer properties
    */
   public var properties(default, null):openfl.tiled.Properties;
+
   /**
    * Embedded layer data
    */

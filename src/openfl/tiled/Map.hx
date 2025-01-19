@@ -12,6 +12,9 @@ import openfl.geom.Rectangle;
 import openfl.net.URLLoader;
 import openfl.net.URLRequest;
 
+/**
+ * Map class for loading and rendering tilemap
+ */
 class Map extends EventDispatcher {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
@@ -19,37 +22,155 @@ class Map extends EventDispatcher {
   private static inline var TILEMAP_DEFAULT_DEBUG_RENDER_COLOR:Int = 0xff0000;
   #end
 
+  /**
+   * TMX map format version
+   */
   public var version(default, null):Float;
+
+  /**
+   * Tiled editor version used to safe the map
+   */
   public var tiledversion(default, null):Float;
+
+  /**
+   * class
+   */
   public var klass(default, null):String;
+
+  /**
+   * Orientation
+   */
   public var orientation(default, null):Orientation;
+
+  /**
+   * Render order
+   */
   public var renderorder(default, null):RenderOrder;
+
+  /**
+   * Compression level
+   */
   public var compressionlevel(default, null):Int;
+
+  /**
+   * Map width
+   */
   public var width(default, null):Int;
+
+  /**
+   * Map height
+   */
   public var height(default, null):Int;
+
+  /**
+   * Tile width
+   */
   public var tilewidth(default, null):Int;
+
+  /**
+   * Tile height
+   */
   public var tileheight(default, null):Int;
+
+  /**
+   * Width and height of tiles edge in pixel, only for hexagonal maps
+   */
   public var hexsidelength(default, null):Int;
+
+  /**
+   * Stagger axis for staggered and hexagonal maps
+   */
   public var staggeraxis(default, null):StaggerAxis;
+
+  /**
+   * Stagger index for staggered and hexagonal maps
+   */
   public var staggerindex(default, null):StaggerIndex;
+
+  /**
+   * X coordinate of parallax origin in pixel
+   */
   public var parallaxoriginx(default, null):Int;
+
+  /**
+   * Y coordinate of parallax origin in pixel
+   */
   public var parallaxoriginy(default, null):Int;
+
+  /**
+   * Background color
+   */
   public var backgroundcolor(default, null):UInt;
+
+  /**
+   * Next available id for new layers
+   */
   public var nextlayerid(default, null):Int;
+
+  /**
+   * Next available id for new objects
+   */
   public var nextobjectid(default, null):Int;
+
+  /**
+   * Is infinite / chunked map
+   */
   public var infinite(default, null):Int;
+
+  /**
+   * Array of tilesets
+   */
   public var tileset(default, null):Array<openfl.tiled.Tileset>;
+
+  /**
+   * Array of layers
+   */
   public var layer(default, null):Array<openfl.tiled.Layer>;
+
+  /**
+   * Array of object groups
+   */
   public var objectgroup(default, null):Array<openfl.tiled.ObjectGroup>;
+
+  /**
+   * Array of image layers
+   */
   public var imagelayer(default, null):Array<openfl.tiled.ImageLayer>;
+
+  /**
+   * Array of groups
+   */
   public var group(default, null):Array<openfl.tiled.Group>;
 
+  /**
+   * Is fully loaded flag
+   */
   public var isLoaded(default, null):Bool;
+
+  /**
+   * Used prefix folder
+   */
   public var prefix(default, null):String;
+
+  /**
+   * Openfl tilemap instance
+   */
   public var tilemap(get, null):openfl.display.Tilemap;
-  public var renderOffsetX(get, null):Int;
-  public var renderOffsetY(get, null):Int;
+
+  /**
+   * Render offset x
+   */
+  @:dox(hide) @:noCompletion public var renderOffsetX(get, null):Int;
+
+  /**
+   * Render offset y
+   */
+  @:dox(hide) @:noCompletion public var renderOffsetY(get, null):Int;
+
   #if openfl_tiled_debug_render_objects
+  /**
+   * Debug render object color
+   */
   public var debugRenderObjectColor(default, default):Int;
   #end
 

@@ -1,11 +1,17 @@
 package openfl.tiled;
 
+/**
+ * Tiled properties
+ */
 class Properties {
+  /**
+   * Array of properties
+   */
   public var property(default, null):Array<openfl.tiled.Property>;
 
   /**
    * Constructor
-   * @param node
+   * @param node xml representation to be parsed
    */
   public function new(node:Xml) {
     this.property = new Array<openfl.tiled.Property>();
@@ -21,8 +27,8 @@ class Properties {
 
   /**
    * Helper to get property by name
-   * @param name
-   * @return Property
+   * @param name Name to get property
+   * @return Found property or null
    */
   public function propertyByName(name:String):Property {
     for (property in this.property) {

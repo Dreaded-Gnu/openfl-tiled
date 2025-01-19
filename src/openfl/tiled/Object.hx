@@ -3,23 +3,93 @@ package openfl.tiled;
 import openfl.geom.Rectangle;
 import openfl.geom.Point;
 
+/**
+ * Tiled object
+ */
 class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Updatable {
+  /**
+   * ID
+   */
   public var id(default, null):Int;
+
+  /**
+   * Name
+   */
   public var name(default, null):String;
+
+  /**
+   * Type
+   */
   public var type(default, null):String;
+
+  /**
+   * X position
+   */
   public var x(default, null):Float;
+
+  /**
+   * Y position
+   */
   public var y(default, null):Float;
+
+  /**
+   * Width
+   */
   public var width(default, null):Float;
+
+  /**
+   * Height
+   */
   public var height(default, null):Float;
+
+  /**
+   * Rotation
+   */
   public var rotation(default, null):Float;
+
+  /**
+   * Gid
+   */
   public var gid(get, null):Int;
+
+  /**
+   * Visible flag
+   */
   public var visible(default, null):Int;
+
+  /**
+   * Template
+   */
   public var template(default, null):String;
+
+  /**
+   * Object properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+
+  /**
+   * Ellipse instance
+   */
   public var ellipse(default, null):openfl.tiled.object.Ellipse;
+
+  /**
+   * Point instance
+   */
   public var point(default, null):openfl.tiled.object.Point;
+
+  /**
+   * Polygon instance
+   */
   public var polygon(default, null):openfl.tiled.object.Polygon;
+
+  /**
+   * Polyline instance
+   */
   public var polyline(default, null):openfl.tiled.object.Polyline;
+
+  /**
+   * Text instance
+   */
   public var text(default, null):openfl.tiled.object.Text;
 
   private var mTile:openfl.tiled.helper.AnimatedTile;
@@ -32,8 +102,8 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node xml representation to parse
+   * @param map map this object belongs to
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
@@ -84,32 +154,32 @@ class Object implements openfl.tiled.helper.Flippable implements openfl.tiled.Up
   }
 
   /**
-   * Getter for flipped horizontally
-   * @return Bool
+   * Helper for flipped horizontally checks
+   * @return True if flipped horizontally, else false
    */
   public function isFlippedHorizontally():Bool {
     return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
   /**
-   * Getter for flipped vertically
-   * @return Bool
+   * Helper for flipped vertically checks
+   * @return True if flipped vertically, else false
    */
   public function isFlippedVertically():Bool {
     return Helper.isGidFlippedVertically(this.mGid);
   }
 
   /**
-   * Getter for flipped diagonally
-   * @return Bool
+   * Helper for flipped diagonally checks
+   * @return True if flipped diagonally, else false
    */
   public function isFlippedDiagonally():Bool {
     return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
   /**
-   * Getter for flipped hexagonal 120
-   * @return Bool
+   * Helper for flipped hexagonal 120 checks
+   * @return True if rotated hexagonal by 120, else false
    */
   public function isRotatedHexagonal120():Bool {
     return Helper.isGidRotatedHexagonal120(this.mGid);

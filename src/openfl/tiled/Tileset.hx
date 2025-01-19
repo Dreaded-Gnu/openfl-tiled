@@ -10,29 +10,118 @@ import openfl.tiled.tileset.TileRenderSize;
 import openfl.tiled.tileset.ObjectAlignment;
 import openfl.tiled.map.Orientation;
 
+/**
+ * Tileset representation
+ */
 class Tileset extends EventDispatcher {
+  /**
+   * First gid
+   */
   public var firstgid(default, null):Int;
+
+  /**
+   * Source to be loaded
+   */
   public var source(default, null):String;
+
+  /**
+   * Name
+   */
   public var name(default, null):String;
+
+  /**
+   * Class
+   */
   public var klass(default, null):String;
+
+  /**
+   * Tile width
+   */
   public var tilewidth(default, null):Int;
+
+  /**
+   * Tile height
+   */
   public var tileheight(default, null):Int;
+
+  /**
+   * Spacing
+   */
   public var spacing(default, null):Int;
+
+  /**
+   * Margin
+   */
   public var margin(default, null):Int;
+
+  /**
+   * Tile count
+   */
   public var tilecount(default, null):Int;
+
+  /**
+   * Columns
+   */
   public var columns(default, null):Int;
+
+  /**
+   * Object alignment
+   */
   public var objectalignment(default, null):ObjectAlignment;
+
+  /**
+   * Tile render size
+   */
   public var tilerendersize(default, null):TileRenderSize;
+
+  /**
+   * Fill mode
+   */
   public var fillmode(default, null):FillMode;
+
+  /**
+   * Tileset image
+   */
   public var image(default, null):openfl.tiled.Image;
+
+  /**
+   * Tileset offset
+   */
   public var tileoffset(default, null):openfl.tiled.tileset.TileOffset;
+
+  /**
+   * Grid
+   */
   public var grid(default, null):openfl.tiled.tileset.Grid;
+
+  /**
+   * Properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+
+  /**
+   * Terrain types
+   */
   public var terraintypes(default, null):openfl.tiled.tileset.TerrainTypes;
+
+  /**
+   * Wangset
+   */
   public var wangset(default, null):openfl.tiled.tileset.Wangsets;
+
+  /**
+   * Transformations
+   */
   public var transformations(default, null):openfl.tiled.tileset.Transformations;
+
+  /**
+   * Map of tiles
+   */
   public var tile(default, null):std.Map<Int, openfl.tiled.tileset.Tile>;
 
+  /**
+   * Openfl tileset created
+   */
   public var tileset(default, null):openfl.display.Tileset;
 
   private var mSourceLoaded:Bool = false;
@@ -41,8 +130,8 @@ class Tileset extends EventDispatcher {
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node xml representation to parse
+   * @param map map the tileset belongs to
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     super();

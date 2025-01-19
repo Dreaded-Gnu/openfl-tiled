@@ -1,31 +1,105 @@
 package openfl.tiled;
 
+/**
+ * Group of objects
+ */
 class ObjectGroup implements openfl.tiled.Updatable {
+  /**
+   * ID
+   */
   public var id(default, null):Int;
+
+  /**
+   * Name
+   */
   public var name(default, null):String;
+
+  /**
+   * Class
+   */
   public var klass(default, null):String;
+
+  /**
+   * Color
+   */
   public var color(default, null):UInt;
+
+  /**
+   * X coordinate
+   */
   public var x(default, null):Int;
+
+  /**
+   * Y coordinate
+   */
   public var y(default, null):Int;
+
+  /**
+   * Width
+   */
   public var width(default, null):Int;
+
+  /**
+   * Height
+   */
   public var height(default, null):Int;
+
+  /**
+   * Opacity
+   */
   public var opacity(default, null):Float;
+
+  /**
+   * Visible flag
+   */
   public var visible(default, null):Int;
+
+  /**
+   * Tint color
+   */
   public var tintcolor(default, null):String;
+
+  /**
+   * Offset X
+   */
   public var offsetx(default, null):Int;
+
+  /**
+   * Offset y
+   */
   public var offsety(default, null):Int;
+
+  /**
+   * Parallax X
+   */
   public var parallaxx(default, null):Int;
+
+  /**
+   * Parallax y
+   */
   public var parallaxy(default, null):Int;
+
+  /**
+   * Draw order
+   */
   public var draworder(default, null):openfl.tiled.objectgroup.DrawOrder;
+
+  /**
+   * Object group properties
+   */
   public var properties(default, null):openfl.tiled.Properties;
+
+  /**
+   * Objects within object group
+   */
   public var object(default, null):Array<openfl.tiled.Object>;
 
   private var mMap:openfl.tiled.Map;
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node xml representation to be parsed
+   * @param map map this object group belongs to
    */
   public function new(node:Xml, map:openfl.tiled.Map) {
     this.mMap = map;
