@@ -5,6 +5,7 @@
 
 - [ ] Improve code documentation
 - [ ] Publish to haxelib
+- [ ] Provide some samples
 
 ## Already done
 
