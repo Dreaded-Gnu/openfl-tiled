@@ -309,8 +309,8 @@ class Layer implements tiledfl.Updatable {
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         } else {
-          t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1,
-            1, 0, tileset.tile[gid]?.animation, this.mMap);
+          t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1, 1, 0,
+            tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping

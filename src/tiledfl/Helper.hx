@@ -130,8 +130,7 @@ class Helper {
    * @param flippable Flippable implementation
    * @param tileset tileset
    */
-  public static function applyTileFlipping(map:tiledfl.Map, t:tiledfl.helper.AnimatedTile, flippable:tiledfl.helper.Flippable,
-      tileset:tiledfl.Tileset):Void {
+  public static function applyTileFlipping(map:tiledfl.Map, t:tiledfl.helper.AnimatedTile, flippable:tiledfl.helper.Flippable, tileset:tiledfl.Tileset):Void {
     var x:Float = t.x;
     var y:Float = t.y;
     // handle hexagonal stuff
