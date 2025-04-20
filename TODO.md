@@ -4,7 +4,6 @@
 ## Still to be done
 
 - [ ] Improve code documentation
-- [ ] Publish to haxelib
 - [ ] Provide some samples
 
 ## Already done
@@ -44,3 +43,4 @@
 - [x] Flipped objects are not correctly checked whether they will be visible or not
 - [x] Generate code documentation
 - [x] Fix annoying borders around tiles when it comes to scaling
+- [x] Publish to haxelib
