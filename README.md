@@ -6,7 +6,7 @@ Implementation of tiled map parsing for openfl and haxe.
 
 ```haxe
 // initialize map
-var map:openfl.tiled.Map = new openfl.tiled.Map(
+var map:tiledfl.Map = new tiledfl.Map(
   "/tiled/rpg/",
   "/tiled/rpg/island.tmx",
   stage.stageWidth,
