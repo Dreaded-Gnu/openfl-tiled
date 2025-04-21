@@ -45,10 +45,10 @@ haxelib install TiledFL
 
 Following configuration options are possible via defines.
 
-### TiledFL_use_asset
+### tiledfl_use_asset
 
 When defined via `project.xml` implementation uses openfl `Assets` class to fetch all the necessary data.
 
-### TiledFL_debug_render_object
+### tiledfl_debug_render_object
 
 When defined tiled mapeditor objects are rendered by default with red color. This color can be changed by manipulating property `debugRenderObjectColor` of map instance.

@@ -95,7 +95,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
   private var mTile:tiledfl.helper.AnimatedTile;
   private var mMap:tiledfl.Map;
   private var mGid:Int;
-  #if TiledFL_debug_render_object
+  #if tiledfl_debug_render_object
   private var mShape:openfl.display.Shape;
   private var mTileset:openfl.display.Tileset;
   #end
@@ -107,7 +107,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    */
   public function new(node:Xml, map:tiledfl.Map) {
     this.mMap = map;
-    #if TiledFL_debug_render_object
+    #if tiledfl_debug_render_object
     this.mShape = new openfl.display.Shape();
     #end
     // parse properties
@@ -269,7 +269,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     return 1;
   }
 
-  #if TiledFL_debug_render_object
+  #if tiledfl_debug_render_object
   /**
    * Wrapper to transform generated shape into tile with tileset
    */
@@ -497,7 +497,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
   @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
     var added:Int = 0;
     // render collision object if set
-    #if TiledFL_debug_render_object
+    #if tiledfl_debug_render_object
     if (this.gid == 0) {
       added += this.renderObject(offsetX, offsetY, index);
     }

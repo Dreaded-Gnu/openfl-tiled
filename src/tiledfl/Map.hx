@@ -18,7 +18,7 @@ import tiledfl.map.Orientation;
 class Map extends EventDispatcher {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
-  #if TiledFL_debug_render_object
+  #if tiledfl_debug_render_object
   private static inline var TILEMAP_DEFAULT_DEBUG_RENDER_COLOR:Int = 0xff0000;
   #end
 
@@ -167,7 +167,7 @@ class Map extends EventDispatcher {
    */
   @:dox(hide) @:noCompletion public var renderOffsetY(get, null):Int;
 
-  #if TiledFL_debug_render_object
+  #if tiledfl_debug_render_object
   /**
    * Debug render object color
    */
@@ -213,7 +213,7 @@ class Map extends EventDispatcher {
     this.mRenderOffsetY = 0;
     this.mRendered = false;
     // set public properties if needed
-    #if TiledFL_debug_render_object
+    #if tiledfl_debug_render_object
     this.debugRenderObjectColor = TILEMAP_DEFAULT_DEBUG_RENDER_COLOR;
     #end
     // initialize tilemap
@@ -416,7 +416,7 @@ class Map extends EventDispatcher {
    * Method to start loading process of map
    */
   public function load():Void {
-    #if TiledFL_use_asset
+    #if tiledfl_use_asset
     // fake loader
     var loader:URLLoader = new URLLoader();
     loader.data = Assets.getText(mPath);

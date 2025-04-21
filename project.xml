@@ -10,6 +10,6 @@
 
   <assets path="public" rename="" />
 
-  <!--<define name="TiledFL_use_asset" />-->
-  <define name="TiledFL_debug_render_object" />
+  <!--<define name="tiledfl_use_asset" />-->
+  <define name="tiledfl_debug_render_object" />
 </project>
