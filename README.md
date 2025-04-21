@@ -24,6 +24,8 @@ function onMapLoadComplete(event:Event):Void {
   map.removeEventListener(Event.COMPLETE, onMapLoadComplete);
   // add child to stage (necessary for animations)
   stage.addChild(map.tilemap);
+  // initially render the map
+  map.render();
 }
 ```
 
