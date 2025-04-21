@@ -133,6 +133,13 @@ class Main extends Sprite {
         var oldPlayerY:Float = this.mPlayer.y;
         this.mPlayer.x = playerOffsetX;
         this.mPlayer.y = playerOffsetY;
+        // check for collision
+        if (this.mMap.collides(Std.int(this.mPlayer.x / SCALE), Std.int(this.mPlayer.y / SCALE), this.mMap.tilewidth, this.mMap.tileheight)) {
+          this.mPlayer.x = oldPlayerX;
+          this.mPlayer.y = oldPlayerY;
+          changeX = changeY = false;
+        }
+        // check for center map
         if (this.mPlayer.x - this.mPlayer.width / 2 < this.stage.stageWidth / 2 - this.mPlayer.width / 2
           && mOffsetX * SCALE > 0
           && mOffsetX * SCALE < mapWidth - this.stage.stageWidth
@@ -144,12 +151,6 @@ class Main extends Sprite {
           && mOffsetY * SCALE < mapHeight - this.stage.stageHeight
           && changeY) {
           this.mPlayer.y = this.stage.stageHeight / 2 - this.mPlayer.height / 2;
-        }
-        // check for collision
-        if (this.mMap.collides(Std.int(this.mPlayer.x / SCALE), Std.int(this.mPlayer.y / SCALE), this.mMap.tilewidth, this.mMap.tileheight)) {
-          this.mPlayer.x = oldPlayerX;
-          this.mPlayer.y = oldPlayerY;
-          changeX = changeY = false;
         }
       }
       if ((this.mPlayer.x + this.mPlayer.width / 2 >= this.stage.stageWidth / 2 - this.mPlayer.width / 2
