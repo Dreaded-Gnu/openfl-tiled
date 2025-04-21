@@ -1,8 +1,13 @@
 package tiledfl;
 
+#if tiledfl_use_asset
+import openfl.Assets;
+#end
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
+#if (js && html5)
 import openfl.errors.Error;
+#end
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.geom.Point;

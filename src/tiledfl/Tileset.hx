@@ -1,5 +1,8 @@
 package tiledfl;
 
+#if tiledfl_use_asset
+import openfl.Assets;
+#end
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.geom.Rectangle;
