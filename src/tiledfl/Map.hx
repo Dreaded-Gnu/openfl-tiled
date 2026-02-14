@@ -706,17 +706,20 @@ class Map extends EventDispatcher {
    * @return Bool
    */
   @:dox(hide) @:noCompletion public function willBeVisible(x:Int, y:Int, width:Int, height:Int):Bool {
+    // cache scrollrect x and y
+    var scrollRectX:Float = this.mTileMap.scrollRect.x;
+    var scrollRectY:Float = this.mTileMap.scrollRect.y;
     // build min and max point
-    var maxPoint:Point = new Point(x + width + this.mTileMap.scrollRect.x, y + width + this.mTileMap.scrollRect.y);
-    var minPoint:Point = new Point(x + this.mTileMap.scrollRect.x, y + this.mTileMap.scrollRect.y);
+    var maxPoint:Point = new Point(x + width + scrollRectX, y + width + scrollRectY);
+    var minPoint:Point = new Point(x + scrollRectX, y + scrollRectY);
     // transform to global
     maxPoint.copyFrom(this.mTileMap.localToGlobal(maxPoint));
     minPoint.copyFrom(this.mTileMap.localToGlobal(minPoint));
     // calculate width and height with offset
-    var width:Float = this.mTileMap.width;
-    var height:Float = this.mTileMap.height;
+    var mapWidth:Float = this.mTileMap.width;
+    var mapHeight:Float = this.mTileMap.height;
     // check whether it's in tilemap width range
-    return (maxPoint.x >= 0 && maxPoint.x <= width && maxPoint.y >= 0 && maxPoint.y <= height)
-      || (minPoint.x >= 0 && minPoint.x <= width && minPoint.y >= 0 && minPoint.y <= height);
+    return (maxPoint.x >= 0 && maxPoint.x <= mapWidth && maxPoint.y >= 0 && maxPoint.y <= mapHeight)
+      || (minPoint.x >= 0 && minPoint.x <= mapWidth && minPoint.y >= 0 && minPoint.y <= mapHeight);
   }
 }

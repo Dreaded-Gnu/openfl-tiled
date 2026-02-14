@@ -335,14 +335,20 @@ class Layer implements tiledfl.Updatable {
             }
           }
         } else {
+          // add half map as offset for diamond shaped maps
           t.x += this.mMap.width / 2 * tileset.tilewidth;
-        } // apply position correction when tileheight is greater than tilemap
+          // adjust realX as well, because if not visible check will detect
+          // half of the map as not visible
+          t.realX += this.mMap.width / 2 * tileset.tilewidth;
+        }
+        // apply position correction when tileheight is greater than tilemap
         if (tileset.tileheight > this.mMap.tileheight) {
           t.y = Std.int(t.y / (tileset.tileheight / this.mMap.tileheight));
         }
         if (tileset.tilewidth > this.mMap.tilewidth) {
           t.x = Std.int(t.x / (tileset.tilewidth / this.mMap.tilewidth));
-        } // apply tileoffset
+        }
+        // apply tileoffset
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
