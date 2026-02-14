@@ -317,10 +317,16 @@ class Layer implements tiledfl.Updatable {
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (this.mMap.orientation == MapOrientationStaggered) {
+          // for staggered adjust x and y
           t.x = x * tileset.tilewidth;
           t.y = y * tileset.tileheight;
+          // for staggered also adjust realX and realY
+          t.realX = x * tileset.tilewidth;
+          t.realY = y * tileset.tileheight;
+          // handle stagger axis and index
           if (this.mMap.staggeraxis == MapStaggerAxisY) {
             t.y = Std.int(t.y / 2);
+            t.realY = Std.int(t.realY / 2);
             if (this.mMap.staggerindex == MapStaggerIndexOdd) {
               t.x += Std.int((y & 1) * tileset.tilewidth / 2);
             } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
@@ -328,6 +334,7 @@ class Layer implements tiledfl.Updatable {
             }
           } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
             t.x = Std.int(t.x / 2);
+            t.realX = Std.int(t.realX / 2);
             if (this.mMap.staggerindex == MapStaggerIndexOdd) {
               t.y += Std.int((x & 1) * tileset.tileheight / 2);
             } else if (this.mMap.staggerindex == MapStaggerIndexEven) {

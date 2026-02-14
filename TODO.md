@@ -5,6 +5,7 @@
 
 - [ ] Improve code documentation
 - [ ] Provide some samples
+- [ ] Switch from integer for coordinates to float
 
 ## Already done
 

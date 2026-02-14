@@ -26,8 +26,8 @@ class Main extends Sprite {
     // this.mMap = new tiledfl.Map("tiled/rpg/", "tiled/rpg/island.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new tiledfl.Map("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new tiledfl.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    this.mMap = new tiledfl.Map("tiled/isometric_grass_and_water/", "tiled/isometric_grass_and_water/isometric_grass_and_water.tmx", this.stage.stageWidth,
-      this.stage.stageHeight);
+    this.mMap = new tiledfl.Map("tiled/isometric_staggered_grass_and_water/",
+      "tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx", this.stage.stageWidth, this.stage.stageHeight);
     /*this.mMap.tilemap.scaleX = SCALE;
       this.mMap.tilemap.scaleY = SCALE; */
     // this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
