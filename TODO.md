@@ -4,6 +4,7 @@
 ## Still to be done
 
 - [ ] Improve code documentation
+- [ ] Publish code documentation
 - [ ] Provide some samples
 
 ## Already done
