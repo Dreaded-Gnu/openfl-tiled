@@ -3,7 +3,8 @@ package tiledfl.map;
 /**
  * Tiled map stager index enum
  */
-enum abstract StaggerIndex(String) {
+enum abstract StaggerIndex(String)
+{
   /**
    * Map staggered on even indexes
    */

@@ -6,7 +6,8 @@ import tiledfl.map.RenderOrder;
 /**
  * Layer representation
  */
-class Layer implements tiledfl.Updatable {
+class Layer implements tiledfl.Updatable
+{
   /**
    * Id
    */
@@ -96,7 +97,8 @@ class Layer implements tiledfl.Updatable {
    * @param map map this layer belongs to
    * @param layerId layer id
    */
-  public function new(node:Xml, map:tiledfl.Map, layerId:Int) {
+  public function new(node:Xml, map:tiledfl.Map, layerId:Int)
+  {
     this.mMap = map;
     this.mTileCheckContainer = new std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>();
     // parse stuff
@@ -115,12 +117,15 @@ class Layer implements tiledfl.Updatable {
     this.parallaxx = node.exists("parallaxx") ? Std.parseInt(node.get("parallaxx")) : 1;
     this.parallaxy = node.exists("parallaxy") ? Std.parseInt(node.get("parallaxy")) : 1;
     // parse children
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "data":
           this.data = new tiledfl.layer.Data(child);
         case "properties":
@@ -138,17 +143,20 @@ class Layer implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  private function renderLayer(x:Float, y:Float, offsetX:Float, offsetY:Float, index:Int):Int {
+  private function renderLayer(x:Float, y:Float, offsetX:Float, offsetY:Float, index:Int):Int
+  {
     var id:Int = Std.int(x + y * this.width);
     // get gid
     var gid:Int = this.data.tile[id].gid;
     // handle invalid
-    if (0 == gid) {
+    if (0 == gid)
+    {
       return 0;
     }
     // get tileset
     var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-    if (null == tileset) {
+    if (null == tileset)
+    {
       return 0;
     }
     // generate tile
@@ -161,14 +169,17 @@ class Layer implements tiledfl.Updatable {
     t.realX -= offsetX;
     t.realY -= offsetY;
     // add tile at position
-    if (!this.mTileCheckContainer.get(tileset.firstgid).exists(id)) {
+    if (!this.mTileCheckContainer.get(tileset.firstgid).exists(id))
+    {
       // set item
       this.mTileCheckContainer.get(tileset.firstgid).set(id, t);
     }
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(t.realX, t.realY, tileset.tilewidth, tileset.tileheight)) {
+    if (!this.mMap.willBeVisible(t.realX, t.realY, tileset.tilewidth, tileset.tileheight))
+    {
       // check if it's displayed
-      if (tilemap.contains(t)) {
+      if (tilemap.contains(t))
+      {
         // just remove it from map
         tilemap.removeTile(t);
       }
@@ -187,14 +198,16 @@ class Layer implements tiledfl.Updatable {
    * @param chunkIndex
    * @return Void
    */
-  private function renderChunk(chunk:tiledfl.layer.Chunk, chunkIndex:Int, offsetX:Float, offsetY:Float, mapIndex:Int, index:Int):Int {
+  private function renderChunk(chunk:tiledfl.layer.Chunk, chunkIndex:Int, offsetX:Float, offsetY:Float, mapIndex:Int, index:Int):Int
+  {
     // calculate max to iterate to
     var max:Int = Std.int(chunk.width * chunk.height);
     var count:Int = 0;
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // iterate from max to min
-    for (i in 0...max) {
+    for (i in 0...max)
+    {
       // calculate x and y
       var x:Int = Std.int(i % chunk.width);
       var y:Int = Std.int(i / chunk.height);
@@ -203,12 +216,14 @@ class Layer implements tiledfl.Updatable {
       // get gid of current id
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
-      if (0 == gid) {
+      if (0 == gid)
+      {
         continue;
       }
       // get tileset
       var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-      if (null == tileset) {
+      if (null == tileset)
+      {
         continue;
       }
       // generate tile
@@ -221,17 +236,22 @@ class Layer implements tiledfl.Updatable {
       // get tile container for checking
       var map:std.Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
-      if (!map.exists(mapIndex)) {
+      if (!map.exists(mapIndex))
+      {
         // set item
         map.set(mapIndex++, t);
-      } else {
+      }
+      else
+      {
         // increment index to fake set item
         mapIndex++;
       }
       // skip coordinate if not visible
-      if (!this.mMap.willBeVisible(t.realX, t.realY, tileset.tilewidth, tileset.tileheight)) {
+      if (!this.mMap.willBeVisible(t.realX, t.realY, tileset.tilewidth, tileset.tileheight))
+      {
         // check if it's displayed
-        if (tilemap.contains(t)) {
+        if (tilemap.contains(t))
+        {
           // just remove it from map
           tilemap.removeTile(t);
         }
@@ -259,31 +279,41 @@ class Layer implements tiledfl.Updatable {
    * @return tiledfl.helper.AnimatedTile
    */
   private function generateTile(x:Float, y:Float, id:Int, gid:Int, tileset:tiledfl.Tileset, mapIndex:Int, chunk:tiledfl.layer.Chunk = null,
-      chunkIndex:Int = -1):tiledfl.helper.AnimatedTile {
+      chunkIndex:Int = -1):tiledfl.helper.AnimatedTile
+  {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
     // adjust x / y for chunked maps
-    if (chunk != null) {
-      if (this.mMap.orientation == MapOrientationIsometric || this.mMap.orientation == MapOrientationStaggered) {
+    if (chunk != null)
+    {
+      if (this.mMap.orientation == MapOrientationIsometric || this.mMap.orientation == MapOrientationStaggered)
+      {
         //// FIXME: IS THIS RIGHT THAT WAY?
         x += chunk.x;
         y += chunk.y;
-      } else {
+      }
+      else
+      {
         x += chunk.x;
         y += chunk.y;
       }
     }
     // generate check container if necessary
-    if (null == this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid)) {
-      if (chunkIndex != -1) {
+    if (null == this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid))
+    {
+      if (chunkIndex != -1)
+      {
         this.mTileCheckContainer.set(chunkIndex, new std.Map<Int, tiledfl.helper.AnimatedTile>());
-      } else {
+      }
+      else
+      {
         this.mTileCheckContainer.set(tileset.firstgid, new std.Map<Int, tiledfl.helper.AnimatedTile>());
       }
     }
     var ts:openfl.display.Tileset = tileset.tileset;
     var tile:tiledfl.tileset.Tile = tileset.getTileByGid(gid);
-    if (tile?.tileset != null) {
+    if (tile?.tileset != null)
+    {
       ts = tile.tileset;
     }
     var layerTile:tiledfl.layer.Tile = chunk != null ? chunk.tile[id] : this.data.tile[id];
@@ -291,9 +321,11 @@ class Layer implements tiledfl.Updatable {
     var map:std.Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
     // generate tile
     var t:tiledfl.helper.AnimatedTile = null;
-    switch (this.mMap.orientation) {
+    switch (this.mMap.orientation)
+    {
       case MapOrientationIsometric, MapOrientationStaggered:
-        if (map.exists(mapIndex)) {
+        if (map.exists(mapIndex))
+        {
           t = map.get(mapIndex);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
@@ -308,7 +340,9 @@ class Layer implements tiledfl.Updatable {
           t.map = this.mMap;
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
-        } else {
+        }
+        else
+        {
           t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
@@ -316,7 +350,8 @@ class Layer implements tiledfl.Updatable {
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
-        if (this.mMap.orientation == MapOrientationStaggered) {
+        if (this.mMap.orientation == MapOrientationStaggered)
+        {
           // for staggered adjust x and y
           t.x = x * tileset.tilewidth;
           t.y = y * tileset.tileheight;
@@ -324,24 +359,35 @@ class Layer implements tiledfl.Updatable {
           t.realX = x * tileset.tilewidth;
           t.realY = y * tileset.tileheight;
           // handle stagger axis and index
-          if (this.mMap.staggeraxis == MapStaggerAxisY) {
+          if (this.mMap.staggeraxis == MapStaggerAxisY)
+          {
             t.y /= 2;
             t.realY /= 2;
-            if (this.mMap.staggerindex == MapStaggerIndexOdd) {
+            if (this.mMap.staggerindex == MapStaggerIndexOdd)
+            {
               t.x += (Std.int(y) & 1) * tileset.tilewidth / 2;
-            } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
+            }
+            else if (this.mMap.staggerindex == MapStaggerIndexEven)
+            {
               t.x -= (Std.int(y) & 1) * tileset.tilewidth / 2;
             }
-          } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
+          }
+          else if (this.mMap.staggeraxis == MapStaggerAxisX)
+          {
             t.x /= 2;
             t.realX /= 2;
-            if (this.mMap.staggerindex == MapStaggerIndexOdd) {
+            if (this.mMap.staggerindex == MapStaggerIndexOdd)
+            {
               t.y += (Std.int(x) & 1) * tileset.tileheight / 2;
-            } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
+            }
+            else if (this.mMap.staggerindex == MapStaggerIndexEven)
+            {
               t.y -= (Std.int(x) & 1) * tileset.tileheight / 2;
             }
           }
-        } else {
+        }
+        else
+        {
           // add half map as offset for diamond shaped maps
           t.x += this.mMap.width / 2 * tileset.tilewidth;
           // adjust realX as well, because if not visible check will detect
@@ -349,17 +395,20 @@ class Layer implements tiledfl.Updatable {
           t.realX += this.mMap.width / 2 * tileset.tilewidth;
         }
         // apply position correction when tileheight is greater than tilemap
-        if (tileset.tileheight > this.mMap.tileheight) {
+        if (tileset.tileheight > this.mMap.tileheight)
+        {
           t.y = Std.int(t.y / (tileset.tileheight / this.mMap.tileheight));
         }
-        if (tileset.tilewidth > this.mMap.tilewidth) {
+        if (tileset.tilewidth > this.mMap.tilewidth)
+        {
           t.x = Std.int(t.x / (tileset.tilewidth / this.mMap.tilewidth));
         }
         // apply tileoffset
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
-        if (map.exists(mapIndex)) {
+        if (map.exists(mapIndex))
+        {
           t = map.get(mapIndex);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
@@ -374,7 +423,9 @@ class Layer implements tiledfl.Updatable {
           t.map = this.mMap;
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
-        } else {
+        }
+        else
+        {
           t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
@@ -382,17 +433,22 @@ class Layer implements tiledfl.Updatable {
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
-        if (tile?.tileset != null) {
+        if (tile?.tileset != null)
+        {
           var rect:openfl.geom.Rectangle = ts.getRect(0);
-          if (rect.height > this.mMap.tileheight) {
+          if (rect.height > this.mMap.tileheight)
+          {
             t.y -= rect.height / Std.int(rect.height / this.mMap.tileheight);
           }
           /*if (rect.width > this.mMap.tilewidth) {
             t.x -= rect.width / Std.int(rect.width / this.mMap.tilewidth);
           }*/
-        } else {
+        }
+        else
+        {
           // apply position correction when tileheight is greater than tilemap tileheight
-          if (tileset.tileheight > this.mMap.tileheight) {
+          if (tileset.tileheight > this.mMap.tileheight)
+          {
             t.y -= tileset.tileheight / Std.int(tileset.tileheight / this.mMap.tileheight);
           }
           /*if (tileset.tilewidth > this.mMap.tilewidth) {
@@ -403,7 +459,8 @@ class Layer implements tiledfl.Updatable {
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
       case MapOrientationHexagonal:
-        if (map.exists(mapIndex)) {
+        if (map.exists(mapIndex))
+        {
           t = map.get(mapIndex);
           // gid
           t.id = tile?.tileset != null ? 0 : gid;
@@ -418,7 +475,9 @@ class Layer implements tiledfl.Updatable {
           t.map = this.mMap;
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
-        } else {
+        }
+        else
+        {
           t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
@@ -426,27 +485,40 @@ class Layer implements tiledfl.Updatable {
           // apply flipping
           tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
-        if (this.mMap.staggeraxis == MapStaggerAxisY) {
+        if (this.mMap.staggeraxis == MapStaggerAxisY)
+        {
           var adjustX:Int = 0;
-          if (this.mMap.staggerindex == MapStaggerIndexEven) {
-            if (0 != (y + 1) % 2) {
+          if (this.mMap.staggerindex == MapStaggerIndexEven)
+          {
+            if (0 != (y + 1) % 2)
+            {
               adjustX = this.mMap.hexsidelength;
             }
-          } else if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-            if (0 == (y + 1) % 2) {
+          }
+          else if (this.mMap.staggerindex == MapStaggerIndexOdd)
+          {
+            if (0 == (y + 1) % 2)
+            {
               adjustX = this.mMap.hexsidelength;
             }
           }
           t.y -= (this.mMap.hexsidelength / 2) * y;
           t.x += adjustX;
-        } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
+        }
+        else if (this.mMap.staggeraxis == MapStaggerAxisX)
+        {
           var adjustY:Int = 0;
-          if (this.mMap.staggerindex == MapStaggerIndexEven) {
-            if (0 != (y + 1) % 2) {
+          if (this.mMap.staggerindex == MapStaggerIndexEven)
+          {
+            if (0 != (y + 1) % 2)
+            {
               adjustY = this.mMap.hexsidelength;
             }
-          } else if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-            if (0 == (y + 1) % 2) {
+          }
+          else if (this.mMap.staggerindex == MapStaggerIndexOdd)
+          {
+            if (0 == (y + 1) % 2)
+            {
               adjustY = this.mMap.hexsidelength;
             }
           }
@@ -466,24 +538,31 @@ class Layer implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
-    switch (this.mMap.renderorder) {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  {
+    switch (this.mMap.renderorder)
+    {
       case RenderOrder.MapRenderOrderRightDown:
-        if (this.mMap.infinite == 1) {
+        if (this.mMap.infinite == 1)
+        {
           var chunkIdx:Int = 0;
           var total:Int = 0;
           var mapIdx:Int = 0;
           // render chunk by chunk
-          for (chunk in this.data.chunk) {
+          for (chunk in this.data.chunk)
+          {
             total += this.renderChunk(chunk, chunkIdx, offsetX, offsetY, mapIdx, index + total);
             chunkIdx++;
             mapIdx += Std.int(chunk.width * chunk.height);
           }
           return total;
-        } else {
+        }
+        else
+        {
           var max:Int = Std.int(this.width * this.height);
           var total:Int = 0;
-          for (i in 0...max) {
+          for (i in 0...max)
+          {
             // calculate x and y
             var x:Int = Std.int(i % this.width);
             var y:Int = Std.int(i / this.width);
@@ -507,34 +586,41 @@ class Layer implements tiledfl.Updatable {
    * @param y
    * @return Int
    */
-  private function getTileGidAt(x:Float, y:Float):Int {
+  private function getTileGidAt(x:Float, y:Float):Int
+  {
     // handle non infinite maps
-    if (this.mMap.infinite != 1) {
+    if (this.mMap.infinite != 1)
+    {
       var id:Int = Std.int(y / this.mMap.tileheight * this.mMap.width + x / this.mMap.tilewidth);
       // handle not set
-      if (null == this.data.tile[id]) {
+      if (null == this.data.tile[id])
+      {
         return 0;
       }
       // get gid
       var gid:Int = this.data.tile[id].gid;
       // handle invalid
-      if (0 == gid) {
+      if (0 == gid)
+      {
         return 0;
       }
       // get tileset
       var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-      if (null == tileset) {
+      if (null == tileset)
+      {
         return 0;
       }
       return gid;
     }
     // handle infinite maps
-    for (chunk in this.data.chunk) {
+    for (chunk in this.data.chunk)
+    {
       // check if chunk is affected
       if (!(chunk.x * this.mMap.tilewidth <= x
         && chunk.x * this.mMap.tilewidth + this.mMap.tilewidth * chunk.width > x
         && chunk.y * this.mMap.tileheight <= y
-        && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y)) {
+        && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y))
+      {
         continue;
       }
       var realX:Float = x - chunk.x * this.mMap.tilewidth;
@@ -544,12 +630,14 @@ class Layer implements tiledfl.Updatable {
       // get gid
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
-      if (0 == gid) {
+      if (0 == gid)
+      {
         return 0;
       }
       // get tileset
       var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-      if (null == tileset) {
+      if (null == tileset)
+      {
         return 0;
       }
       return gid;
@@ -564,23 +652,28 @@ class Layer implements tiledfl.Updatable {
    * @param y
    * @return tiledfl.tileset.Tile
    */
-  private function getTileAt(x:Float, y:Float):tiledfl.tileset.Tile {
+  private function getTileAt(x:Float, y:Float):tiledfl.tileset.Tile
+  {
     // handle non infinite maps
-    if (this.mMap.infinite != 1) {
+    if (this.mMap.infinite != 1)
+    {
       var id:Int = Std.int(y / this.mMap.tileheight * this.mMap.width + x / this.mMap.tilewidth);
       // handle not set
-      if (null == this.data.tile[id]) {
+      if (null == this.data.tile[id])
+      {
         return null;
       }
       // get gid
       var gid:Int = this.data.tile[id].gid;
       // handle invalid
-      if (0 == gid) {
+      if (0 == gid)
+      {
         return null;
       }
       // get tileset
       var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-      if (null == tileset) {
+      if (null == tileset)
+      {
         return null;
       }
       // subtract first gid from tileset
@@ -589,12 +682,14 @@ class Layer implements tiledfl.Updatable {
       return tileset.getTileByGid(gid);
     }
     // handle infinite maps
-    for (chunk in this.data.chunk) {
+    for (chunk in this.data.chunk)
+    {
       // check if chunk is affected
       if (!(chunk.x * this.mMap.tilewidth <= x
         && chunk.x * this.mMap.tilewidth + this.mMap.tilewidth * chunk.width > x
         && chunk.y * this.mMap.tileheight <= y
-        && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y)) {
+        && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y))
+      {
         continue;
       }
       var realX:Float = x - chunk.x * this.mMap.tilewidth;
@@ -604,12 +699,14 @@ class Layer implements tiledfl.Updatable {
       // get gid
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
-      if (0 == gid) {
+      if (0 == gid)
+      {
         return null;
       }
       // get tileset
       var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-      if (null == tileset) {
+      if (null == tileset)
+      {
         return null;
       }
       // subtract first gid from tileset
@@ -629,7 +726,8 @@ class Layer implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  {
     // array of tiles
     var tiles:Array<tiledfl.tileset.Tile> = new Array<tiledfl.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
@@ -638,7 +736,8 @@ class Layer implements tiledfl.Updatable {
     y += this.mMap.renderOffsetY;
     // loop through whole size
     var max:Int = Std.int(width * height);
-    for (i in 0...max) {
+    for (i in 0...max)
+    {
       // calculate tx and ty
       var tx:Int = Std.int(i % width);
       var ty:Int = Std.int(i / height);
@@ -646,22 +745,27 @@ class Layer implements tiledfl.Updatable {
       var tile:tiledfl.tileset.Tile = this.getTileAt(x + tx, y + ty);
       var id:Int = this.getTileGidAt(x + tx, y + ty);
       // push tile if not null and not yet existing
-      if (tile != null && -1 == Lambda.indexOf(tiles, tile)) {
+      if (tile != null && -1 == Lambda.indexOf(tiles, tile))
+      {
         tiles.push(tile);
       }
       // push tile id if set and not yet existing
-      if (id != 0 && -1 == tileId.indexOf(id)) {
+      if (id != 0 && -1 == tileId.indexOf(id))
+      {
         tileId.push(id);
       }
     }
     // check for collision enabled on layer level
-    if (this.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME) != null && tileId.length > 0) {
+    if (this.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME) != null && tileId.length > 0)
+    {
       return true;
     }
     // iterate tiles
-    for (tile in tiles) {
+    for (tile in tiles)
+    {
       // handle possible collision by tile properties
-      if (tile.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME)?.value == "true") {
+      if (tile.properties?.propertyByName(Helper.COLLISION_PROPERTY_NAME)?.value == "true")
+      {
         return true;
       }
     }
@@ -673,14 +777,18 @@ class Layer implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
-    if (0 == this.data.chunk.length) {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float
+  {
+    if (0 == this.data.chunk.length)
+    {
       return this.width;
     }
     var maxWidth:Float = 0;
     // loop through all layers
-    for (chunk in this.data.chunk) {
-      if (chunk.x + chunk.width > maxWidth) {
+    for (chunk in this.data.chunk)
+    {
+      if (chunk.x + chunk.width > maxWidth)
+      {
         // check for new max width
         maxWidth = chunk.x + chunk.width;
       }
@@ -692,14 +800,18 @@ class Layer implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
-    if (0 == this.data.chunk.length) {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float
+  {
+    if (0 == this.data.chunk.length)
+    {
       return this.height;
     }
     var maxHeight:Float = 0;
     // loop through all layers
-    for (chunk in this.data.chunk) {
-      if (chunk.y + chunk.height > maxHeight) {
+    for (chunk in this.data.chunk)
+    {
+      if (chunk.y + chunk.height > maxHeight)
+      {
         // check for new map height
         maxHeight = chunk.y + chunk.height;
       }

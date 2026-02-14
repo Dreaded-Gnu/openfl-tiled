@@ -7,7 +7,8 @@ import openfl.geom.Rectangle;
 /**
  * Tiled tile representation
  */
-class Tile extends EventDispatcher {
+class Tile extends EventDispatcher
+{
   /**
    * Tile id
    */
@@ -80,7 +81,8 @@ class Tile extends EventDispatcher {
    * @param node xml representation to parse
    * @param map map the tile belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     super();
     this.mMap = map;
     // parse properties
@@ -93,11 +95,14 @@ class Tile extends EventDispatcher {
     this.width = node.exists("width") ? Std.parseInt(node.get("width")) : -1;
     this.height = node.exists("height") ? Std.parseInt(node.get("height")) : -1;
     // parse children
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "properties":
           this.properties = new tiledfl.Properties(child);
         case "image":
@@ -113,11 +118,15 @@ class Tile extends EventDispatcher {
   /**
    * Load async image if necessary stuff
    */
-  @:dox(hide) @:noCompletion public function load():Void {
-    if (this.image != null) {
+  @:dox(hide) @:noCompletion public function load():Void
+  {
+    if (this.image != null)
+    {
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       this.image.load();
-    } else {
+    }
+    else
+    {
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
   }
@@ -126,7 +135,8 @@ class Tile extends EventDispatcher {
    * Callback for on image completed
    * @param event
    */
-  private function onImageCompleted(event:Event):Void {
+  private function onImageCompleted(event:Event):Void
+  {
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // parse image to tileset
     var rect:Array<Rectangle> = new Array<Rectangle>();

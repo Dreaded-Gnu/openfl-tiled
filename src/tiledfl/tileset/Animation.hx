@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Tileset animation class
  */
-class Animation {
+class Animation
+{
   /**
    * Array of frames of the animation
    */
@@ -13,13 +14,17 @@ class Animation {
    * Constructor
    * @param node xml representation to parse
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     this.frame = new Array<Frame>();
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "frame":
           this.frame.push(new Frame(child));
       }

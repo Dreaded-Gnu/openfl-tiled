@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Transformations representation
  */
-class Transformations {
+class Transformations
+{
   /**
    * Horizontally flipped
    */

@@ -1,6 +1,7 @@
 package tiledfl;
 
-@:dox(hide) interface Updatable {
+@:dox(hide) interface Updatable
+{
   /**
    * Update method
    * @param offsetX

@@ -3,19 +3,19 @@
     "character": "  "
   },
   "lineEnds": {
-    "leftCurly": "after",
-    "rightCurly": "after",
+    "leftCurly": "both",
+    "rightCurly": "both",
     "objectLiteralCurly": {
       "leftCurly": "after"
     }
   },
   "sameLine": {
-    "ifBody": "same",
-    "ifElse": "same",
-    "doWhile": "same",
-    "tryBody": "same",
-    "catchBody": "same",
-    "functionBody": "same"
+    "ifBody": "next",
+    "ifElse": "next",
+    "doWhile": "next",
+    "tryBody": "next",
+    "catchBody": "next",
+    "functionBody": "next"
   },
   "emptyLines": {
     "finalNewline": true

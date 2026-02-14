@@ -6,7 +6,8 @@ import openfl.events.EventDispatcher;
 /**
  * Tiled group representation
  */
-class Group extends EventDispatcher implements tiledfl.Updatable {
+class Group extends EventDispatcher implements tiledfl.Updatable
+{
   /**
    * Group id
    */
@@ -82,7 +83,8 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * @param node xml representation to parse
    * @param map map this group belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     super();
     // cache map
     this.mMap = map;
@@ -103,12 +105,15 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
     // setup render objects array
     this.mRenderObjects = new Array<tiledfl.Updatable>();
     // parse children
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "properties":
           this.properties = new tiledfl.Properties(child);
         case "layer":
@@ -138,11 +143,13 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  {
     // initialize total
     var total:Int = 0;
     // iterate through render objects and perform an update
-    for (renderObject in this.mRenderObjects) {
+    for (renderObject in this.mRenderObjects)
+    {
       // update render object and increment total
       total += renderObject.update(offsetX, offsetY, index + total);
     }
@@ -158,9 +165,12 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
-    for (renderObject in this.mRenderObjects) {
-      if (renderObject.collides(x, y, width, height)) {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  {
+    for (renderObject in this.mRenderObjects)
+    {
+      if (renderObject.collides(x, y, width, height))
+      {
         return true;
       }
     }
@@ -171,9 +181,11 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float
+  {
     var width:Float = 0;
-    for (renderObject in this.mRenderObjects) {
+    for (renderObject in this.mRenderObjects)
+    {
       width = Math.max(width, renderObject.evaluateWidth());
     }
     return width;
@@ -183,9 +195,11 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float
+  {
     var height:Float = 0;
-    for (renderObject in this.mRenderObjects) {
+    for (renderObject in this.mRenderObjects)
+    {
       height = Math.max(height, renderObject.evaluateHeight());
     }
     return height;
@@ -194,24 +208,31 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
   /**
    * Load method
    */
-  @:dox(hide) @:noCompletion public function load():Void {
-    if (!this.mImageLayerLoaded) {
+  @:dox(hide) @:noCompletion public function load():Void
+  {
+    if (!this.mImageLayerLoaded)
+    {
       var tmpImageLayer:Array<tiledfl.ImageLayer> = new Array<tiledfl.ImageLayer>();
-      for (imagelayer in this.imagelayer) {
+      for (imagelayer in this.imagelayer)
+      {
         tmpImageLayer.push(imagelayer);
       }
       // handle no tiles to be loaded
-      if (0 >= tmpImageLayer.length) {
+      if (0 >= tmpImageLayer.length)
+      {
         this.mImageLayerLoaded = true;
         this.load();
         return;
       }
       // loop through tiles and start loading them
-      for (imagelayer in this.imagelayer) {
-        imagelayer.addEventListener(Event.COMPLETE, (event:Event) -> {
+      for (imagelayer in this.imagelayer)
+      {
+        imagelayer.addEventListener(Event.COMPLETE, (event:Event) ->
+        {
           tmpImageLayer.remove(imagelayer);
           // continue loading when end was reached
-          if (0 >= tmpImageLayer.length) {
+          if (0 >= tmpImageLayer.length)
+          {
             this.mImageLayerLoaded = true;
             // continue with load process
             this.load();
@@ -220,23 +241,30 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
         // load tile
         imagelayer.load();
       }
-    } else if (!this.mGroupLoaded) {
+    }
+    else if (!this.mGroupLoaded)
+    {
       var tmpGroup:Array<tiledfl.Group> = new Array<tiledfl.Group>();
-      for (group in this.group) {
+      for (group in this.group)
+      {
         tmpGroup.push(group);
       }
       // handle no tiles to be loaded
-      if (0 >= tmpGroup.length) {
+      if (0 >= tmpGroup.length)
+      {
         this.mGroupLoaded = true;
         this.load();
         return;
       }
       // loop through tiles and start loading them
-      for (group in this.group) {
-        group.addEventListener(Event.COMPLETE, (event:Event) -> {
+      for (group in this.group)
+      {
+        group.addEventListener(Event.COMPLETE, (event:Event) ->
+        {
           tmpGroup.remove(group);
           // continue loading when end was reached
-          if (0 >= tmpGroup.length) {
+          if (0 >= tmpGroup.length)
+          {
             this.mGroupLoaded = true;
             // continue with load process
             this.load();
@@ -245,7 +273,9 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
         // load tile
         group.load();
       }
-    } else {
+    }
+    else
+    {
       // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }

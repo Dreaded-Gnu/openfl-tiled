@@ -3,7 +3,8 @@ package tiledfl.object;
 /**
  * Tiled point object
  */
-class Point {
+class Point
+{
   private var object:tiledfl.Object;
 
   /**
@@ -11,7 +12,8 @@ class Point {
    * @param node node data to parse
    * @param object object instance this object belongs to
    */
-  public function new(node:Xml, object:tiledfl.Object) {
+  public function new(node:Xml, object:tiledfl.Object)
+  {
     this.object = object;
   }
 }

@@ -6,7 +6,8 @@ import openfl.events.Event;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
 
-class Main extends Sprite {
+class Main extends Sprite
+{
   private var mMap:tiledfl.Map;
   private var mPlayer:Sprite;
   private var mKeys:Map<Int, Bool> = [];
@@ -19,7 +20,8 @@ class Main extends Sprite {
   /**
    * Constructor
    */
-  public function new() {
+  public function new()
+  {
     super();
     // load map
     // this.mMap = new tiledfl.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
@@ -29,7 +31,7 @@ class Main extends Sprite {
     // this.mMap = new tiledfl.Map("tiled/isometric_staggered_grass_and_water/",
     //   "tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx", this.stage.stageWidth, this.stage.stageHeight);
     /*this.mMap.tilemap.scaleX = SCALE;
-      this.mMap.tilemap.scaleY = SCALE;*/
+      this.mMap.tilemap.scaleY = SCALE; */
     this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
@@ -46,7 +48,8 @@ class Main extends Sprite {
    * Resize event handler
    * @param event
    */
-  private function onResize(event:Event):Void {
+  private function onResize(event:Event):Void
+  {
     this.mMap.resize(this.stage.stageWidth, this.stage.stageHeight);
   }
 
@@ -54,7 +57,8 @@ class Main extends Sprite {
    * On map load completed
    * @param event
    */
-  private function onMapLoadComplete(event:Event):Void {
+  private function onMapLoadComplete(event:Event):Void
+  {
     this.mMap.removeEventListener(Event.COMPLETE, onMapLoadComplete);
     // add as child
     this.addChild(this.mMap.tilemap);
@@ -80,7 +84,8 @@ class Main extends Sprite {
    * On key down handler
    * @param event
    */
-  private function onKeyDown(event:KeyboardEvent):Void {
+  private function onKeyDown(event:KeyboardEvent):Void
+  {
     mKeys[event.keyCode] = true;
   }
 
@@ -88,7 +93,8 @@ class Main extends Sprite {
    * On key up handler
    * @param event
    */
-  private function onKeyUp(event:KeyboardEvent):Void {
+  private function onKeyUp(event:KeyboardEvent):Void
+  {
     mKeys[event.keyCode] = false;
   }
 
@@ -96,7 +102,8 @@ class Main extends Sprite {
    * On frame enter
    * @param event
    */
-  private function onEnterFrame(event:Event):Void {
+  private function onEnterFrame(event:Event):Void
+  {
     var changeX:Bool = false;
     var changeY:Bool = false;
     var newOffsetX:Float = mOffsetX;
@@ -107,30 +114,41 @@ class Main extends Sprite {
     var mapHeight:Float = this.mMap.height * this.mMap.tileheight * SCALE;
     var mapWidth:Float = this.mMap.width * this.mMap.tilewidth * SCALE;
     // handle keys
-    if (mKeys[Keyboard.UP]) {
+    if (mKeys[Keyboard.UP])
+    {
       changeY = true;
       newOffsetY = Math.max(newOffsetY - MOVE_SPEED, 0);
       playerOffsetY = Math.max(this.mPlayer.y - MOVE_SPEED, 0);
-    } else if (mKeys[Keyboard.DOWN]) {
+    }
+    else if (mKeys[Keyboard.DOWN])
+    {
       changeY = true;
-      if (mapHeight > this.stage.stageHeight) {
+      if (mapHeight > this.stage.stageHeight)
+      {
         newOffsetY = Math.min(newOffsetY + MOVE_SPEED, mapHeight * SCALE - this.stage.stageHeight);
       }
       playerOffsetY = Math.min(this.mPlayer.y + MOVE_SPEED, this.stage.stageHeight - this.mPlayer.height);
-    } else if (mKeys[Keyboard.LEFT]) {
+    }
+    else if (mKeys[Keyboard.LEFT])
+    {
       changeX = true;
       newOffsetX = Math.max(newOffsetX - MOVE_SPEED, 0);
       playerOffsetX = Math.max(this.mPlayer.x - MOVE_SPEED, 0);
-    } else if (mKeys[Keyboard.RIGHT]) {
+    }
+    else if (mKeys[Keyboard.RIGHT])
+    {
       changeX = true;
-      if (mapWidth > this.stage.stageWidth) {
+      if (mapWidth > this.stage.stageWidth)
+      {
         newOffsetX = Math.min(newOffsetX + MOVE_SPEED, mapWidth - this.stage.stageWidth);
       }
       playerOffsetX = Math.min(this.mPlayer.x + MOVE_SPEED, this.stage.stageWidth - this.mPlayer.width);
     }
     // handle map rendering
-    if (this.mMap.isLoaded && (changeX || changeY)) {
-      if (this.mPlayer != null) {
+    if (this.mMap.isLoaded && (changeX || changeY))
+    {
+      if (this.mPlayer != null)
+      {
         var oldPlayerX:Float = this.mPlayer.x;
         var oldPlayerY:Float = this.mPlayer.y;
         this.mPlayer.x = playerOffsetX;
@@ -145,13 +163,15 @@ class Main extends Sprite {
         if (this.mPlayer.x - this.mPlayer.width / 2 < this.stage.stageWidth / 2 - this.mPlayer.width / 2
           && mOffsetX * SCALE > 0
           && mOffsetX * SCALE < mapWidth - this.stage.stageWidth
-          && changeX) {
+          && changeX)
+        {
           this.mPlayer.x = this.stage.stageWidth / 2 - this.mPlayer.width / 2;
         }
         if (this.mPlayer.y - this.mPlayer.height / 2 < this.stage.stageHeight / 2 - this.mPlayer.height / 2
           && mOffsetY * SCALE > 0
           && mOffsetY * SCALE < mapHeight - this.stage.stageHeight
-          && changeY) {
+          && changeY)
+        {
           this.mPlayer.y = this.stage.stageHeight / 2 - this.mPlayer.height / 2;
         }
       }
@@ -166,17 +186,20 @@ class Main extends Sprite {
           && changeY)
         || (this.mPlayer.y + this.mPlayer.height / 2 < this.stage.stageHeight / 2 - this.mPlayer.height / 2
           && mOffsetY * SCALE >= mapHeight - this.stage.stageHeight
-          && changeY)) {
+          && changeY))
+      {
         if (this.mPlayer.x + this.mPlayer.width / 2 < this.stage.stageWidth / 2 - this.mPlayer.width / 2
           && mOffsetX * SCALE >= mapWidth - this.stage.stageWidth
           && mapWidth > this.stage.stageWidth
-          && changeX) {
+          && changeX)
+        {
           this.mPlayer.x = this.stage.stageWidth / 2 - this.mPlayer.width / 2;
         }
         if (this.mPlayer.y + this.mPlayer.height / 2 < this.stage.stageHeight / 2 - this.mPlayer.height / 2
           && mOffsetY * SCALE >= mapHeight - this.stage.stageHeight
           && mapHeight > this.stage.stageHeight
-          && changeY) {
+          && changeY)
+        {
           this.mPlayer.y = this.stage.stageHeight / 2 - this.mPlayer.height / 2;
         }
         mOffsetX = newOffsetX;

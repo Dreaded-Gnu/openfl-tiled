@@ -3,7 +3,8 @@ package tiledfl.map;
 /**
  * Tiled map orientation enum
  */
-enum abstract Orientation(String) {
+enum abstract Orientation(String)
+{
   /**
    * Orthogonal map
    */

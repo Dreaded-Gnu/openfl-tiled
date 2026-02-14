@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Wangsets representation
  */
-class Wangsets {
+class Wangsets
+{
   /**
    * Array of wangsets
    */

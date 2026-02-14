@@ -3,7 +3,8 @@ package tiledfl;
 /**
  * Tiled properties
  */
-class Properties {
+class Properties
+{
   /**
    * Array of properties
    */
@@ -13,10 +14,13 @@ class Properties {
    * Constructor
    * @param node xml representation to be parsed
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     this.property = new Array<tiledfl.Property>();
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
@@ -30,9 +34,12 @@ class Properties {
    * @param name Name to get property
    * @return Found property or null
    */
-  public function propertyByName(name:String):Property {
-    for (property in this.property) {
-      if (property.name == name) {
+  public function propertyByName(name:String):Property
+  {
+    for (property in this.property)
+    {
+      if (property.name == name)
+      {
         return property;
       }
     }

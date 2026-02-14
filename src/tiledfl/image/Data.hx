@@ -6,7 +6,8 @@ import openfl.utils.ByteArray;
 /**
  * Image data handling
  */
-class Data {
+class Data
+{
   /**
    * Used encoding of data
    */
@@ -26,17 +27,20 @@ class Data {
    * Constructor
    * @param node data node to parse
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     this.encoding = node.get("encoding");
     this.compression = node.get("compression");
 
     // handle no elements / parsed data
     var data:String = node.firstChild().nodeValue;
     // handle encoding
-    switch (this.encoding) {
+    switch (this.encoding)
+    {
       case "base64":
         // handle possible compression
-        switch (this.compression) {
+        switch (this.compression)
+        {
           case "gzip":
             throw new Error("gzip compression not supported");
           case "zlib":

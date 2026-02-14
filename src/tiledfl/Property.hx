@@ -3,7 +3,8 @@ package tiledfl;
 /**
  * Tiled property
  */
-class Property {
+class Property
+{
   /**
    * Name
    */
@@ -28,7 +29,8 @@ class Property {
    * Constructor
    * @param node xml representation to be parsed
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     this.name = node.get("name");
     this.type = node.exists("type") ? node.get("type") : "string";
     this.propertytype = node.get("propertytype");

@@ -6,7 +6,8 @@ import openfl.geom.Rectangle;
 /**
  * Tiled object
  */
-class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
+class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
+{
   /**
    * ID
    */
@@ -105,7 +106,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param node xml representation to parse
    * @param map map this object belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     this.mMap = map;
     #if tiledfl_debug_render_object
     this.mShape = new openfl.display.Shape();
@@ -123,12 +125,15 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     this.visible = node.exists("visible") ? Std.parseInt(node.get("visible")) : 1;
     this.template = node.get("template");
     // loop through childs
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "properties":
           this.properties = new tiledfl.Properties(child);
         case "ellipse":
@@ -149,7 +154,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Getter for gid property
    * @return Int
    */
-  private function get_gid():Int {
+  private function get_gid():Int
+  {
     return Helper.extractGid(this.mGid);
   }
 
@@ -157,7 +163,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper for flipped horizontally checks
    * @return True if flipped horizontally, else false
    */
-  public function isFlippedHorizontally():Bool {
+  public function isFlippedHorizontally():Bool
+  {
     return Helper.isGidFlippedHorizontally(this.mGid);
   }
 
@@ -165,7 +172,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper for flipped vertically checks
    * @return True if flipped vertically, else false
    */
-  public function isFlippedVertically():Bool {
+  public function isFlippedVertically():Bool
+  {
     return Helper.isGidFlippedVertically(this.mGid);
   }
 
@@ -173,7 +181,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper for flipped diagonally checks
    * @return True if flipped diagonally, else false
    */
-  public function isFlippedDiagonally():Bool {
+  public function isFlippedDiagonally():Bool
+  {
     return Helper.isGidFlippedDiagonally(this.mGid);
   }
 
@@ -181,7 +190,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper for flipped hexagonal 120 checks
    * @return True if rotated hexagonal by 120, else false
    */
-  public function isRotatedHexagonal120():Bool {
+  public function isRotatedHexagonal120():Bool
+  {
     return Helper.isGidRotatedHexagonal120(this.mGid);
   }
 
@@ -192,15 +202,18 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param tileIndex
    * @return Int
    */
-  private function renderTileObject(offsetX:Float, offsetY:Float, tileIndex:Int):Int {
+  private function renderTileObject(offsetX:Float, offsetY:Float, tileIndex:Int):Int
+  {
     var gid:Int = this.gid;
     // handle invalid
-    if (0 == gid) {
+    if (0 == gid)
+    {
       return 0;
     }
     // get tileset
     var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
-    if (null == tileset) {
+    if (null == tileset)
+    {
       return 0;
     }
     // subtract first gid from tileset
@@ -208,13 +221,15 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     // get tileset and tile
     var ts:openfl.display.Tileset = tileset.tileset;
     var tile:tiledfl.tileset.Tile = tileset.getTileByGid(gid);
-    if (tile?.tileset != null) {
+    if (tile?.tileset != null)
+    {
       ts = tile.tileset;
     }
     // generate tile
     var t:tiledfl.helper.AnimatedTile = null;
     // handle already set
-    if (this.mTile != null) {
+    if (this.mTile != null)
+    {
       t = this.mTile;
       // gid
       t.id = tile?.tileset != null ? 0 : gid;
@@ -230,7 +245,9 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
       t.map = this.mMap;
       // apply flipping
       tiledfl.Helper.applyTileFlipping(this.mMap, t, this, tileset);
-    } else {
+    }
+    else
+    {
       t = new tiledfl.helper.AnimatedTile( // gid
         tile?.tileset != null ? 0 : gid, // x / y position
         this.x - tileset.tileoffset.x,
@@ -250,13 +267,16 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     t.realX -= offsetX;
     t.realY -= offsetY;
     // cahce tile if not cached
-    if (this.mTile == null) {
+    if (this.mTile == null)
+    {
       this.mTile = t;
     }
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(t.realX, t.realY, this.width * t.scaleX, this.height * t.scaleY)) {
+    if (!this.mMap.willBeVisible(t.realX, t.realY, this.width * t.scaleX, this.height * t.scaleY))
+    {
       // check if it's displayed
-      if (tilemap.contains(t)) {
+      if (tilemap.contains(t))
+      {
         // just remove it from map
         tilemap.removeTile(t);
       }
@@ -273,7 +293,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
   /**
    * Wrapper to transform generated shape into tile with tileset
    */
-  private function transformShapToTile(shapeOffsetX:Float, shapeOffsetY:Float):Void {
+  private function transformShapToTile(shapeOffsetX:Float, shapeOffsetY:Float):Void
+  {
     // draw shape to bitmap data
     var bmd:openfl.display.BitmapData = new openfl.display.BitmapData(Std.int(this.mShape.width), Std.int(this.mShape.height), true, 0);
     bmd.draw(this.mShape);
@@ -282,7 +303,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     rect.push(new Rectangle(this.mShape.x, this.mShape.y, bmd.width, bmd.height));
     this.mTileset = new openfl.display.Tileset(bmd, rect);
     // build tile if not built
-    if (this.mTile == null) {
+    if (this.mTile == null)
+    {
       this.mTile = new tiledfl.helper.AnimatedTile(0, this.x, this.y, 1, 1, 0, null, this.mMap);
     }
     // set x and y
@@ -295,7 +317,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
   /**
    * Simple debugging function to render an object
    */
-  private function renderObject(offsetX:Float, offsetY:Float, tileIndex:Int):Int {
+  private function renderObject(offsetX:Float, offsetY:Float, tileIndex:Int):Int
+  {
     // cache tilemap
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // clear shape
@@ -306,9 +329,11 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     var shapeOffsetX:Float = 0;
     var shapeOffsetY:Float = 0;
     // handle object types
-    if (this.polyline != null) {
+    if (this.polyline != null)
+    {
       // determine offset for rendering
-      for (point in this.polyline.points) {
+      for (point in this.polyline.points)
+      {
         shapeOffsetX = Math.min(shapeOffsetX, point.x);
         shapeOffsetY = Math.min(shapeOffsetY, point.y);
       }
@@ -316,7 +341,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
       shapeOffsetX = Math.abs(shapeOffsetX);
       shapeOffsetY = Math.abs(shapeOffsetY);
       // polyline rendering rendering line from point to point
-      for (idx in 0...this.polyline.points.length - 1) {
+      for (idx in 0...this.polyline.points.length - 1)
+      {
         // get line point 1 and 2
         var linePoint1:Point = new Point(this.polyline.points[idx].x + shapeOffsetX, this.polyline.points[idx].y + shapeOffsetY);
         var linePoint2:Point = new Point(this.polyline.points[idx + 1].x + shapeOffsetX, this.polyline.points[idx + 1].y + shapeOffsetY);
@@ -325,9 +351,12 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
         // draw line to point 2
         this.mShape.graphics.lineTo(linePoint2.x, linePoint2.y);
       }
-    } else if (this.polygon != null) {
+    }
+    else if (this.polygon != null)
+    {
       // determine offset for rendering
-      for (point in this.polyline.points) {
+      for (point in this.polyline.points)
+      {
         shapeOffsetX = Math.min(shapeOffsetX, point.x);
         shapeOffsetY = Math.min(shapeOffsetY, point.y);
       }
@@ -335,7 +364,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
       shapeOffsetX = Math.abs(shapeOffsetX);
       shapeOffsetY = Math.abs(shapeOffsetY);
       // polygon rendering rendering line from point to point
-      for (idx in 0...this.polygon.points.length - 1) {
+      for (idx in 0...this.polygon.points.length - 1)
+      {
         // get line point 1 and 2
         var linePoint1:Point = new Point(this.polygon.points[idx].x + shapeOffsetX, this.polygon.points[idx].y + shapeOffsetY);
         var linePoint2:Point = new Point(this.polygon.points[idx + 1].x + shapeOffsetX, this.polygon.points[idx + 1].y + shapeOffsetY);
@@ -344,13 +374,19 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
         // draw line to point 2
         this.mShape.graphics.lineTo(linePoint2.x, linePoint2.y);
       }
-    } else if (this.ellipse != null) {
+    }
+    else if (this.ellipse != null)
+    {
       // generate shape
       this.mShape.graphics.drawEllipse(0, 0, this.width, this.height);
-    } else if (this.point != null) {
+    }
+    else if (this.point != null)
+    {
       // generate shape
       this.mShape.graphics.drawRect(0, 0, 1, 1);
-    } else {
+    }
+    else
+    {
       // generate shape
       this.mShape.graphics.drawRect(0, 0, this.width, this.height);
     }
@@ -362,9 +398,11 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     this.mTile.realX -= offsetX;
     this.mTile.realY -= offsetY;
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(this.mTile.realX, this.mTile.realY, this.mTileset.bitmapData.width, this.mTileset.bitmapData.height)) {
+    if (!this.mMap.willBeVisible(this.mTile.realX, this.mTile.realY, this.mTileset.bitmapData.width, this.mTileset.bitmapData.height))
+    {
       // check if it's displayed
-      if (tilemap.contains(this.mTile)) {
+      if (tilemap.contains(this.mTile))
+      {
         // just remove it from map
         tilemap.removeTile(this.mTile);
       }
@@ -386,17 +424,22 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  {
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // float buffer
     var buffer:Float = .1;
     // loop through width and height
-    for (tx in 0...Std.int(width)) {
-      for (ty in 0...Std.int(height)) {
-        if (this.polyline != null) {
+    for (tx in 0...Std.int(width))
+    {
+      for (ty in 0...Std.int(height))
+      {
+        if (this.polyline != null)
+        {
           // poly line collision check by checking each line
-          for (idx in 0...this.polyline.points.length - 1) {
+          for (idx in 0...this.polyline.points.length - 1)
+          {
             // get line point 1 and translate it into global
             var linePoint1:Point = new Point(this.x + this.polyline.points[idx].x, this.y + this.polyline.points[idx].y);
             linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
@@ -412,13 +455,17 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
             // get line length
             var linelength:Float = Point.distance(linePoint1, linePoint2);
             // handle collision
-            if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer) {
+            if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer)
+            {
               return true;
             }
           }
-        } else if (this.polygon != null) {
+        }
+        else if (this.polygon != null)
+        {
           // polygon collision check by checking each line
-          for (idx in 0...this.polygon.points.length - 1) {
+          for (idx in 0...this.polygon.points.length - 1)
+          {
             // get line point 1 and translate it into global
             var linePoint1:Point = new Point(this.x + this.polygon.points[idx].x, this.y + this.polygon.points[idx].y);
             linePoint1.copyFrom(tilemap.localToGlobal(linePoint1));
@@ -434,11 +481,14 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
             // get line length
             var linelength:Float = Point.distance(linePoint1, linePoint2);
             // handle collision
-            if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer) {
+            if (dist1 + dist2 >= linelength - buffer && dist1 + dist2 <= linelength + buffer)
+            {
               return true;
             }
           }
-        } else if (this.ellipse != null) {
+        }
+        else if (this.ellipse != null)
+        {
           // create checkpoint and translate it into global
           var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
           checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
@@ -452,10 +502,13 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
           var width:Float = maxPoint.x - minPoint.x;
           var height:Float = maxPoint.y - minPoint.y;
           // calculate collision
-          if (Math.pow(checkPoint.x - minPoint.x, 2) / Math.pow(width / 2, 2) + Math.pow(checkPoint.y - minPoint.y, 2) / Math.pow(height / 2, 2) <= 1) {
+          if (Math.pow(checkPoint.x - minPoint.x, 2) / Math.pow(width / 2, 2) + Math.pow(checkPoint.y - minPoint.y, 2) / Math.pow(height / 2, 2) <= 1)
+          {
             return true;
           }
-        } else if (this.point != null) {
+        }
+        else if (this.point != null)
+        {
           // create checkpoint and translate it into global
           var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
           checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
@@ -463,10 +516,13 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
           var point:Point = new Point(this.x, this.y);
           point.copyFrom(tilemap.localToGlobal(point));
           // point collision check
-          if (point.equals(checkPoint)) {
+          if (point.equals(checkPoint))
+          {
             return true;
           }
-        } else {
+        }
+        else
+        {
           // create checkpoint and translate it into global
           var checkPoint:Point = new Point(x + tx + this.mMap.renderOffsetX, y + ty + this.mMap.renderOffsetY);
           checkPoint.copyFrom(tilemap.localToGlobal(checkPoint));
@@ -479,7 +535,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
           // create rectangle
           var rect:Rectangle = new Rectangle(minPoint.x, minPoint.y, maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
           // check if point contains rectangle
-          if (rect.containsPoint(checkPoint)) {
+          if (rect.containsPoint(checkPoint))
+          {
             return true;
           }
         }
@@ -494,11 +551,13 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param offsetY
    * @param index
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  {
     var added:Int = 0;
     // render collision object if set
     #if tiledfl_debug_render_object
-    if (this.gid == 0) {
+    if (this.gid == 0)
+    {
       added += this.renderObject(offsetX, offsetY, index);
     }
     #end
@@ -510,7 +569,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float
+  {
     return 0;
   }
 
@@ -518,7 +578,8 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float
+  {
     return 0;
   }
 }

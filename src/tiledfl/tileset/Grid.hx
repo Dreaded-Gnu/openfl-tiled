@@ -5,7 +5,8 @@ import openfl.errors.Error;
 /**
  * Grid representation
  */
-class Grid {
+class Grid
+{
   /**
    * Orientation of the grid
    */
@@ -25,9 +26,11 @@ class Grid {
    * Constructor
    * @param node xml representation to parse
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     var o:String = node.get("orientation");
-    switch (o) {
+    switch (o)
+    {
       case "orthogonal":
         this.orientation = tiledfl.map.Orientation.MapOrientationOrthogonal;
       case "isometric":

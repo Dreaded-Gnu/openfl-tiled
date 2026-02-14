@@ -7,7 +7,8 @@ import openfl.geom.Rectangle;
 /**
  * Image layer representation
  */
-class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
+class ImageLayer extends EventDispatcher implements tiledfl.Updatable
+{
   /**
    * Id
    */
@@ -105,7 +106,8 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * @param node xml representation to parse
    * @param map map the image lyer belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     super();
     // cache map
     this.mMap = map;
@@ -125,12 +127,15 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
     this.repeatx = node.exists("repeatx") ? Std.parseInt(node.get("repeatx")) : 0;
     this.repeaty = node.exists("repeaty") ? Std.parseInt(node.get("repeaty")) : 0;
     // parse children
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "properties":
           this.properties = new tiledfl.Properties(child);
         case "image":
@@ -142,8 +147,10 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
   /**
    * Load method
    */
-  @:dox(hide) @:noCompletion public function load():Void {
-    if (this.image != null) {
+  @:dox(hide) @:noCompletion public function load():Void
+  {
+    if (this.image != null)
+    {
       // register event listener
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       // start loading
@@ -159,7 +166,8 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * Callback for on image completed
    * @param event
    */
-  private function onImageCompleted(event:Event):Void {
+  private function onImageCompleted(event:Event):Void
+  {
     // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // parse image to tileset
@@ -180,9 +188,11 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * @param offsetY
    * @param index
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  {
     // handle null, which shouldn't happen at all
-    if (this.tile == null) {
+    if (this.tile == null)
+    {
       return 0;
     }
     // apply x / y offset
@@ -193,9 +203,11 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // check if won't be visible
-    if (!this.mMap.willBeVisible(this.tile.realX, this.tile.realY, this.image.width, this.image.height)) {
+    if (!this.mMap.willBeVisible(this.tile.realX, this.tile.realY, this.image.width, this.image.height))
+    {
       // check if it was added
-      if (tilemap.contains(this.tile)) {
+      if (tilemap.contains(this.tile))
+      {
         // remove it since it isn't visible any longer
         tilemap.removeTile(this.tile);
       }
@@ -216,7 +228,8 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  {
     return false;
   }
 
@@ -224,7 +237,8 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Int
+  {
     return 0;
   }
 
@@ -232,7 +246,8 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Int
+  {
     return 0;
   }
 }

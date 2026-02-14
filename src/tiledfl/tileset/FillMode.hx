@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Fill mode enum
  */
-enum abstract FillMode(String) {
+enum abstract FillMode(String)
+{
   /**
    * Fill mode stretch
    */

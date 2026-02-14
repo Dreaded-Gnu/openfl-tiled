@@ -3,7 +3,8 @@ package tiledfl.map;
 /**
  * Tiled map stagger axis enum
  */
-enum abstract StaggerAxis(String) {
+enum abstract StaggerAxis(String)
+{
   /**
    * Staggered on x axis
    */

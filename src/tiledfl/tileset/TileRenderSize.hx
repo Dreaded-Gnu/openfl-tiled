@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Tile render size enum
  */
-enum abstract TileRenderSize(String) {
+enum abstract TileRenderSize(String)
+{
   /**
    * Tileset tile render size tile
    */

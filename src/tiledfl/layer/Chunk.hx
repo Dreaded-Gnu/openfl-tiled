@@ -6,7 +6,8 @@ import openfl.utils.ByteArray;
 /**
  * Chunk layer implementation
  */
-class Chunk {
+class Chunk
+{
   /**
    * X coordinate the chunk starts
    */
@@ -37,7 +38,8 @@ class Chunk {
    * @param node chunk xml representation
    * @param data layer data handling
    */
-  public function new(node:Xml, data:tiledfl.layer.Data) {
+  public function new(node:Xml, data:tiledfl.layer.Data)
+  {
     this.x = Std.parseInt(node.get("x"));
     this.y = Std.parseInt(node.get("y"));
     this.width = Std.parseInt(node.get("width"));
@@ -47,10 +49,12 @@ class Chunk {
     // get data
     var chunk:String = node.firstChild().nodeValue;
     // handle encoding
-    switch (data.encoding) {
+    switch (data.encoding)
+    {
       case "base64":
         // handle possible compression
-        switch (data.compression) {
+        switch (data.compression)
+        {
           case "gzip":
             throw new Error("gzip compression not supported");
           case "zlib":
@@ -61,7 +65,8 @@ class Chunk {
             // set access mode
             data.endian = LITTLE_ENDIAN;
             // read tiles and push them
-            while (data.position < data.length) {
+            while (data.position < data.length)
+            {
               this.tile.push(new tiledfl.layer.Tile(data.readInt()));
             }
           case "zstd":
@@ -72,13 +77,15 @@ class Chunk {
             // set access mode
             data.endian = LITTLE_ENDIAN;
             // read tiles and push them
-            while (data.position < data.length) {
+            while (data.position < data.length)
+            {
               this.tile.push(new tiledfl.layer.Tile(data.readInt()));
             }
         }
       case "csv":
         var tileIndexList:Array<Int> = Helper.csvToArray(chunk);
-        for (tileId in tileIndexList) {
+        for (tileId in tileIndexList)
+        {
           this.tile.push(new tiledfl.layer.Tile(tileId));
         }
       default:

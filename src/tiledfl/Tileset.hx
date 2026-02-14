@@ -16,7 +16,8 @@ import tiledfl.tileset.ObjectAlignment;
 /**
  * Tileset representation
  */
-class Tileset extends EventDispatcher {
+class Tileset extends EventDispatcher
+{
   /**
    * First gid
    */
@@ -136,7 +137,8 @@ class Tileset extends EventDispatcher {
    * @param node xml representation to parse
    * @param map map the tileset belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     super();
     // cache map
     this.mMap = map;
@@ -148,7 +150,8 @@ class Tileset extends EventDispatcher {
    * Helper to parse
    * @param node
    */
-  private function parse(node:Xml):Void {
+  private function parse(node:Xml):Void
+  {
     this.firstgid = node.exists("firstgid") ? Std.parseInt(node.get("firstgid")) : this.firstgid;
     this.source = node.exists("source") ? node.get("source") : this.source;
     this.name = node.get("name");
@@ -160,7 +163,8 @@ class Tileset extends EventDispatcher {
     this.tilecount = node.exists("tilecount") ? Std.parseInt(node.get("tilecount")) : -1;
     this.columns = node.exists("columns") ? Std.parseInt(node.get("columns")) : -1;
     var o:String = node.get("objectalignment");
-    switch (o) {
+    switch (o)
+    {
       case "unspecified":
         this.objectalignment = this.mMap.orientation == Orientation.MapOrientationOrthogonal ? ObjectAlignment.TilesetObjectAlignmentBottomLeft : ObjectAlignment.TilesetObjectAlignmentBottom;
       case "topleft":
@@ -185,14 +189,16 @@ class Tileset extends EventDispatcher {
         this.objectalignment = this.mMap.orientation == Orientation.MapOrientationOrthogonal ? ObjectAlignment.TilesetObjectAlignmentBottomLeft : ObjectAlignment.TilesetObjectAlignmentBottom;
     }
     var tr:String = node.exists("tilerendersize") ? node.get("tilerendersize") : "tile";
-    switch (tr) {
+    switch (tr)
+    {
       case "tile":
         this.tilerendersize = TileRenderSize.TilesetTileRenderSizeTile;
       case "grid":
         this.tilerendersize = TileRenderSize.TilesetTileRenderSizeGrid;
     }
     var fm:String = node.exists("fillmode") ? node.get("fillmode") : "stretch";
-    switch (fm) {
+    switch (fm)
+    {
       case "stretch":
         this.fillmode = FillMode.TilesetFillModeStretch;
       case "preserve-aspect-fit":
@@ -202,12 +208,15 @@ class Tileset extends EventDispatcher {
     // initialize arrays
     this.tile = new std.Map<Int, tiledfl.tileset.Tile>();
     // loop through children
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         continue;
       }
 
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "image":
           this.image = new tiledfl.Image(child, this.mMap);
         case "tile":
@@ -224,7 +233,8 @@ class Tileset extends EventDispatcher {
       }
     }
 
-    if (this.tileoffset == null) {
+    if (this.tileoffset == null)
+    {
       this.tileoffset = new tiledfl.tileset.TileOffset(null);
     }
   }
@@ -234,9 +244,12 @@ class Tileset extends EventDispatcher {
    * @param gid
    * @return tiledfl.tileset.Tile
    */
-  @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):tiledfl.tileset.Tile {
-    for (tile in this.tile) {
-      if (tile.id == gid) {
+  @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):tiledfl.tileset.Tile
+  {
+    for (tile in this.tile)
+    {
+      if (tile.id == gid)
+      {
         return tile;
       }
     }
@@ -246,8 +259,10 @@ class Tileset extends EventDispatcher {
   /**
    * Load callback
    */
-  @:dox(hide) @:noCompletion public function load():Void {
-    if (!this.mSourceLoaded && this.source != null) {
+  @:dox(hide) @:noCompletion public function load():Void
+  {
+    if (!this.mSourceLoaded && this.source != null)
+    {
       #if tiledfl_use_asset
       var data:String = Assets.getText(Helper.joinPath(this.mMap.prefix, this.source));
       // parse xml
@@ -260,7 +275,8 @@ class Tileset extends EventDispatcher {
       var request:URLRequest = new URLRequest(Helper.joinPath(this.mMap.prefix, this.source));
       var loader:URLLoader = new URLLoader();
       // set load complete callback
-      loader.addEventListener(Event.COMPLETE, (event:Event) -> {
+      loader.addEventListener(Event.COMPLETE, (event:Event) ->
+      {
         // parse xml
         this.parse(Xml.parse(loader.data).firstElement());
         // set loaded to true
@@ -270,23 +286,30 @@ class Tileset extends EventDispatcher {
       });
       loader.load(request);
       #end
-    } else if (!this.mTileLoaded) {
+    }
+    else if (!this.mTileLoaded)
+    {
       var tmpTile:Array<tiledfl.tileset.Tile> = new Array<tiledfl.tileset.Tile>();
-      for (tile in this.tile) {
+      for (tile in this.tile)
+      {
         tmpTile.push(tile);
       }
       // handle no tiles to be loaded
-      if (0 >= tmpTile.length) {
+      if (0 >= tmpTile.length)
+      {
         this.mTileLoaded = true;
         this.load();
         return;
       }
       // loop through tiles and start loading them
-      for (tile in this.tile) {
-        tile.addEventListener(Event.COMPLETE, (event:Event) -> {
+      for (tile in this.tile)
+      {
+        tile.addEventListener(Event.COMPLETE, (event:Event) ->
+        {
           tmpTile.remove(tile);
           // continue loading when end was reached
-          if (0 >= tmpTile.length) {
+          if (0 >= tmpTile.length)
+          {
             // set tile loaded flag
             this.mTileLoaded = true;
             // continue with load process
@@ -296,12 +319,16 @@ class Tileset extends EventDispatcher {
         // load tile
         tile.load();
       }
-    } else if (this.image != null && this.tileset == null) {
+    }
+    else if (this.image != null && this.tileset == null)
+    {
       // set complete handler
       this.image.addEventListener(Event.COMPLETE, onImageCompleted);
       // load image
       this.image.load();
-    } else {
+    }
+    else
+    {
       // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
@@ -311,7 +338,8 @@ class Tileset extends EventDispatcher {
    * Callback for on image completed
    * @param event
    */
-  private function onImageCompleted(event:Event):Void {
+  private function onImageCompleted(event:Event):Void
+  {
     // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // evaluate tx and ty length
@@ -319,8 +347,10 @@ class Tileset extends EventDispatcher {
     var tylen:Int = Std.int(this.image.height / this.tileheight);
     // prepare tileset rectangles
     var rect:Array<Rectangle> = new Array<Rectangle>();
-    for (ty in 0...tylen) {
-      for (tx in 0...txlen) {
+    for (ty in 0...tylen)
+    {
+      for (tx in 0...txlen)
+      {
         rect.push(new Rectangle(tx * this.tilewidth + tx * this.spacing + this.margin, ty * this.tileheight + ty * this.spacing + this.margin, this.tilewidth,
           this.tileheight));
       }

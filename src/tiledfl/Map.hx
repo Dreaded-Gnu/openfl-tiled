@@ -18,7 +18,8 @@ import tiledfl.map.Orientation;
 /**
  * Map class for loading and rendering tilemap
  */
-class Map extends EventDispatcher {
+class Map extends EventDispatcher
+{
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
   #if tiledfl_debug_render_object
@@ -198,7 +199,8 @@ class Map extends EventDispatcher {
    * @param width tilemap width
    * @param height tilemap height
    */
-  public function new(prefix:String, path:String, width:Int, height:Int) {
+  public function new(prefix:String, path:String, width:Int, height:Int)
+  {
     // call parent constructor
     super();
     // set variables
@@ -232,7 +234,8 @@ class Map extends EventDispatcher {
    * Added to stage handler
    * @param event
    */
-  private function onAddedToStage(event:Event):Void {
+  private function onAddedToStage(event:Event):Void
+  {
     // initially render the map
     this.render();
     // dispatch added to stage event
@@ -243,7 +246,8 @@ class Map extends EventDispatcher {
    * Removed from stage handler
    * @param event
    */
-  private function onRemovedFromStage(event:Event):Void {
+  private function onRemovedFromStage(event:Event):Void
+  {
     // remove set event listeners from tilemap
     this.mTileMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
     this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
@@ -256,7 +260,8 @@ class Map extends EventDispatcher {
    * @param width width to resize tilemap to
    * @param height height to resize tilemap to
    */
-  public function resize(width:Float, height:Float):Void {
+  public function resize(width:Float, height:Float):Void
+  {
     // resize tilemap
     this.mTileMap.width = width * TILEMAP_RENDER_OFFSET_FACTOR;
     this.mTileMap.height = height * TILEMAP_RENDER_OFFSET_FACTOR;
@@ -273,7 +278,8 @@ class Map extends EventDispatcher {
    * On load complete callback
    * @param event
    */
-  private function onLoadComplete(event:Event):Void {
+  private function onLoadComplete(event:Event):Void
+  {
     // get url loader
     var loader:URLLoader = cast event.target;
     // remove on load complete handler
@@ -288,7 +294,8 @@ class Map extends EventDispatcher {
    * Helper method to parse XML
    * @param xmlContent
    */
-  private function parseXml(xmlContent:String):Void {
+  private function parseXml(xmlContent:String):Void
+  {
     var xmlParsed:Xml = Xml.parse(xmlContent).firstElement();
     // parse map
     this.version = Std.parseFloat(xmlParsed.get("version"));
@@ -296,7 +303,8 @@ class Map extends EventDispatcher {
     this.klass = xmlParsed.exists("class") ? xmlParsed.get("class") : "";
     // parse orientation
     var o:String = xmlParsed.get("orientation");
-    switch (o) {
+    switch (o)
+    {
       case "orthogonal":
         this.orientation = Orientation.MapOrientationOrthogonal;
       case "isometric":
@@ -310,7 +318,8 @@ class Map extends EventDispatcher {
     }
     // parse render order
     var r:String = xmlParsed.exists("renderorder") ? xmlParsed.get("renderorder") : "right-down";
-    switch (r) {
+    switch (r)
+    {
       case "right-down":
         this.renderorder = RenderOrder.MapRenderOrderRightDown;
       case "right-up":
@@ -326,13 +335,16 @@ class Map extends EventDispatcher {
     this.tilewidth = Std.parseInt(xmlParsed.get("tilewidth"));
     this.tileheight = Std.parseInt(xmlParsed.get("tileheight"));
     // handle only hexagonal stuff
-    if (this.orientation == Orientation.MapOrientationHexagonal) {
+    if (this.orientation == Orientation.MapOrientationHexagonal)
+    {
       this.hexsidelength = Std.parseInt(xmlParsed.get("hexsidelength"));
     }
     // handle hexagonal / staggered stuff
-    if (this.orientation == Orientation.MapOrientationHexagonal || this.orientation == Orientation.MapOrientationStaggered) {
+    if (this.orientation == Orientation.MapOrientationHexagonal || this.orientation == Orientation.MapOrientationStaggered)
+    {
       var axis:String = xmlParsed.get("staggeraxis");
-      switch (axis) {
+      switch (axis)
+      {
         case "x":
           this.staggeraxis = StaggerAxis.MapStaggerAxisX;
         case "y":
@@ -341,7 +353,8 @@ class Map extends EventDispatcher {
           throw new Error('Unsupported staggeraxis $axis');
       }
       var index:String = xmlParsed.get("staggerindex");
-      switch (index) {
+      switch (index)
+      {
         case "even":
           this.staggerindex = StaggerIndex.MapStaggerIndexEven;
         case "odd":
@@ -366,12 +379,15 @@ class Map extends EventDispatcher {
     this.mRenderObjects = new Array<tiledfl.Updatable>();
 
     var layerId:Int = 0;
-    for (child in xmlParsed) {
-      if (child.nodeType != Xml.Element) {
+    for (child in xmlParsed)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "tileset":
           var ts:tiledfl.Tileset = new tiledfl.Tileset(child, this);
           this.tileset.push(ts);
@@ -395,20 +411,25 @@ class Map extends EventDispatcher {
     }
 
     // determine and adjust max widths for infinite maps
-    if (this.infinite == 1) {
+    if (this.infinite == 1)
+    {
       var maxWidth:Float = 0;
       var maxHeight:Float = 0;
-      for (renderObject in this.mRenderObjects) {
+      for (renderObject in this.mRenderObjects)
+      {
         maxWidth = Math.max(maxWidth, renderObject.evaluateWidth());
         maxHeight = Math.max(maxHeight, renderObject.evaluateHeight());
       }
       // overwrite width and height property if greater
-      if (maxWidth > this.width) {
+      if (maxWidth > this.width)
+      {
         this.width = maxWidth;
       }
-      if (maxHeight > this.height) {
+      if (maxHeight > this.height)
+      {
         this.height = maxHeight;
-        if (this.orientation == MapOrientationIsometric || this.orientation == MapOrientationStaggered) {
+        if (this.orientation == MapOrientationIsometric || this.orientation == MapOrientationStaggered)
+        {
           this.height = this.height / 2;
         }
       }
@@ -418,7 +439,8 @@ class Map extends EventDispatcher {
   /**
    * Method to start loading process of map
    */
-  public function load():Void {
+  public function load():Void
+  {
     #if tiledfl_use_asset
     // fake loader
     var loader:URLLoader = new URLLoader();
@@ -439,24 +461,31 @@ class Map extends EventDispatcher {
   /**
    * Load all necessary data
    */
-  private function loadData():Void {
-    if (!this.mTilesetLoaded) {
+  private function loadData():Void
+  {
+    if (!this.mTilesetLoaded)
+    {
       var tmpTileset:Array<tiledfl.Tileset> = new Array<tiledfl.Tileset>();
-      for (tileset in this.tileset) {
+      for (tileset in this.tileset)
+      {
         tmpTileset.push(tileset);
       }
       // handle no tiles to be loaded
-      if (0 >= tmpTileset.length) {
+      if (0 >= tmpTileset.length)
+      {
         this.mTilesetLoaded = true;
         this.loadData();
         return;
       }
       // loop through tilesets and start loading them
-      for (tileset in this.tileset) {
-        tileset.addEventListener(Event.COMPLETE, (event:Event) -> {
+      for (tileset in this.tileset)
+      {
+        tileset.addEventListener(Event.COMPLETE, (event:Event) ->
+        {
           tmpTileset.remove(tileset);
           // continue loading when end was reached
-          if (0 >= tmpTileset.length) {
+          if (0 >= tmpTileset.length)
+          {
             this.mTilesetLoaded = true;
             // continue with load process
             this.loadData();
@@ -465,23 +494,30 @@ class Map extends EventDispatcher {
         // load tile
         tileset.load();
       }
-    } else if (!this.mImageLayerLoaded) {
+    }
+    else if (!this.mImageLayerLoaded)
+    {
       var tmpImageLayer:Array<tiledfl.ImageLayer> = new Array<tiledfl.ImageLayer>();
-      for (imagelayer in this.imagelayer) {
+      for (imagelayer in this.imagelayer)
+      {
         tmpImageLayer.push(imagelayer);
       }
       // handle no tiles to be loaded
-      if (0 >= tmpImageLayer.length) {
+      if (0 >= tmpImageLayer.length)
+      {
         this.mImageLayerLoaded = true;
         this.loadData();
         return;
       }
       // loop through tiles and start loading them
-      for (imagelayer in this.imagelayer) {
-        imagelayer.addEventListener(Event.COMPLETE, (event:Event) -> {
+      for (imagelayer in this.imagelayer)
+      {
+        imagelayer.addEventListener(Event.COMPLETE, (event:Event) ->
+        {
           tmpImageLayer.remove(imagelayer);
           // continue loading when end was reached
-          if (0 >= tmpImageLayer.length) {
+          if (0 >= tmpImageLayer.length)
+          {
             this.mImageLayerLoaded = true;
             // continue with load process
             this.loadData();
@@ -490,23 +526,30 @@ class Map extends EventDispatcher {
         // load tile
         imagelayer.load();
       }
-    } else if (!this.mGroupLoaded) {
+    }
+    else if (!this.mGroupLoaded)
+    {
       var tmpGroup:Array<tiledfl.Group> = new Array<tiledfl.Group>();
-      for (group in this.group) {
+      for (group in this.group)
+      {
         tmpGroup.push(group);
       }
       // handle no tiles to be loaded
-      if (0 >= tmpGroup.length) {
+      if (0 >= tmpGroup.length)
+      {
         this.mGroupLoaded = true;
         this.loadData();
         return;
       }
       // loop through tiles and start loading them
-      for (group in this.group) {
-        group.addEventListener(Event.COMPLETE, (event:Event) -> {
+      for (group in this.group)
+      {
+        group.addEventListener(Event.COMPLETE, (event:Event) ->
+        {
           tmpGroup.remove(group);
           // continue loading when end was reached
-          if (0 >= tmpGroup.length) {
+          if (0 >= tmpGroup.length)
+          {
             this.mGroupLoaded = true;
             // continue with load process
             this.loadData();
@@ -515,7 +558,9 @@ class Map extends EventDispatcher {
         // load tile
         group.load();
       }
-    } else {
+    }
+    else
+    {
       // set loaded flag
       this.isLoaded = true;
       // dispatch complete event
@@ -528,10 +573,13 @@ class Map extends EventDispatcher {
    * @param gid
    * @return tiledfl.Tileset
    */
-  @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):tiledfl.Tileset {
+  @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):tiledfl.Tileset
+  {
     var tileset:tiledfl.Tileset = null;
-    for (ts in this.tileset) {
-      if (gid >= ts.firstgid) {
+    for (ts in this.tileset)
+    {
+      if (gid >= ts.firstgid)
+      {
         tileset = ts;
       }
     }
@@ -543,13 +591,16 @@ class Map extends EventDispatcher {
    * @param offsetX x offset to be considered
    * @param offsetY y offset to be considered
    */
-  public function render(offsetX:Float = 0, offsetY:Float = 0):Void {
+  public function render(offsetX:Float = 0, offsetY:Float = 0):Void
+  {
     // skip render if not loaded!
-    if (!this.isLoaded) {
+    if (!this.isLoaded)
+    {
       return;
     }
     // handle no offset change
-    if (this.mOffsetX == offsetX && this.mOffsetY == offsetY && this.mRendered) {
+    if (this.mOffsetX == offsetX && this.mOffsetY == offsetY && this.mRendered)
+    {
       return;
     }
     // set previous offset x and y
@@ -564,51 +615,64 @@ class Map extends EventDispatcher {
     var minWidthPos:Float = this.mTileMap.width / TILEMAP_RENDER_OFFSET_FACTOR * TILEMAP_RENDER_MIN_FACTOR;
     var minHeightPos:Float = this.mTileMap.height / TILEMAP_RENDER_OFFSET_FACTOR * TILEMAP_RENDER_MIN_FACTOR;
     // update render objects if it wasn't rendered yet or some threshold is reached
-    if (!this.mRendered || rect.x > minWidthPos || rect.y > minHeightPos || rect.x < 0 || rect.y < 0) {
+    if (!this.mRendered || rect.x > minWidthPos || rect.y > minHeightPos || rect.x < 0 || rect.y < 0)
+    {
       // new rect x and y will by default be the one set
       var newRectX:Float = rect.x;
       var newRectY:Float = rect.y;
       // determine new render offsets
-      if (!this.mRendered) {
+      if (!this.mRendered)
+      {
         // handle not rendered by using offset minus min width divided by two
         this.mRenderOffsetX = Math.max(this.mOffsetX - minWidthPos / 2, 0);
         // adjust rect x position
         newRectX /= 2;
-      } else if (rect.x > minWidthPos) {
+      }
+      else if (rect.x > minWidthPos)
+      {
         // increment render offset
         this.mRenderOffsetX += rect.x / 2;
         // adjust rect x position
         newRectX /= 2;
-      } else if (rect.x < 0) {
+      }
+      else if (rect.x < 0)
+      {
         // determine new rect x
         newRectX = minWidthPos / 2;
         // calculate new render offset
         var newRenderOffsetX:Float = Math.max(this.mRenderOffsetX - minWidthPos / 2, 0);
         // handle offset turns to 0
-        if (newRenderOffsetX == 0) {
+        if (newRenderOffsetX == 0)
+        {
           // adjust new rect x by adding difference
           newRectX += (this.mRenderOffsetX - minWidthPos / 2);
         }
         // set new render offset
         this.mRenderOffsetX = newRenderOffsetX;
       }
-      if (!this.mRendered) {
+      if (!this.mRendered)
+      {
         // handle not rendered by using offset minus min height divided by two
         this.mRenderOffsetY = Math.max(this.mOffsetY - minHeightPos / 2, 0);
         // adjust rect x position
         newRectY /= 2;
-      } else if (rect.y > minHeightPos) {
+      }
+      else if (rect.y > minHeightPos)
+      {
         // increment render offset
         this.mRenderOffsetY += rect.y / 2;
         // adjust rect x position
         newRectY /= 2;
-      } else if (rect.y < 0) {
+      }
+      else if (rect.y < 0)
+      {
         // determine new rect x
         newRectY = minHeightPos / 2;
         // calculate new render offset
         var newRenderOffsetY:Float = Math.max(this.mRenderOffsetY - minHeightPos / 2, 0);
         // handle offset turns to 0
-        if (newRenderOffsetY == 0) {
+        if (newRenderOffsetY == 0)
+        {
           // adjust new rect y by adding difference
           newRectY += (this.mRenderOffsetY - minHeightPos / 2);
         }
@@ -618,7 +682,8 @@ class Map extends EventDispatcher {
       // setup index for render object update to keep the render order from tiled
       var index:Int = 0;
       // iterate over render objects
-      for (renderObject in this.mRenderObjects) {
+      for (renderObject in this.mRenderObjects)
+      {
         // update render object
         index += renderObject.update(this.mRenderOffsetX, this.mRenderOffsetY, index);
       }
@@ -639,7 +704,8 @@ class Map extends EventDispatcher {
    * Getter for tilemap property
    * @return openfl.display.Tilemap
    */
-  @:dox(hide) @:noCompletion private function get_tilemap():openfl.display.Tilemap {
+  @:dox(hide) @:noCompletion private function get_tilemap():openfl.display.Tilemap
+  {
     return this.mTileMap;
   }
 
@@ -647,7 +713,8 @@ class Map extends EventDispatcher {
    * Getter for render offset X
    * @return Int
    */
-  @:dox(hide) @:noCompletion private function get_renderOffsetX():Float {
+  @:dox(hide) @:noCompletion private function get_renderOffsetX():Float
+  {
     return this.mOffsetX;
   }
 
@@ -655,7 +722,8 @@ class Map extends EventDispatcher {
    * Getter for render offset y
    * @return Int
    */
-  @:dox(hide) @:noCompletion private function get_renderOffsetY():Float {
+  @:dox(hide) @:noCompletion private function get_renderOffsetY():Float
+  {
     return this.mOffsetY;
   }
 
@@ -664,9 +732,12 @@ class Map extends EventDispatcher {
    * @param name object group name to lookup
    * @return Object group with the name or null if not found
    */
-  public function objectgroupByName(name:String):tiledfl.ObjectGroup {
-    for (objectgroup in this.objectgroup) {
-      if (objectgroup.name == name) {
+  public function objectgroupByName(name:String):tiledfl.ObjectGroup
+  {
+    for (objectgroup in this.objectgroup)
+    {
+      if (objectgroup.name == name)
+      {
         return objectgroup;
       }
     }
@@ -681,15 +752,19 @@ class Map extends EventDispatcher {
    * @param height height
    * @return True if collision was detected, else false
    */
-  public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
+  public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  {
     // skip render if not loaded!
-    if (!this.isLoaded) {
+    if (!this.isLoaded)
+    {
       return false;
     }
     // loop through render objects
-    for (renderObject in this.mRenderObjects) {
+    for (renderObject in this.mRenderObjects)
+    {
       // check for collision
-      if (renderObject.collides(x, y, width, height)) {
+      if (renderObject.collides(x, y, width, height))
+      {
         return true;
       }
     }
@@ -705,7 +780,8 @@ class Map extends EventDispatcher {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function willBeVisible(x:Float, y:Float, width:Float, height:Float):Bool {
+  @:dox(hide) @:noCompletion public function willBeVisible(x:Float, y:Float, width:Float, height:Float):Bool
+  {
     // cache scrollrect x and y
     var scrollRectX:Float = this.mTileMap.scrollRect.x;
     var scrollRectY:Float = this.mTileMap.scrollRect.y;

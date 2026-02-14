@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Frame representation
  */
-class Frame {
+class Frame
+{
   /**
    * Tile id of the frame
    */
@@ -18,7 +19,8 @@ class Frame {
    * Constructor
    * @param node xml representation to parse
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     this.tileid = Std.parseInt(node.get("tileid"));
     this.duration = Std.parseInt(node.get("duration"));
   }

@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Wang color representation
  */
-class Wangcolor {
+class Wangcolor
+{
   /**
    * Name
    */

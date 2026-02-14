@@ -3,7 +3,8 @@ package tiledfl.map;
 /**
  * Tiled map render order enum
  */
-enum abstract RenderOrder(String) {
+enum abstract RenderOrder(String)
+{
   /**
    * Render order right down
    */

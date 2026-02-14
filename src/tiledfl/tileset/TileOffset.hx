@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Tile offset representation
  */
-class TileOffset {
+class TileOffset
+{
   /**
    * Offset on x axis
    */
@@ -18,7 +19,8 @@ class TileOffset {
    * Constructor
    * @param node xml representation to parse
    */
-  public function new(node:Xml) {
+  public function new(node:Xml)
+  {
     this.x = node != null ? Std.parseInt(node.get("x")) : 0;
     this.y = node != null ? Std.parseInt(node.get("y")) : 0;
   }

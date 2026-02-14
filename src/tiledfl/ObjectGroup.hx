@@ -3,7 +3,8 @@ package tiledfl;
 /**
  * Group of objects
  */
-class ObjectGroup implements tiledfl.Updatable {
+class ObjectGroup implements tiledfl.Updatable
+{
   /**
    * ID
    */
@@ -101,7 +102,8 @@ class ObjectGroup implements tiledfl.Updatable {
    * @param node xml representation to be parsed
    * @param map map this object group belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     this.mMap = map;
     // parse properties
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -120,7 +122,8 @@ class ObjectGroup implements tiledfl.Updatable {
     this.parallaxx = node.exists("parallaxx") ? Std.parseInt(node.get("parallaxx")) : 1;
     this.parallaxy = node.exists("parallaxy") ? Std.parseInt(node.get("parallaxy")) : 1;
     var d:String = node.get("draworder");
-    switch (d) {
+    switch (d)
+    {
       case "index":
         this.draworder = ObjectGroupDrawOrderIndex;
       case "topdown":
@@ -131,12 +134,15 @@ class ObjectGroup implements tiledfl.Updatable {
 
     this.object = new Array<tiledfl.Object>();
 
-    for (child in node) {
-      if (child.nodeType != Xml.Element) {
+    for (child in node)
+    {
+      if (child.nodeType != Xml.Element)
+      {
         // skip non elements
         continue;
       }
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "properties":
           this.properties = new tiledfl.Properties(child);
         case "object":
@@ -152,11 +158,13 @@ class ObjectGroup implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  {
     // initialize total
     var total:Int = 0;
     // iterate through objects
-    for (object in this.object) {
+    for (object in this.object)
+    {
       // call update of object method
       total += object.update(offsetX, offsetY, index + total);
     }
@@ -172,14 +180,18 @@ class ObjectGroup implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
-    for (object in this.object) {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  {
+    for (object in this.object)
+    {
       // handle no collision layer and not collidable object
-      if (this.name != Helper.COLLISION_LAYER_NAME && object.type != Helper.COLLISION_LAYER_NAME) {
+      if (this.name != Helper.COLLISION_LAYER_NAME && object.type != Helper.COLLISION_LAYER_NAME)
+      {
         continue;
       }
       // check for collision
-      if (object.collides(x, y, width, height)) {
+      if (object.collides(x, y, width, height))
+      {
         return true;
       }
     }
@@ -190,7 +202,8 @@ class ObjectGroup implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float
+  {
     return 0;
   }
 
@@ -198,7 +211,8 @@ class ObjectGroup implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float
+  {
     return 0;
   }
 }

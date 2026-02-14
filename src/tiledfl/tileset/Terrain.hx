@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Tiled terrain object
  */
-class Terrain {
+class Terrain
+{
   /**
    * Terrain name
    */

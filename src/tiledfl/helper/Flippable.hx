@@ -3,7 +3,8 @@ package tiledfl.helper;
 /**
  * Flippable interface
  */
-interface Flippable {
+interface Flippable
+{
   /**
    * Helper for flipped horizontally checks
    * @return True if flipped horizontally, else false

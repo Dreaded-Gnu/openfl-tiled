@@ -15,7 +15,8 @@ import openfl.geom.Point;
 /**
  * Image representation
  */
-class Image extends EventDispatcher {
+class Image extends EventDispatcher
+{
   /**
    * Format
    */
@@ -59,7 +60,8 @@ class Image extends EventDispatcher {
    * @param node
    * @param map
    */
-  public function new(node:Xml, map:tiledfl.Map) {
+  public function new(node:Xml, map:tiledfl.Map)
+  {
     super();
     // cache map
     this.mMap = map;
@@ -71,13 +73,16 @@ class Image extends EventDispatcher {
     this.width = node.exists("width") ? Std.parseInt(node.get("width")) : -1;
     this.height = node.exists("height") ? Std.parseInt(node.get("height")) : -1;
     // parse children
-    for (child in node) {
+    for (child in node)
+    {
       // skip non elements
-      if (child.nodeType != Xml.Element) {
+      if (child.nodeType != Xml.Element)
+      {
         continue;
       }
       // handle child
-      switch (child.nodeName) {
+      switch (child.nodeName)
+      {
         case "data":
           this.data = new tiledfl.image.Data(child);
       }
@@ -87,9 +92,11 @@ class Image extends EventDispatcher {
   /**
    * Load method
    */
-  @:dox(hide) @:noCompletion public function load():Void {
+  @:dox(hide) @:noCompletion public function load():Void
+  {
     // handle data set
-    if (this.data != null) {
+    if (this.data != null)
+    {
       // emit warning for not supported targets
       #if (js && html5)
       throw new Error("Embedded images are not supported in js html5 target!");
@@ -111,19 +118,23 @@ class Image extends EventDispatcher {
    * On load complete event
    * @param event
    */
-  private function onLoadComplete(bitmapData:BitmapData) {
+  private function onLoadComplete(bitmapData:BitmapData)
+  {
     // apply transparency if necessary
-    if (this.mTransSet) {
+    if (this.mTransSet)
+    {
       // manipulate pixel once trans property is set
       bitmapData.threshold(bitmapData, bitmapData.rect, new Point(0, 0), "==", this.trans);
     }
     // create bitmap
     bitmap = new Bitmap(bitmapData);
     // populate width and height if undefined
-    if (-1 == this.width) {
+    if (-1 == this.width)
+    {
       this.width = bitmap.width;
     }
-    if (-1 == this.height) {
+    if (-1 == this.height)
+    {
       this.height = bitmap.height;
     }
     // dispatch load complete

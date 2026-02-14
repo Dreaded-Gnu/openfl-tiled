@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Terrain types representation
  */
-class TerrainTypes {
+class TerrainTypes
+{
   /**
    * Array of terrain elements
    */

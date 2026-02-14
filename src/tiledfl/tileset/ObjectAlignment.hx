@@ -3,7 +3,8 @@ package tiledfl.tileset;
 /**
  * Object alignment enum
  */
-enum abstract ObjectAlignment(String) {
+enum abstract ObjectAlignment(String)
+{
   /**
    * Object alignment unspecified
    */

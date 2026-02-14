@@ -5,7 +5,8 @@ import openfl.events.Event;
 /**
  * Animated tile implementation extending openfl.display.Tile
  */
-class AnimatedTile extends openfl.display.Tile {
+class AnimatedTile extends openfl.display.Tile
+{
   /**
    * Animation data used for this tile
    */
@@ -44,7 +45,8 @@ class AnimatedTile extends openfl.display.Tile {
    * @param animation animation data
    * @param map map instance
    */
-  public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:tiledfl.tileset.Animation, map:tiledfl.Map) {
+  public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:tiledfl.tileset.Animation, map:tiledfl.Map)
+  {
     super(id, x, y, scaleX, scaleY, rotation);
     // save animation and prepare max animation
     this.mAnimation = animation;
@@ -54,7 +56,8 @@ class AnimatedTile extends openfl.display.Tile {
     this.realX = this.x;
     this.realY = this.y;
     // set initial timer
-    if (this.mAnimation != null && this.mAnimation.frame.length > 0) {
+    if (this.mAnimation != null && this.mAnimation.frame.length > 0)
+    {
       // set current animation and id
       this.mCurrentAnimation = 0;
       this.id = this.mAnimation.frame[mCurrentAnimation].tileid;
@@ -70,7 +73,8 @@ class AnimatedTile extends openfl.display.Tile {
    * Switch tile on animation delay completed on enter frame
    * @param event
    */
-  private function onEnterFrame(event:Event):Void {
+  private function onEnterFrame(event:Event):Void
+  {
     // save current time
     var currentTime:Float = haxe.Timer.stamp();
     // calculate milliseconds delta
@@ -80,13 +84,15 @@ class AnimatedTile extends openfl.display.Tile {
     // increase duration
     this.mDuration += deltaTime;
     // handle frame not yet done
-    if (this.mDuration < this.mAnimation.frame[mCurrentAnimation].duration) {
+    if (this.mDuration < this.mAnimation.frame[mCurrentAnimation].duration)
+    {
       return;
     }
     // reset duration time
     this.mDuration = 0;
     // handle max animation step reached
-    if (++this.mCurrentAnimation >= this.mMaxAnimation) {
+    if (++this.mCurrentAnimation >= this.mMaxAnimation)
+    {
       this.mCurrentAnimation = 0;
     }
     // set id correctly
@@ -98,7 +104,8 @@ class AnimatedTile extends openfl.display.Tile {
     // overwrite tileset
     this.tileset = tileset.tileset;
     // overwrite tileset with one from tile if set
-    if (tile?.tileset != null) {
+    if (tile?.tileset != null)
+    {
       this.tileset = tile.tileset;
       // reset id to 0
       this.id = 0;
@@ -110,10 +117,12 @@ class AnimatedTile extends openfl.display.Tile {
    * @param animation
    * @return tiledfl.tileset.Animation
    */
-  private function set_animation(animation:tiledfl.tileset.Animation):tiledfl.tileset.Animation {
+  private function set_animation(animation:tiledfl.tileset.Animation):tiledfl.tileset.Animation
+  {
     this.mAnimation = animation;
     this.mMaxAnimation = animation != null ? animation.frame.length : 0;
-    if (this.mCurrentAnimation >= this.mMaxAnimation) {
+    if (this.mCurrentAnimation >= this.mMaxAnimation)
+    {
       this.mCurrentAnimation = 0;
     }
     return this.mAnimation;
@@ -123,7 +132,8 @@ class AnimatedTile extends openfl.display.Tile {
    * Animation getter
    * @return tiledfl.tileset.Animation
    */
-  private function get_animation():tiledfl.tileset.Animation {
+  private function get_animation():tiledfl.tileset.Animation
+  {
     return this.mAnimation;
   }
 
@@ -132,7 +142,8 @@ class AnimatedTile extends openfl.display.Tile {
    * @param map
    * @return tiledfl.Map
    */
-  private function set_map(map:tiledfl.Map):tiledfl.Map {
+  private function set_map(map:tiledfl.Map):tiledfl.Map
+  {
     return this.mMap = map;
   }
 
@@ -140,7 +151,8 @@ class AnimatedTile extends openfl.display.Tile {
    * Map getter
    * @return tiledfl.Map
    */
-  private function get_map():tiledfl.Map {
+  private function get_map():tiledfl.Map
+  {
     return this.mMap;
   }
 }

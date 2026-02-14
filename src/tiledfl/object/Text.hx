@@ -3,7 +3,8 @@ package tiledfl.object;
 /**
  * Tiled text object
  */
-class Text {
+class Text
+{
   /**
    * Font family to be used
    */
@@ -66,7 +67,8 @@ class Text {
    * @param node node data to parse
    * @param object object instance this object belongs to
    */
-  public function new(node:Xml, object:tiledfl.Object) {
+  public function new(node:Xml, object:tiledfl.Object)
+  {
     this.object = object;
     this.fontfamily = node.exists("fontfamily") ? node.get("fontfamily") : "sans-serif";
     this.pixelsize = node.exists("pixelsize") ? Std.parseInt(node.get("fontfamily")) : 16;
