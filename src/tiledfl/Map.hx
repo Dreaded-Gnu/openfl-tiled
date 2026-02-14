@@ -58,22 +58,22 @@ class Map extends EventDispatcher {
   /**
    * Map width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Map height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Tile width
    */
-  public var tilewidth(default, null):Int;
+  public var tilewidth(default, null):Float;
 
   /**
    * Tile height
    */
-  public var tileheight(default, null):Int;
+  public var tileheight(default, null):Float;
 
   /**
    * Width and height of tiles edge in pixel, only for hexagonal maps
@@ -93,12 +93,12 @@ class Map extends EventDispatcher {
   /**
    * X coordinate of parallax origin in pixel
    */
-  public var parallaxoriginx(default, null):Int;
+  public var parallaxoriginx(default, null):Float;
 
   /**
    * Y coordinate of parallax origin in pixel
    */
-  public var parallaxoriginy(default, null):Int;
+  public var parallaxoriginy(default, null):Float;
 
   /**
    * Background color
@@ -163,12 +163,12 @@ class Map extends EventDispatcher {
   /**
    * Render offset x
    */
-  @:dox(hide) @:noCompletion public var renderOffsetX(get, null):Int;
+  @:dox(hide) @:noCompletion public var renderOffsetX(get, null):Float;
 
   /**
    * Render offset y
    */
-  @:dox(hide) @:noCompletion public var renderOffsetY(get, null):Int;
+  @:dox(hide) @:noCompletion public var renderOffsetY(get, null):Float;
 
   #if tiledfl_debug_render_object
   /**
@@ -183,12 +183,12 @@ class Map extends EventDispatcher {
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
   private var mRenderObjects:Array<tiledfl.Updatable>;
-  private var mOffsetX:Int;
-  private var mOffsetY:Int;
-  private var mPreviousOffsetX:Int;
-  private var mPreviousOffsetY:Int;
-  private var mRenderOffsetX:Int;
-  private var mRenderOffsetY:Int;
+  private var mOffsetX:Float;
+  private var mOffsetY:Float;
+  private var mPreviousOffsetX:Float;
+  private var mPreviousOffsetY:Float;
+  private var mRenderOffsetX:Float;
+  private var mRenderOffsetY:Float;
   private var mRendered:Bool;
 
   /**
@@ -256,7 +256,7 @@ class Map extends EventDispatcher {
    * @param width width to resize tilemap to
    * @param height height to resize tilemap to
    */
-  public function resize(width:Int, height:Int):Void {
+  public function resize(width:Float, height:Float):Void {
     // resize tilemap
     this.mTileMap.width = width * TILEMAP_RENDER_OFFSET_FACTOR;
     this.mTileMap.height = height * TILEMAP_RENDER_OFFSET_FACTOR;
@@ -396,11 +396,11 @@ class Map extends EventDispatcher {
 
     // determine and adjust max widths for infinite maps
     if (this.infinite == 1) {
-      var maxWidth:Int = 0;
-      var maxHeight:Int = 0;
+      var maxWidth:Float = 0;
+      var maxHeight:Float = 0;
       for (renderObject in this.mRenderObjects) {
-        maxWidth = Std.int(Math.max(maxWidth, renderObject.evaluateWidth()));
-        maxHeight = Std.int(Math.max(maxHeight, renderObject.evaluateHeight()));
+        maxWidth = Math.max(maxWidth, renderObject.evaluateWidth());
+        maxHeight = Math.max(maxHeight, renderObject.evaluateHeight());
       }
       // overwrite width and height property if greater
       if (maxWidth > this.width) {
@@ -409,7 +409,7 @@ class Map extends EventDispatcher {
       if (maxHeight > this.height) {
         this.height = maxHeight;
         if (this.orientation == MapOrientationIsometric || this.orientation == MapOrientationStaggered) {
-          this.height = Std.int(this.height / 2);
+          this.height = this.height / 2;
         }
       }
     }
@@ -543,7 +543,7 @@ class Map extends EventDispatcher {
    * @param offsetX x offset to be considered
    * @param offsetY y offset to be considered
    */
-  public function render(offsetX:Int = 0, offsetY:Int = 0):Void {
+  public function render(offsetX:Float = 0, offsetY:Float = 0):Void {
     // skip render if not loaded!
     if (!this.isLoaded) {
       return;
@@ -571,19 +571,19 @@ class Map extends EventDispatcher {
       // determine new render offsets
       if (!this.mRendered) {
         // handle not rendered by using offset minus min width divided by two
-        this.mRenderOffsetX = Std.int(Math.max(this.mOffsetX - minWidthPos / 2, 0));
+        this.mRenderOffsetX = Math.max(this.mOffsetX - minWidthPos / 2, 0);
         // adjust rect x position
         newRectX /= 2;
       } else if (rect.x > minWidthPos) {
         // increment render offset
-        this.mRenderOffsetX += Std.int(rect.x / 2);
+        this.mRenderOffsetX += rect.x / 2;
         // adjust rect x position
         newRectX /= 2;
       } else if (rect.x < 0) {
         // determine new rect x
         newRectX = minWidthPos / 2;
         // calculate new render offset
-        var newRenderOffsetX = Std.int(Math.max(this.mRenderOffsetX - minWidthPos / 2, 0));
+        var newRenderOffsetX:Float = Math.max(this.mRenderOffsetX - minWidthPos / 2, 0);
         // handle offset turns to 0
         if (newRenderOffsetX == 0) {
           // adjust new rect x by adding difference
@@ -594,19 +594,19 @@ class Map extends EventDispatcher {
       }
       if (!this.mRendered) {
         // handle not rendered by using offset minus min height divided by two
-        this.mRenderOffsetY = Std.int(Math.max(this.mOffsetY - minHeightPos / 2, 0));
+        this.mRenderOffsetY = Math.max(this.mOffsetY - minHeightPos / 2, 0);
         // adjust rect x position
         newRectY /= 2;
       } else if (rect.y > minHeightPos) {
         // increment render offset
-        this.mRenderOffsetY += Std.int(rect.y / 2);
+        this.mRenderOffsetY += rect.y / 2;
         // adjust rect x position
         newRectY /= 2;
       } else if (rect.y < 0) {
         // determine new rect x
         newRectY = minHeightPos / 2;
         // calculate new render offset
-        var newRenderOffsetY = Std.int(Math.max(this.mRenderOffsetY - minHeightPos / 2, 0));
+        var newRenderOffsetY:Float = Math.max(this.mRenderOffsetY - minHeightPos / 2, 0);
         // handle offset turns to 0
         if (newRenderOffsetY == 0) {
           // adjust new rect y by adding difference
@@ -639,7 +639,7 @@ class Map extends EventDispatcher {
    * Getter for tilemap property
    * @return openfl.display.Tilemap
    */
-  private function get_tilemap():openfl.display.Tilemap {
+  @:dox(hide) @:noCompletion private function get_tilemap():openfl.display.Tilemap {
     return this.mTileMap;
   }
 
@@ -647,7 +647,7 @@ class Map extends EventDispatcher {
    * Getter for render offset X
    * @return Int
    */
-  private function get_renderOffsetX():Int {
+  @:dox(hide) @:noCompletion private function get_renderOffsetX():Float {
     return this.mOffsetX;
   }
 
@@ -655,7 +655,7 @@ class Map extends EventDispatcher {
    * Getter for render offset y
    * @return Int
    */
-  private function get_renderOffsetY():Int {
+  @:dox(hide) @:noCompletion private function get_renderOffsetY():Float {
     return this.mOffsetY;
   }
 
@@ -681,7 +681,7 @@ class Map extends EventDispatcher {
    * @param height height
    * @return True if collision was detected, else false
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
     // skip render if not loaded!
     if (!this.isLoaded) {
       return false;
@@ -705,7 +705,7 @@ class Map extends EventDispatcher {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function willBeVisible(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function willBeVisible(x:Float, y:Float, width:Float, height:Float):Bool {
     // cache scrollrect x and y
     var scrollRectX:Float = this.mTileMap.scrollRect.x;
     var scrollRectY:Float = this.mTileMap.scrollRect.y;

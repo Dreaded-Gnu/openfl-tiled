@@ -10,22 +10,22 @@ class Chunk {
   /**
    * X coordinate the chunk starts
    */
-  public var x(default, null):Int;
+  public var x(default, null):Float;
 
   /**
    * Y coordinate the chunk starts
    */
-  public var y(default, null):Int;
+  public var y(default, null):Float;
 
   /**
    * Chunk width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Chunk height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Array of tiles in chunk

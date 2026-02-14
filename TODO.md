@@ -5,7 +5,6 @@
 
 - [ ] Improve code documentation
 - [ ] Provide some samples
-- [ ] Switch from integer for coordinates to float
 
 ## Already done
 
@@ -45,3 +44,4 @@
 - [x] Generate code documentation
 - [x] Fix annoying borders around tiles when it comes to scaling
 - [x] Publish to haxelib
+- [x] Switch from integer for coordinates to float

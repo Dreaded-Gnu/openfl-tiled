@@ -25,12 +25,12 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
   /**
    * Offset on x axis
    */
-  public var offsetx(default, null):Int;
+  public var offsetx(default, null):Float;
 
   /**
    * Offset on y axis
    */
-  public var offsety(default, null):Int;
+  public var offsety(default, null):Float;
 
   /**
    * Opacity
@@ -138,7 +138,7 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
     // initialize total
     var total:Int = 0;
     // iterate through render objects and perform an update
@@ -158,7 +158,7 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
     for (renderObject in this.mRenderObjects) {
       if (renderObject.collides(x, y, width, height)) {
         return true;
@@ -171,10 +171,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
-    var width:Int = 0;
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
+    var width:Float = 0;
     for (renderObject in this.mRenderObjects) {
-      width = Std.int(Math.max(width, renderObject.evaluateWidth()));
+      width = Math.max(width, renderObject.evaluateWidth());
     }
     return width;
   }
@@ -183,10 +183,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
-    var height:Int = 0;
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
+    var height:Float = 0;
     for (renderObject in this.mRenderObjects) {
-      height = Std.int(Math.max(height, renderObject.evaluateHeight()));
+      height = Math.max(height, renderObject.evaluateHeight());
     }
     return height;
   }

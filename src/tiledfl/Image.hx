@@ -34,12 +34,12 @@ class Image extends EventDispatcher {
   /**
    * Width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Possible embedded data
@@ -121,10 +121,10 @@ class Image extends EventDispatcher {
     bitmap = new Bitmap(bitmapData);
     // populate width and height if undefined
     if (-1 == this.width) {
-      this.width = Std.int(bitmap.width);
+      this.width = bitmap.width;
     }
     if (-1 == this.height) {
-      this.height = Std.int(bitmap.height);
+      this.height = bitmap.height;
     }
     // dispatch load complete
     this.dispatchEvent(new Event(Event.COMPLETE));

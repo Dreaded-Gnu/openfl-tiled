@@ -26,32 +26,32 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
   /**
    * X offset
    */
-  public var offsetx(default, null):Int;
+  public var offsetx(default, null):Float;
 
   /**
    * Y offset
    */
-  public var offsety(default, null):Int;
+  public var offsety(default, null):Float;
 
   /**
    * Parallax X
    */
-  public var parallaxx(default, null):Int;
+  public var parallaxx(default, null):Float;
 
   /**
    * Parallax Y
    */
-  public var parallaxy(default, null):Int;
+  public var parallaxy(default, null):Float;
 
   /**
    * X position
    */
-  public var x(default, null):Int;
+  public var x(default, null):Float;
 
   /**
    * Y position
    */
-  public var y(default, null):Int;
+  public var y(default, null):Float;
 
   /**
    * Opacity
@@ -180,7 +180,7 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * @param offsetY
    * @param index
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
     // handle null, which shouldn't happen at all
     if (this.tile == null) {
       return 0;
@@ -193,7 +193,7 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // check if won't be visible
-    if (!this.mMap.willBeVisible(Std.int(this.tile.realX), Std.int(this.tile.realY), this.image.width, this.image.height)) {
+    if (!this.mMap.willBeVisible(this.tile.realX, this.tile.realY, this.image.width, this.image.height)) {
       // check if it was added
       if (tilemap.contains(this.tile)) {
         // remove it since it isn't visible any longer
@@ -216,7 +216,7 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
     return false;
   }
 

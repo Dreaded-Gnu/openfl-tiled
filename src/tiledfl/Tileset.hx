@@ -40,32 +40,32 @@ class Tileset extends EventDispatcher {
   /**
    * Tile width
    */
-  public var tilewidth(default, null):Int;
+  public var tilewidth(default, null):Float;
 
   /**
    * Tile height
    */
-  public var tileheight(default, null):Int;
+  public var tileheight(default, null):Float;
 
   /**
    * Spacing
    */
-  public var spacing(default, null):Int;
+  public var spacing(default, null):Float;
 
   /**
    * Margin
    */
-  public var margin(default, null):Int;
+  public var margin(default, null):Float;
 
   /**
    * Tile count
    */
-  public var tilecount(default, null):Int;
+  public var tilecount(default, null):Float;
 
   /**
    * Columns
    */
-  public var columns(default, null):Int;
+  public var columns(default, null):Float;
 
   /**
    * Object alignment

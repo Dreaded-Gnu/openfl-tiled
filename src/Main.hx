@@ -10,8 +10,8 @@ class Main extends Sprite {
   private var mMap:tiledfl.Map;
   private var mPlayer:Sprite;
   private var mKeys:Map<Int, Bool> = [];
-  private var mOffsetX:Int = 0;
-  private var mOffsetY:Int = 0;
+  private var mOffsetX:Float = 0;
+  private var mOffsetY:Float = 0;
 
   private static inline var SCALE:Float = 2;
   private static inline var MOVE_SPEED:Float = 2;
@@ -26,11 +26,11 @@ class Main extends Sprite {
     // this.mMap = new tiledfl.Map("tiled/rpg/", "tiled/rpg/island.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new tiledfl.Map("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // this.mMap = new tiledfl.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    this.mMap = new tiledfl.Map("tiled/isometric_staggered_grass_and_water/",
-      "tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new tiledfl.Map("tiled/isometric_staggered_grass_and_water/",
+    //   "tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx", this.stage.stageWidth, this.stage.stageHeight);
     /*this.mMap.tilemap.scaleX = SCALE;
-      this.mMap.tilemap.scaleY = SCALE; */
-    // this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
+      this.mMap.tilemap.scaleY = SCALE;*/
+    this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener
@@ -99,34 +99,34 @@ class Main extends Sprite {
   private function onEnterFrame(event:Event):Void {
     var changeX:Bool = false;
     var changeY:Bool = false;
-    var newOffsetX:Int = mOffsetX;
-    var newOffsetY:Int = mOffsetY;
-    var playerOffsetX:Int = Std.int(this.mPlayer?.x ?? 0);
-    var playerOffsetY:Int = Std.int(this.mPlayer?.y ?? 0);
+    var newOffsetX:Float = mOffsetX;
+    var newOffsetY:Float = mOffsetY;
+    var playerOffsetX:Float = this.mPlayer?.x ?? 0;
+    var playerOffsetY:Float = this.mPlayer?.y ?? 0;
     // calculate map height and width
-    var mapHeight:Int = Std.int(this.mMap.height * this.mMap.tileheight * SCALE);
-    var mapWidth:Int = Std.int(this.mMap.width * this.mMap.tilewidth * SCALE);
+    var mapHeight:Float = this.mMap.height * this.mMap.tileheight * SCALE;
+    var mapWidth:Float = this.mMap.width * this.mMap.tilewidth * SCALE;
     // handle keys
     if (mKeys[Keyboard.UP]) {
       changeY = true;
-      newOffsetY = Std.int(Math.max(newOffsetY - MOVE_SPEED, 0));
-      playerOffsetY = Std.int(Math.max(this.mPlayer.y - MOVE_SPEED, 0));
+      newOffsetY = Math.max(newOffsetY - MOVE_SPEED, 0);
+      playerOffsetY = Math.max(this.mPlayer.y - MOVE_SPEED, 0);
     } else if (mKeys[Keyboard.DOWN]) {
       changeY = true;
       if (mapHeight > this.stage.stageHeight) {
-        newOffsetY = Std.int(Math.min(newOffsetY + MOVE_SPEED, mapHeight * SCALE - this.stage.stageHeight));
+        newOffsetY = Math.min(newOffsetY + MOVE_SPEED, mapHeight * SCALE - this.stage.stageHeight);
       }
-      playerOffsetY = Std.int(Math.min(this.mPlayer.y + MOVE_SPEED, this.stage.stageHeight - this.mPlayer.height));
+      playerOffsetY = Math.min(this.mPlayer.y + MOVE_SPEED, this.stage.stageHeight - this.mPlayer.height);
     } else if (mKeys[Keyboard.LEFT]) {
       changeX = true;
-      newOffsetX = Std.int(Math.max(newOffsetX - MOVE_SPEED, 0));
-      playerOffsetX = Std.int(Math.max(this.mPlayer.x - MOVE_SPEED, 0));
+      newOffsetX = Math.max(newOffsetX - MOVE_SPEED, 0);
+      playerOffsetX = Math.max(this.mPlayer.x - MOVE_SPEED, 0);
     } else if (mKeys[Keyboard.RIGHT]) {
       changeX = true;
       if (mapWidth > this.stage.stageWidth) {
-        newOffsetX = Std.int(Math.min(newOffsetX + MOVE_SPEED, mapWidth - this.stage.stageWidth));
+        newOffsetX = Math.min(newOffsetX + MOVE_SPEED, mapWidth - this.stage.stageWidth);
       }
-      playerOffsetX = Std.int(Math.min(this.mPlayer.x + MOVE_SPEED, this.stage.stageWidth - this.mPlayer.width));
+      playerOffsetX = Math.min(this.mPlayer.x + MOVE_SPEED, this.stage.stageWidth - this.mPlayer.width);
     }
     // handle map rendering
     if (this.mMap.isLoaded && (changeX || changeY)) {
@@ -136,11 +136,11 @@ class Main extends Sprite {
         this.mPlayer.x = playerOffsetX;
         this.mPlayer.y = playerOffsetY;
         // check for collision
-        if (this.mMap.collides(Std.int(this.mPlayer.x / SCALE), Std.int(this.mPlayer.y / SCALE), this.mMap.tilewidth, this.mMap.tileheight)) {
+        /*if (this.mMap.collides(this.mPlayer.x / SCALE, this.mPlayer.y / SCALE, this.mMap.tilewidth, this.mMap.tileheight)) {
           this.mPlayer.x = oldPlayerX;
           this.mPlayer.y = oldPlayerY;
           changeX = changeY = false;
-        }
+        }*/
         // check for center map
         if (this.mPlayer.x - this.mPlayer.width / 2 < this.stage.stageWidth / 2 - this.mPlayer.width / 2
           && mOffsetX * SCALE > 0

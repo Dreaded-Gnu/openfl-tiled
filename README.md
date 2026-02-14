@@ -44,7 +44,7 @@ Function starts loading of the map and accepts no parameter. Once completed `Eve
 #### tiledfl.Map::resize
 
 ```haxe
-public function resize(width:Int, height:Int):Void;
+public function resize(width:Float, height:Float):Void;
 ```
 
 Function to resize the map. Method accepts width and height as parameter, recreates the scroll rect and rerenders the whole map.
@@ -52,7 +52,7 @@ Function to resize the map. Method accepts width and height as parameter, recrea
 #### tiledfl.Map::render
 
 ```haxe
-public function render(offsetX:Int = 0, offsetY:Int = 0):Void;
+public function render(offsetX:Float = 0, offsetY:Float = 0):Void;
 ```
 
 Calling renders the map. The function accepts two optional parameters to render with offset x and/or y. In case it was already rendered and offsets don't differ nothing will be done.
@@ -60,7 +60,7 @@ Calling renders the map. The function accepts two optional parameters to render 
 #### tiledfl.Map::collides
 
 ```haxe
-public function collides(x:Int, y:Int, width:Int, height:Int):Bool;
+public function collides(x:Float, y:Float, width:Float, height:Float):Bool;
 ```
 
 Check whether a rectangle starting at x/y width specific width and height collides with a collidable object. Collidable objects are tiles that have a property `collides` set to `"true"`, objects that have `collision` set as name or objects that have type set to `collision`

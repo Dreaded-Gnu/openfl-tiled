@@ -25,22 +25,22 @@ class Layer implements tiledfl.Updatable {
   /**
    * X position
    */
-  public var x(default, null):Int;
+  public var x(default, null):Float;
 
   /**
    * Y position
    */
-  public var y(default, null):Int;
+  public var y(default, null):Float;
 
   /**
    * Width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Opacity
@@ -60,22 +60,22 @@ class Layer implements tiledfl.Updatable {
   /**
    * Offset x
    */
-  public var offsetx(default, null):Int;
+  public var offsetx(default, null):Float;
 
   /**
    * Offset y
    */
-  public var offsety(default, null):Int;
+  public var offsety(default, null):Float;
 
   /**
    * Parallax x
    */
-  public var parallaxx(default, null):Int;
+  public var parallaxx(default, null):Float;
 
   /**
    * Parallax y
    */
-  public var parallaxy(default, null):Int;
+  public var parallaxy(default, null):Float;
 
   /**
    * Layer properties
@@ -138,8 +138,8 @@ class Layer implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  private function renderLayer(x:Int, y:Int, offsetX:Int, offsetY:Int, index:Int):Int {
-    var id:Int = x + y * this.width;
+  private function renderLayer(x:Float, y:Float, offsetX:Float, offsetY:Float, index:Int):Int {
+    var id:Int = Std.int(x + y * this.width);
     // get gid
     var gid:Int = this.data.tile[id].gid;
     // handle invalid
@@ -166,7 +166,7 @@ class Layer implements tiledfl.Updatable {
       this.mTileCheckContainer.get(tileset.firstgid).set(id, t);
     }
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(t.realX), Std.int(t.realY), tileset.tilewidth, tileset.tileheight)) {
+    if (!this.mMap.willBeVisible(t.realX, t.realY, tileset.tilewidth, tileset.tileheight)) {
       // check if it's displayed
       if (tilemap.contains(t)) {
         // just remove it from map
@@ -187,9 +187,9 @@ class Layer implements tiledfl.Updatable {
    * @param chunkIndex
    * @return Void
    */
-  private function renderChunk(chunk:tiledfl.layer.Chunk, chunkIndex:Int, offsetX:Int, offsetY:Int, mapIndex:Int, index:Int):Int {
+  private function renderChunk(chunk:tiledfl.layer.Chunk, chunkIndex:Int, offsetX:Float, offsetY:Float, mapIndex:Int, index:Int):Int {
     // calculate max to iterate to
-    var max:Int = chunk.width * chunk.height;
+    var max:Int = Std.int(chunk.width * chunk.height);
     var count:Int = 0;
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
@@ -199,7 +199,7 @@ class Layer implements tiledfl.Updatable {
       var x:Int = Std.int(i % chunk.width);
       var y:Int = Std.int(i / chunk.height);
       // calculate id
-      var id:Int = x + y * chunk.width;
+      var id:Int = Std.int(x + y * chunk.width);
       // get gid of current id
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
@@ -229,7 +229,7 @@ class Layer implements tiledfl.Updatable {
         mapIndex++;
       }
       // skip coordinate if not visible
-      if (!this.mMap.willBeVisible(Std.int(t.realX), Std.int(t.realY), tileset.tilewidth, tileset.tileheight)) {
+      if (!this.mMap.willBeVisible(t.realX, t.realY, tileset.tilewidth, tileset.tileheight)) {
         // check if it's displayed
         if (tilemap.contains(t)) {
           // just remove it from map
@@ -258,7 +258,7 @@ class Layer implements tiledfl.Updatable {
    * @param chunkIndex
    * @return tiledfl.helper.AnimatedTile
    */
-  private function generateTile(x:Int, y:Int, id:Int, gid:Int, tileset:tiledfl.Tileset, mapIndex:Int, chunk:tiledfl.layer.Chunk = null,
+  private function generateTile(x:Float, y:Float, id:Int, gid:Int, tileset:tiledfl.Tileset, mapIndex:Int, chunk:tiledfl.layer.Chunk = null,
       chunkIndex:Int = -1):tiledfl.helper.AnimatedTile {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
@@ -325,20 +325,20 @@ class Layer implements tiledfl.Updatable {
           t.realY = y * tileset.tileheight;
           // handle stagger axis and index
           if (this.mMap.staggeraxis == MapStaggerAxisY) {
-            t.y = Std.int(t.y / 2);
-            t.realY = Std.int(t.realY / 2);
+            t.y /= 2;
+            t.realY /= 2;
             if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-              t.x += Std.int((y & 1) * tileset.tilewidth / 2);
+              t.x += (Std.int(y) & 1) * tileset.tilewidth / 2;
             } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
-              t.x -= Std.int((y & 1) * tileset.tilewidth / 2);
+              t.x -= (Std.int(y) & 1) * tileset.tilewidth / 2;
             }
           } else if (this.mMap.staggeraxis == MapStaggerAxisX) {
-            t.x = Std.int(t.x / 2);
-            t.realX = Std.int(t.realX / 2);
+            t.x /= 2;
+            t.realX /= 2;
             if (this.mMap.staggerindex == MapStaggerIndexOdd) {
-              t.y += Std.int((x & 1) * tileset.tileheight / 2);
+              t.y += (Std.int(x) & 1) * tileset.tileheight / 2;
             } else if (this.mMap.staggerindex == MapStaggerIndexEven) {
-              t.y -= Std.int((x & 1) * tileset.tileheight / 2);
+              t.y -= (Std.int(x) & 1) * tileset.tileheight / 2;
             }
           }
         } else {
@@ -466,7 +466,7 @@ class Layer implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
     switch (this.mMap.renderorder) {
       case RenderOrder.MapRenderOrderRightDown:
         if (this.mMap.infinite == 1) {
@@ -477,11 +477,11 @@ class Layer implements tiledfl.Updatable {
           for (chunk in this.data.chunk) {
             total += this.renderChunk(chunk, chunkIdx, offsetX, offsetY, mapIdx, index + total);
             chunkIdx++;
-            mapIdx += chunk.width * chunk.height;
+            mapIdx += Std.int(chunk.width * chunk.height);
           }
           return total;
         } else {
-          var max:Int = this.width * this.height;
+          var max:Int = Std.int(this.width * this.height);
           var total:Int = 0;
           for (i in 0...max) {
             // calculate x and y
@@ -507,10 +507,10 @@ class Layer implements tiledfl.Updatable {
    * @param y
    * @return Int
    */
-  private function getTileGidAt(x:Int, y:Int):Int {
+  private function getTileGidAt(x:Float, y:Float):Int {
     // handle non infinite maps
     if (this.mMap.infinite != 1) {
-      var id:Int = Std.int(y / this.mMap.tileheight) * this.mMap.width + Std.int(x / this.mMap.tilewidth);
+      var id:Int = Std.int(y / this.mMap.tileheight * this.mMap.width + x / this.mMap.tilewidth);
       // handle not set
       if (null == this.data.tile[id]) {
         return 0;
@@ -537,10 +537,10 @@ class Layer implements tiledfl.Updatable {
         && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y)) {
         continue;
       }
-      var realX:Int = x - chunk.x * this.mMap.tilewidth;
-      var realY:Int = y - chunk.y * this.mMap.tileheight;
+      var realX:Float = x - chunk.x * this.mMap.tilewidth;
+      var realY:Float = y - chunk.y * this.mMap.tileheight;
       // get id
-      var id:Int = Std.int(realY / this.mMap.tileheight) * chunk.width + Std.int(realX / this.mMap.tilewidth);
+      var id:Int = Std.int(realY / this.mMap.tileheight * chunk.width + realX / this.mMap.tilewidth);
       // get gid
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
@@ -564,10 +564,10 @@ class Layer implements tiledfl.Updatable {
    * @param y
    * @return tiledfl.tileset.Tile
    */
-  private function getTileAt(x:Int, y:Int):tiledfl.tileset.Tile {
+  private function getTileAt(x:Float, y:Float):tiledfl.tileset.Tile {
     // handle non infinite maps
     if (this.mMap.infinite != 1) {
-      var id:Int = Std.int(y / this.mMap.tileheight) * this.mMap.width + Std.int(x / this.mMap.tilewidth);
+      var id:Int = Std.int(y / this.mMap.tileheight * this.mMap.width + x / this.mMap.tilewidth);
       // handle not set
       if (null == this.data.tile[id]) {
         return null;
@@ -597,10 +597,10 @@ class Layer implements tiledfl.Updatable {
         && chunk.y * this.mMap.tileheight + this.mMap.tileheight * chunk.height > y)) {
         continue;
       }
-      var realX:Int = x - chunk.x * this.mMap.tilewidth;
-      var realY:Int = y - chunk.y * this.mMap.tileheight;
+      var realX:Float = x - chunk.x * this.mMap.tilewidth;
+      var realY:Float = y - chunk.y * this.mMap.tileheight;
       // get id
-      var id:Int = Std.int(realY / this.mMap.tileheight) * chunk.width + Std.int(realX / this.mMap.tilewidth);
+      var id:Int = Std.int(realY / this.mMap.tileheight * chunk.width + realX / this.mMap.tilewidth);
       // get gid
       var gid:Int = chunk.tile[id].gid;
       // handle invalid
@@ -629,7 +629,7 @@ class Layer implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
     // array of tiles
     var tiles:Array<tiledfl.tileset.Tile> = new Array<tiledfl.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
@@ -637,7 +637,7 @@ class Layer implements tiledfl.Updatable {
     x += this.mMap.renderOffsetX;
     y += this.mMap.renderOffsetY;
     // loop through whole size
-    var max:Int = width * height;
+    var max:Int = Std.int(width * height);
     for (i in 0...max) {
       // calculate tx and ty
       var tx:Int = Std.int(i % width);
@@ -673,11 +673,11 @@ class Layer implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
     if (0 == this.data.chunk.length) {
       return this.width;
     }
-    var maxWidth:Int = 0;
+    var maxWidth:Float = 0;
     // loop through all layers
     for (chunk in this.data.chunk) {
       if (chunk.x + chunk.width > maxWidth) {
@@ -692,11 +692,11 @@ class Layer implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
     if (0 == this.data.chunk.length) {
       return this.height;
     }
-    var maxHeight:Int = 0;
+    var maxHeight:Float = 0;
     // loop through all layers
     for (chunk in this.data.chunk) {
       if (chunk.y + chunk.height > maxHeight) {

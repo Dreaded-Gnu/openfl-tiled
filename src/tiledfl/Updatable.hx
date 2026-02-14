@@ -7,7 +7,7 @@ package tiledfl;
    * @param offsetY
    * @param index
    */
-  public function update(offsetX:Int, offsetY:Int, index:Int):Int;
+  public function update(offsetX:Float, offsetY:Float, index:Int):Int;
 
   /**
    * Helper to check for collision of "rectangle" with element
@@ -17,17 +17,17 @@ package tiledfl;
    * @param height
    * @return Bool
    */
-  public function collides(x:Int, y:Int, width:Int, height:Int):Bool;
+  public function collides(x:Float, y:Float, width:Float, height:Float):Bool;
 
   /**
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Int;
+  public function evaluateWidth():Float;
 
   /**
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Int;
+  public function evaluateHeight():Float;
 }

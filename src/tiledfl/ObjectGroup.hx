@@ -27,22 +27,22 @@ class ObjectGroup implements tiledfl.Updatable {
   /**
    * X coordinate
    */
-  public var x(default, null):Int;
+  public var x(default, null):Float;
 
   /**
    * Y coordinate
    */
-  public var y(default, null):Int;
+  public var y(default, null):Float;
 
   /**
    * Width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Opacity
@@ -62,22 +62,22 @@ class ObjectGroup implements tiledfl.Updatable {
   /**
    * Offset X
    */
-  public var offsetx(default, null):Int;
+  public var offsetx(default, null):Float;
 
   /**
    * Offset y
    */
-  public var offsety(default, null):Int;
+  public var offsety(default, null):Float;
 
   /**
    * Parallax X
    */
-  public var parallaxx(default, null):Int;
+  public var parallaxx(default, null):Float;
 
   /**
    * Parallax y
    */
-  public var parallaxy(default, null):Int;
+  public var parallaxy(default, null):Float;
 
   /**
    * Draw order
@@ -152,7 +152,7 @@ class ObjectGroup implements tiledfl.Updatable {
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
     // initialize total
     var total:Int = 0;
     // iterate through objects
@@ -172,7 +172,7 @@ class ObjectGroup implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
     for (object in this.object) {
       // handle no collision layer and not collidable object
       if (this.name != Helper.COLLISION_LAYER_NAME && object.type != Helper.COLLISION_LAYER_NAME) {
@@ -190,7 +190,7 @@ class ObjectGroup implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
     return 0;
   }
 
@@ -198,7 +198,7 @@ class ObjectGroup implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
     return 0;
   }
 }

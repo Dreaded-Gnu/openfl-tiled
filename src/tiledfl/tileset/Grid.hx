@@ -14,12 +14,12 @@ class Grid {
   /**
    * Grid width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Grid height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Constructor

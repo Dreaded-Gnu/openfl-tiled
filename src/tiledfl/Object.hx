@@ -192,7 +192,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param tileIndex
    * @return Int
    */
-  private function renderTileObject(offsetX:Int, offsetY:Int, tileIndex:Int):Int {
+  private function renderTileObject(offsetX:Float, offsetY:Float, tileIndex:Int):Int {
     var gid:Int = this.gid;
     // handle invalid
     if (0 == gid) {
@@ -254,7 +254,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
       this.mTile = t;
     }
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(t.realX), Std.int(t.realY), Std.int(this.width * t.scaleX), Std.int(this.height * t.scaleY))) {
+    if (!this.mMap.willBeVisible(t.realX, t.realY, this.width * t.scaleX, this.height * t.scaleY)) {
       // check if it's displayed
       if (tilemap.contains(t)) {
         // just remove it from map
@@ -295,7 +295,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
   /**
    * Simple debugging function to render an object
    */
-  private function renderObject(offsetX:Int, offsetY:Int, tileIndex:Int):Int {
+  private function renderObject(offsetX:Float, offsetY:Float, tileIndex:Int):Int {
     // cache tilemap
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // clear shape
@@ -362,7 +362,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
     this.mTile.realX -= offsetX;
     this.mTile.realY -= offsetY;
     // skip coordinate if not visible
-    if (!this.mMap.willBeVisible(Std.int(this.mTile.realX), Std.int(this.mTile.realY), this.mTileset.bitmapData.width, this.mTileset.bitmapData.height)) {
+    if (!this.mMap.willBeVisible(this.mTile.realX, this.mTile.realY, this.mTileset.bitmapData.width, this.mTileset.bitmapData.height)) {
       // check if it's displayed
       if (tilemap.contains(this.mTile)) {
         // just remove it from map
@@ -386,14 +386,14 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Int, y:Int, width:Int, height:Int):Bool {
+  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool {
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // float buffer
     var buffer:Float = .1;
     // loop through width and height
-    for (tx in 0...width) {
-      for (ty in 0...height) {
+    for (tx in 0...Std.int(width)) {
+      for (ty in 0...Std.int(height)) {
         if (this.polyline != null) {
           // poly line collision check by checking each line
           for (idx in 0...this.polyline.points.length - 1) {
@@ -494,7 +494,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * @param offsetY
    * @param index
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Int, offsetY:Int, index:Int):Int {
+  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int {
     var added:Int = 0;
     // render collision object if set
     #if tiledfl_debug_render_object
@@ -510,7 +510,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Int {
+  @:dox(hide) @:noCompletion public function evaluateWidth():Float {
     return 0;
   }
 
@@ -518,7 +518,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable {
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Int {
+  @:dox(hide) @:noCompletion public function evaluateHeight():Float {
     return 0;
   }
 }

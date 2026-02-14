@@ -7,12 +7,12 @@ class TileOffset {
   /**
    * Offset on x axis
    */
-  public var x(default, null):Int;
+  public var x(default, null):Float;
 
   /**
    * Offset on y axis
    */
-  public var y(default, null):Int;
+  public var y(default, null):Float;
 
   /**
    * Constructor

@@ -74,7 +74,7 @@ class AnimatedTile extends openfl.display.Tile {
     // save current time
     var currentTime:Float = haxe.Timer.stamp();
     // calculate milliseconds delta
-    var deltaTime:Float = Std.int((currentTime - this.mPreviousTime) * 1000);
+    var deltaTime:Float = (currentTime - this.mPreviousTime) * 1000;
     // update previous time
     this.mPreviousTime = currentTime;
     // increase duration

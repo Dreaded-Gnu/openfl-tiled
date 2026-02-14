@@ -31,22 +31,22 @@ class Tile extends EventDispatcher {
   /**
    * Tile x coordinate
    */
-  public var x(default, null):Int;
+  public var x(default, null):Float;
 
   /**
    * Tile y coordinate
    */
-  public var y(default, null):Int;
+  public var y(default, null):Float;
 
   /**
    * Tile width
    */
-  public var width(default, null):Int;
+  public var width(default, null):Float;
 
   /**
    * Tile height
    */
-  public var height(default, null):Int;
+  public var height(default, null):Float;
 
   /**
    * Tile properties
