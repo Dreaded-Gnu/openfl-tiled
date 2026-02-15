@@ -55,18 +55,9 @@ class AnimatedTile extends openfl.display.Tile
     // save real x and y
     this.realX = this.x;
     this.realY = this.y;
-    // set initial timer
-    if (this.mAnimation != null && this.mAnimation.frame.length > 0)
-    {
-      // set current animation and id
-      this.mCurrentAnimation = 0;
-      this.id = this.mAnimation.frame[mCurrentAnimation].tileid;
-      // previous time is now and duration is 0
-      this.mPreviousTime = haxe.Timer.stamp();
-      this.mDuration = 0;
-      // Add enter frame listener
-      this.mMap.tilemap.stage?.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-    }
+    // add event listener for added / removed from stage
+    this.mMap.addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
+    this.mMap.addEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
   }
 
   /**
@@ -110,6 +101,40 @@ class AnimatedTile extends openfl.display.Tile
       // reset id to 0
       this.id = 0;
     }
+  }
+
+  /**
+   * On added to stage callback
+   * @param event
+   */
+  private function onAddedToStage(event:Event):Void {
+    // set initial timer for possible animation
+    if (this.mAnimation == null || this.mAnimation.frame.length == 0)
+    {
+      return;
+    }
+    // set current animation and id
+    this.mCurrentAnimation = 0;
+    this.id = this.mAnimation.frame[mCurrentAnimation].tileid;
+    // previous time is now and duration is 0
+    this.mPreviousTime = haxe.Timer.stamp();
+    this.mDuration = 0;
+    // Add enter frame listener
+    this.mMap.tilemap.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+  }
+
+  /**
+   * On removed from stage callback
+   * @param event
+   */
+  private function onRemovedFromStage(event:Event):Void {
+    // set initial timer for possible animation
+    if (this.mAnimation == null || this.mAnimation.frame.length == 0)
+    {
+      return;
+    }
+    // Remove enter frame listener
+    this.mMap.tilemap.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
   }
 
   /**

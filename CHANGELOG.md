@@ -4,6 +4,8 @@
 
 * Fixed rendering of isometric maps (diamond and staggered)
 * Reworked coordinate handling to float to prevent unnecessary int castings
+* Changed AnimatedTile to set ENTER_FRAME handler when map is added to stage
+* Extended AnimatedTile to remove ENTER_FRAME handler when map is removed from stage
 
 ## 0.2.0 (2025-04-26)
 
