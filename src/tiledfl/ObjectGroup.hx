@@ -159,7 +159,7 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
    * @param index
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
     if (this.isDisposed())
     {
@@ -185,7 +185,7 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
     if (this.isDisposed())
     {
@@ -211,7 +211,7 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Float
+  public function evaluateWidth():Float
   {
     return 0;
   }
@@ -220,7 +220,7 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Float
+  public function evaluateHeight():Float
   {
     return 0;
   }

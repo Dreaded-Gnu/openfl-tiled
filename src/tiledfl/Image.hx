@@ -11,6 +11,10 @@ import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.geom.Point;
 
+@:allow(tiledfl.ImageLayer)
+@:allow(tiledfl.Map)
+@:allow(tiledfl.Tileset)
+@:allow(tiledfl.tileset.Tile)
 /**
  * Image representation
  *
@@ -93,7 +97,7 @@ class Image extends tiledfl.RootObject
   /**
    * Load method
    */
-  @:dox(hide) @:noCompletion public function load():Void
+  private function load():Void
   {
     if (this.isDisposed())
     {

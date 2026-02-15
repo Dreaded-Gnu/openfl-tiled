@@ -3,6 +3,8 @@ package tiledfl.tileset;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
 
+@:allow(tiledfl.Map)
+@:allow(tiledfl.Tileset)
 /**
  * Tiled tile representation
  */
@@ -117,7 +119,7 @@ class Tile extends tiledfl.RootObject
   /**
    * Load async image if necessary stuff
    */
-  @:dox(hide) @:noCompletion public function load():Void
+  private function load():Void
   {
     if (this.image != null)
     {

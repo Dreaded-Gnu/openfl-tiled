@@ -425,7 +425,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
     if (this.isDisposed())
     {
@@ -556,7 +556,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * @param offsetY
    * @param index
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
     if (this.isDisposed())
     {
@@ -578,7 +578,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Float
+  public function evaluateWidth():Float
   {
     return 0;
   }
@@ -587,7 +587,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Float
+  public function evaluateHeight():Float
   {
     return 0;
   }

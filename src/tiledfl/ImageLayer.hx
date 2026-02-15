@@ -3,6 +3,8 @@ package tiledfl;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
 
+@:allow(tiledfl.Group)
+@:allow(tiledfl.Map)
 /**
  * Image layer representation
  *
@@ -148,7 +150,7 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
   /**
    * Load method
    */
-  @:dox(hide) @:noCompletion public function load():Void
+  private function load():Void
   {
     if (this.isDisposed())
     {
@@ -197,7 +199,7 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param offsetY
    * @param index
    */
-  @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
     if (this.isDisposed())
     {
@@ -241,7 +243,7 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
     return false;
   }
@@ -250,7 +252,7 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to evaluate width
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateWidth():Int
+  public function evaluateWidth():Int
   {
     return 0;
   }
@@ -259,7 +261,7 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to evaluate height
    * @return Int
    */
-  @:dox(hide) @:noCompletion public function evaluateHeight():Int
+  public function evaluateHeight():Int
   {
     return 0;
   }

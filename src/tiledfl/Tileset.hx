@@ -12,6 +12,10 @@ import tiledfl.tileset.FillMode;
 import tiledfl.tileset.TileRenderSize;
 import tiledfl.tileset.ObjectAlignment;
 
+@:allow(tiledfl.helper.AnimatedTile)
+@:allow(tiledfl.Layer)
+@:allow(tiledfl.Map)
+@:allow(tiledfl.Object)
 /**
  * Representation of tiled tileset object
  *
@@ -245,7 +249,7 @@ class Tileset extends tiledfl.RootObject
    * @param gid
    * @return tiledfl.tileset.Tile
    */
-  @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):Null<tiledfl.tileset.Tile>
+  private function getTileByGid(gid:Int):Null<tiledfl.tileset.Tile>
   {
     if (this.isDisposed())
     {
@@ -264,7 +268,7 @@ class Tileset extends tiledfl.RootObject
   /**
    * Load callback
    */
-  @:dox(hide) @:noCompletion public function load():Void
+  private function load():Void
   {
     if (this.isDisposed())
     {

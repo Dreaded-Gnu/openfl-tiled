@@ -14,6 +14,9 @@ import tiledfl.map.StaggerAxis;
 import tiledfl.map.RenderOrder;
 import tiledfl.map.Orientation;
 
+@:allow(tiledfl.ImageLayer)
+@:allow(tiledfl.Layer)
+@:allow(tiledfl.Object)
 /**
  * Map class for loading and rendering tilemap
  *
@@ -168,12 +171,12 @@ class Map extends tiledfl.RootObject
   /**
    * Render offset x
    */
-  @:dox(hide) @:noCompletion public var renderOffsetX(get, null):Float;
+  private var renderOffsetX(get, null):Float;
 
   /**
    * Render offset y
    */
-  @:dox(hide) @:noCompletion public var renderOffsetY(get, null):Float;
+  private var renderOffsetY(get, null):Float;
 
   #if tiledfl_debug_render_object
   /**
@@ -605,7 +608,7 @@ class Map extends tiledfl.RootObject
    * @param gid
    * @return tiledfl.Tileset
    */
-  @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):Null<tiledfl.Tileset>
+  public function tilesetByGid(gid:Int):Null<tiledfl.Tileset>
   {
     if (this.isDisposed())
     {
@@ -744,7 +747,7 @@ class Map extends tiledfl.RootObject
    * Getter for tilemap property
    * @return openfl.display.Tilemap
    */
-  @:dox(hide) @:noCompletion private function get_tilemap():openfl.display.Tilemap
+  private function get_tilemap():openfl.display.Tilemap
   {
     return this.mTileMap;
   }
@@ -753,7 +756,7 @@ class Map extends tiledfl.RootObject
    * Getter for render offset X
    * @return Int
    */
-  @:dox(hide) @:noCompletion private function get_renderOffsetX():Float
+  private function get_renderOffsetX():Float
   {
     return this.mOffsetX;
   }
@@ -762,7 +765,7 @@ class Map extends tiledfl.RootObject
    * Getter for render offset y
    * @return Int
    */
-  @:dox(hide) @:noCompletion private function get_renderOffsetY():Float
+  private function get_renderOffsetY():Float
   {
     return this.mOffsetY;
   }
@@ -828,7 +831,7 @@ class Map extends tiledfl.RootObject
    * @param height
    * @return Bool
    */
-  @:dox(hide) @:noCompletion public function willBeVisible(x:Float, y:Float, width:Float, height:Float):Bool
+  private function willBeVisible(x:Float, y:Float, width:Float, height:Float):Bool
   {
     if (this.isDisposed())
     {
