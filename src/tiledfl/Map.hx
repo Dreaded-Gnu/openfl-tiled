@@ -27,9 +27,20 @@ import tiledfl.map.Orientation;
 @:allow(tiledfl.Object)
 class Map extends tiledfl.RootObject
 {
+  /**
+   * Tilemap render offset factor
+   */
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
+
+  /**
+   * Tilemap render min factor
+   */
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
+
   #if tiledfl_debug_render_object
+  /**
+   * Default debug render color
+   */
   private static inline var TILEMAP_DEFAULT_DEBUG_RENDER_COLOR:Int = 0xff0000;
   #end
 

@@ -73,6 +73,14 @@ public function dispose():Void;
 
 Dispose whole map and all related instances.
 
+#### tiledfl.Map::objectgroupByName
+
+```haxe
+public function objectgroupByName(name:String):Null<tiledfl.ObjectGroup>
+```
+
+Helper method to get object group by set name if existing
+
 ## Installation
 
 Using TiledFL source install.

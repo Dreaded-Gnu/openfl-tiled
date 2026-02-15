@@ -9,9 +9,24 @@ import openfl.utils.ByteArray;
  */
 class Helper
 {
+  /**
+   * Rotated hexagonal 120 uint flag
+   */
   private static inline var GID_ROTATED_HEXAGONAL_120_FLAG:UInt = 0x10000000;
+
+  /**
+   * Flipped diagonally uint flag
+   */
   private static inline var GID_FLIPPED_DIAGONALLY_FLAG:UInt = 0x20000000;
+
+  /**
+   * Flipped vertically uint flag
+   */
   private static inline var GID_FLIPPED_VERTICALLY_FLAG:UInt = 0x40000000;
+
+  /**
+   * Flipped horizontally uint flag
+   */
   private static inline var GID_FLIPPED_HORIZONTALLY_FLAG:UInt = 0x80000000;
 
   /**

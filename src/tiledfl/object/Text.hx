@@ -87,7 +87,8 @@ class Text extends tiledfl.RootObject
   /**
    * Dispose method
    */
-  override public function dispose():Void {
+  override public function dispose():Void
+  {
     super.dispose();
     this.mObject = null;
   }
