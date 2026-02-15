@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Tiled terrain object
  */
-class Terrain implements Disposable
+class Terrain implements tiledfl.Disposable
 {
   /**
    * Terrain name

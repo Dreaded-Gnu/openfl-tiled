@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Layer data handling
  */
-class Data implements Disposable
+class Data implements tiledfl.Disposable
 {
   /**
    * Used encoding of data

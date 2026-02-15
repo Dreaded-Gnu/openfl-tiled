@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Group of objects
  */
-class ObjectGroup implements tiledfl.Updatable implements Disposable
+class ObjectGroup implements tiledfl.Updatable
 {
   /**
    * ID

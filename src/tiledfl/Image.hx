@@ -17,7 +17,7 @@ import openfl.geom.Point;
  *
  * @event complete Dispatched once image layer loading is completed
  */
-class Image extends EventDispatcher implements Disposable
+class Image extends EventDispatcher implements tiledfl.Disposable
 {
   /**
    * Format

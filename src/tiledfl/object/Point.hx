@@ -3,7 +3,7 @@ package tiledfl.object;
 /**
  * Tiled point object
  */
-class Point implements Disposable
+class Point implements tiledfl.Disposable
 {
   private var mObject:tiledfl.Object;
   private var mDisposed:Bool;

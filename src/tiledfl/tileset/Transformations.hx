@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Transformations representation
  */
-class Transformations implements Disposable
+class Transformations implements tiledfl.Disposable
 {
   /**
    * Horizontally flipped

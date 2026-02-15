@@ -18,7 +18,7 @@ import tiledfl.tileset.ObjectAlignment;
  *
  * @event completed Dispatched when tileset has finished loading
  */
-class Tileset extends EventDispatcher implements Disposable
+class Tileset extends EventDispatcher implements tiledfl.Disposable
 {
   /**
    * First gid

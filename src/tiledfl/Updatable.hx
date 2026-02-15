@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Updatable interface used for updatable/displayable objects
  */
-interface Updatable
+interface Updatable extends Disposable
 {
   /**
    * Update method

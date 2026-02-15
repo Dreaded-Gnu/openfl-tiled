@@ -3,7 +3,7 @@ package tiledfl.object;
 /**
  * Tiled ellipse object
  */
-class Ellipse implements Disposable
+class Ellipse implements tiledfl.Disposable
 {
   private var mObject:tiledfl.Object;
   private var mDisposed:Bool;

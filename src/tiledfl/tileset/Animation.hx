@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Tileset animation class
  */
-class Animation implements Disposable
+class Animation implements tiledfl.Disposable
 {
   /**
    * Array of frames of the animation

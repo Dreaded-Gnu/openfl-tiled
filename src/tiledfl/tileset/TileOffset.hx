@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Tile offset representation
  */
-class TileOffset implements Disposable
+class TileOffset implements tiledfl.Disposable
 {
   /**
    * Offset on x axis

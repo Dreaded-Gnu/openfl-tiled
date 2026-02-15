@@ -5,7 +5,7 @@ import openfl.errors.Error;
 /**
  * Grid representation
  */
-class Grid implements Disposable
+class Grid implements tiledfl.Disposable
 {
   /**
    * Orientation of the grid

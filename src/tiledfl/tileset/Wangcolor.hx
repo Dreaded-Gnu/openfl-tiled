@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Wang color representation
  */
-class Wangcolor implements Disposable
+class Wangcolor implements tiledfl.Disposable
 {
   /**
    * Name

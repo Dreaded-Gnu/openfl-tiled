@@ -23,7 +23,7 @@ import tiledfl.map.Orientation;
  * @event resize Dispatched once resize was done
  * @event complete Dispatched once map loading is completed
  */
-class Map extends EventDispatcher implements Disposable
+class Map extends EventDispatcher implements tiledfl.Disposable
 {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;

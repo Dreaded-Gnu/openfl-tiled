@@ -5,7 +5,7 @@ import openfl.geom.Point;
 /**
  * Tiled poly line object
  */
-class Polyline implements Disposable
+class Polyline implements tiledfl.Disposable
 {
   /**
    * Array of points of the polyline

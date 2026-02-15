@@ -6,7 +6,7 @@ import tiledfl.map.RenderOrder;
 /**
  * Layer representation
  */
-class Layer implements tiledfl.Updatable implements Disposable
+class Layer implements tiledfl.Updatable
 {
   /**
    * Id

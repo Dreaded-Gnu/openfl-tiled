@@ -5,7 +5,7 @@ import openfl.geom.Point;
 /**
  * Tiled polygon object
  */
-class Polygon implements Disposable
+class Polygon implements tiledfl.Disposable
 {
   /**
    * Array of points of the polygon

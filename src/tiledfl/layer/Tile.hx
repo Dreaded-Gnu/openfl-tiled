@@ -3,7 +3,7 @@ package tiledfl.layer;
 /**
  * Tile representation
  */
-class Tile implements tiledfl.helper.Flippable implements Disposable
+class Tile implements tiledfl.helper.Flippable
 {
   /**
    * Gid property

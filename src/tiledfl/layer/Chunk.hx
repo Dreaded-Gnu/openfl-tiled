@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Chunk layer implementation
  */
-class Chunk implements Disposable
+class Chunk implements tiledfl.Disposable
 {
   /**
    * X coordinate the chunk starts

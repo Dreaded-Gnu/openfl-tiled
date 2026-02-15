@@ -6,7 +6,7 @@ import openfl.geom.Rectangle;
 /**
  * Tiled object
  */
-class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable implements Disposable
+class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
 {
   /**
    * ID

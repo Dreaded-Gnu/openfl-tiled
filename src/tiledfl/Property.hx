@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Tiled property
  */
-class Property implements Disposable
+class Property implements tiledfl.Disposable
 {
   /**
    * Name

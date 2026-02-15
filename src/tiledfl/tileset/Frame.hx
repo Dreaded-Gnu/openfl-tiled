@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Frame representation
  */
-class Frame implements Disposable
+class Frame implements tiledfl.Disposable
 {
   /**
    * Tile id of the frame

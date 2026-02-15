@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Tiled properties representation
  */
-class Properties implements Disposable
+class Properties implements tiledfl.Disposable
 {
   /**
    * Array of properties

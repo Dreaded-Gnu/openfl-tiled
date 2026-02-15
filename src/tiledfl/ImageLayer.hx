@@ -9,7 +9,7 @@ import openfl.geom.Rectangle;
  *
  * @event complete Dispatched once image layer loading is completed
  */
-class ImageLayer extends EventDispatcher implements tiledfl.Updatable implements Disposable
+class ImageLayer extends EventDispatcher implements tiledfl.Updatable
 {
   /**
    * Id

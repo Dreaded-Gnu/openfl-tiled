@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Terrain types representation
  */
-class TerrainTypes implements Disposable
+class TerrainTypes implements tiledfl.Disposable
 {
   /**
    * Array of terrain elements

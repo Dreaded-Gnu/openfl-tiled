@@ -8,7 +8,7 @@ import openfl.events.EventDispatcher;
  *
  * @event complete Dispatched once group loading is completed
  */
-class Group extends EventDispatcher implements tiledfl.Updatable implements Disposable
+class Group extends EventDispatcher implements tiledfl.Updatable
 {
   /**
    * Group id

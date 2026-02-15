@@ -7,7 +7,7 @@ import openfl.geom.Rectangle;
 /**
  * Tiled tile representation
  */
-class Tile extends EventDispatcher implements Disposable
+class Tile extends EventDispatcher implements tiledfl.Disposable
 {
   /**
    * Tile id

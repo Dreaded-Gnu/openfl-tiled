@@ -3,7 +3,7 @@ package tiledfl.object;
 /**
  * Tiled text object
  */
-class Text implements Disposable
+class Text implements tiledfl.Disposable
 {
   /**
    * Font family to be used

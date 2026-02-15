@@ -5,7 +5,7 @@ import openfl.events.Event;
 /**
  * Animated tile implementation extending openfl.display.Tile
  */
-class AnimatedTile extends openfl.display.Tile implements Disposable
+class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
 {
   /**
    * Animation data used for this tile
