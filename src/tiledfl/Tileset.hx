@@ -14,7 +14,9 @@ import tiledfl.tileset.TileRenderSize;
 import tiledfl.tileset.ObjectAlignment;
 
 /**
- * Tileset representation
+ * Representation of tiled tileset object
+ *
+ * @event completed Dispatched when tileset has finished loading
  */
 class Tileset extends EventDispatcher
 {

@@ -6,6 +6,8 @@ import openfl.geom.Rectangle;
 
 /**
  * Image layer representation
+ *
+ * @event complete Dispatched once image layer loading is completed
  */
 class ImageLayer extends EventDispatcher implements tiledfl.Updatable
 {

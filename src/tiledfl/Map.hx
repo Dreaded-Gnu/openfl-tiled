@@ -17,6 +17,11 @@ import tiledfl.map.Orientation;
 
 /**
  * Map class for loading and rendering tilemap
+ *
+ * @event addedToStage Dispatched once tilemap was added to stage
+ * @event removedFromStage Dispatched once tilemap was removed from stage
+ * @event resize Dispatched once resize was done
+ * @event complete Dispatched once map loading is completed
  */
 class Map extends EventDispatcher
 {

@@ -5,6 +5,8 @@ import openfl.events.EventDispatcher;
 
 /**
  * Tiled group representation
+ *
+ * @event complete Dispatched once group loading is completed
  */
 class Group extends EventDispatcher implements tiledfl.Updatable
 {

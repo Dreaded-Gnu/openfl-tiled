@@ -14,6 +14,8 @@ import openfl.geom.Point;
 
 /**
  * Image representation
+ *
+ * @event complete Dispatched once image layer loading is completed
  */
 class Image extends EventDispatcher
 {

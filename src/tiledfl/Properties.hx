@@ -1,7 +1,7 @@
 package tiledfl;
 
 /**
- * Tiled properties
+ * Tiled properties representation
  */
 class Properties
 {
@@ -34,7 +34,7 @@ class Properties
    * @param name Name to get property
    * @return Found property or null
    */
-  public function propertyByName(name:String):Property
+  public function propertyByName(name:String):Null<Property>
   {
     for (property in this.property)
     {
