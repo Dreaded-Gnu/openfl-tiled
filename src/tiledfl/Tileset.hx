@@ -4,7 +4,6 @@ package tiledfl;
 import openfl.Assets;
 #end
 import openfl.events.Event;
-import openfl.events.EventDispatcher;
 import openfl.geom.Rectangle;
 import openfl.net.URLRequest;
 import openfl.net.URLLoader;
@@ -18,7 +17,7 @@ import tiledfl.tileset.ObjectAlignment;
  *
  * @event completed Dispatched when tileset has finished loading
  */
-class Tileset extends EventDispatcher implements tiledfl.Disposable
+class Tileset extends tiledfl.RootObject
 {
   /**
    * First gid
@@ -133,7 +132,6 @@ class Tileset extends EventDispatcher implements tiledfl.Disposable
   private var mSourceLoaded:Bool = false;
   private var mTileLoaded:Bool = false;
   private var mMap:tiledfl.Map;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -144,7 +142,6 @@ class Tileset extends EventDispatcher implements tiledfl.Disposable
   {
     super();
     // cache map
-    this.mDisposed = false;
     this.mMap = map;
     // parse stuff
     this.parse(node);
@@ -380,9 +377,9 @@ class Tileset extends EventDispatcher implements tiledfl.Disposable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.mMap = null;
     this.image?.dispose();
     this.image = null;
@@ -405,14 +402,5 @@ class Tileset extends EventDispatcher implements tiledfl.Disposable
       t.dispose();
     }
     this.tile = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Wang tile representation
  */
-class Wangtile implements tiledfl.Disposable
+class Wangtile extends tiledfl.RootObject
 {
   /**
    * Tile id
@@ -30,30 +30,11 @@ class Wangtile implements tiledfl.Disposable
    */
   public var dflip(default, null):Int;
 
-  private var mDisposed:Bool;
-
   /**
    * Constructor
    */
   public function new()
   {
-    this.mDisposed = false;
-  }
-
-  /**
-   * Dispose method
-   */
-  public function dispose():Void
-  {
-    this.mDisposed = true;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
+    super();
   }
 }

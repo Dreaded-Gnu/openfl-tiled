@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Group of objects
  */
-class ObjectGroup implements tiledfl.Updatable
+class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
 {
   /**
    * ID
@@ -96,7 +96,6 @@ class ObjectGroup implements tiledfl.Updatable
   public var object(default, null):Array<tiledfl.Object>;
 
   private var mMap:tiledfl.Map;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -105,7 +104,7 @@ class ObjectGroup implements tiledfl.Updatable
    */
   public function new(node:Xml, map:tiledfl.Map)
   {
-    this.mDisposed = false;
+    super();
     this.mMap = map;
     // parse properties
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -229,9 +228,9 @@ class ObjectGroup implements tiledfl.Updatable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.properties?.dispose();
     this.properties = null;
     for (o in this.object)
@@ -240,14 +239,5 @@ class ObjectGroup implements tiledfl.Updatable
     }
     this.object = null;
     this.mMap = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

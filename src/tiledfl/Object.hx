@@ -6,7 +6,7 @@ import openfl.geom.Rectangle;
 /**
  * Tiled object
  */
-class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
+class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable implements tiledfl.Updatable
 {
   /**
    * ID
@@ -96,7 +96,6 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
   private var mTile:tiledfl.helper.AnimatedTile;
   private var mMap:tiledfl.Map;
   private var mGid:Int;
-  private var mDisposed:Bool;
   #if tiledfl_debug_render_object
   private var mShape:openfl.display.Shape;
   private var mTileset:openfl.display.Tileset;
@@ -109,7 +108,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
    */
   public function new(node:Xml, map:tiledfl.Map)
   {
-    this.mDisposed = false;
+    super();
     this.mMap = map;
     #if tiledfl_debug_render_object
     this.mShape = new openfl.display.Shape();
@@ -596,9 +595,9 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.properties?.dispose();
     this.properties = null;
     this.ellipse?.dispose();
@@ -619,14 +618,5 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
     this.mShape = null;
     this.mTileset = null;
     #end
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

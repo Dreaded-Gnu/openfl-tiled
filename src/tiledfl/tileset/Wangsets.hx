@@ -3,43 +3,32 @@ package tiledfl.tileset;
 /**
  * Wangsets representation
  */
-class Wangsets implements tiledfl.Disposable
+class Wangsets extends tiledfl.RootObject
 {
   /**
    * Array of wangsets
    */
   public var wangset(default, null):Array<tiledfl.tileset.Wangset>;
 
-  private var mDisposed:Bool;
-
   /**
    * Constructor
    */
   public function new()
   {
-    this.mDisposed = false;
+    super();
     this.wangset = new Array<tiledfl.tileset.Wangset>();
   }
 
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     for (w in this.wangset)
     {
       w.dispose();
     }
     this.wangset = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

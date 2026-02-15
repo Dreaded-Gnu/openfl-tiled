@@ -3,7 +3,7 @@ package tiledfl.object;
 /**
  * Tiled text object
  */
-class Text implements tiledfl.Disposable
+class Text extends tiledfl.RootObject
 {
   /**
    * Font family to be used
@@ -61,7 +61,6 @@ class Text implements tiledfl.Disposable
   public var valign(default, null):String;
 
   private var mObject:tiledfl.Object;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -70,7 +69,7 @@ class Text implements tiledfl.Disposable
    */
   public function new(node:Xml, object:tiledfl.Object)
   {
-    this.mDisposed = false;
+    super();
     this.mObject = object;
     this.fontfamily = node.exists("fontfamily") ? node.get("fontfamily") : "sans-serif";
     this.pixelsize = node.exists("pixelsize") ? Std.parseInt(node.get("fontfamily")) : 16;
@@ -83,22 +82,5 @@ class Text implements tiledfl.Disposable
     this.kerning = node.exists("kerning") ? Std.parseInt(node.get("kerning")) : 1;
     this.halign = node.get("halign");
     this.valign = node.get("valign");
-  }
-
-  /**
-   * Dispose method
-   */
-  public function dispose():Void
-  {
-    this.mDisposed = true;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

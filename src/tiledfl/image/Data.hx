@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Image data handling
  */
-class Data implements tiledfl.Disposable
+class Data extends tiledfl.RootObject
 {
   /**
    * Used encoding of data
@@ -23,15 +23,13 @@ class Data implements tiledfl.Disposable
    */
   public var data(default, null):ByteArray;
 
-  private var mDisposed:Bool;
-
   /**
    * Constructor
    * @param node data node to parse
    */
   public function new(node:Xml)
   {
-    this.mDisposed = false;
+    super();
     this.encoding = node.get("encoding");
     this.compression = node.get("compression");
 
@@ -69,22 +67,12 @@ class Data implements tiledfl.Disposable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    // set disposed flag
-    this.mDisposed = true;
+    super.dispose();
     // unset properties
     this.data = null;
     this.encoding = null;
     this.compression = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

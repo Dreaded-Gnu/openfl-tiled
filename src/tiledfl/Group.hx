@@ -1,14 +1,13 @@
 package tiledfl;
 
 import openfl.events.Event;
-import openfl.events.EventDispatcher;
 
 /**
  * Tiled group representation
  *
  * @event complete Dispatched once group loading is completed
  */
-class Group extends EventDispatcher implements tiledfl.Updatable
+class Group extends tiledfl.RootObject implements tiledfl.Updatable
 {
   /**
    * Group id
@@ -79,7 +78,6 @@ class Group extends EventDispatcher implements tiledfl.Updatable
   private var mRenderObjects:Array<tiledfl.Updatable>;
   private var mImageLayerLoaded:Bool;
   private var mGroupLoaded:Bool;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -90,7 +88,6 @@ class Group extends EventDispatcher implements tiledfl.Updatable
   {
     super();
     // cache map
-    this.mDisposed = false;
     this.mMap = map;
     // parse attributes
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -308,9 +305,9 @@ class Group extends EventDispatcher implements tiledfl.Updatable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     for (l in this.layer)
     {
       l.dispose();
@@ -333,14 +330,5 @@ class Group extends EventDispatcher implements tiledfl.Updatable
     this.group = null;
     this.mRenderObjects = null;
     this.mMap = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

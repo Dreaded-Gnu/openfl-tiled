@@ -1,7 +1,6 @@
 package tiledfl;
 
 import openfl.events.Event;
-import openfl.events.EventDispatcher;
 import openfl.geom.Rectangle;
 
 /**
@@ -9,7 +8,7 @@ import openfl.geom.Rectangle;
  *
  * @event complete Dispatched once image layer loading is completed
  */
-class ImageLayer extends EventDispatcher implements tiledfl.Updatable
+class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
 {
   /**
    * Id
@@ -102,7 +101,6 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   public var tile(default, null):Null<tiledfl.helper.AnimatedTile>;
 
   private var mMap:tiledfl.Map;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -113,7 +111,6 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   {
     super();
     // cache map
-    this.mDisposed = false;
     this.mMap = map;
     // parse attributes
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -270,9 +267,9 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.properties?.dispose();
     this.properties = null;
     this.image?.dispose();
@@ -281,14 +278,5 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
     this.tile = null;
     this.tileset = null;
     this.mMap = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

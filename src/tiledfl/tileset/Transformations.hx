@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Transformations representation
  */
-class Transformations implements tiledfl.Disposable
+class Transformations extends tiledfl.RootObject
 {
   /**
    * Horizontally flipped
@@ -25,30 +25,11 @@ class Transformations implements tiledfl.Disposable
    */
   public var preferuntransformed(default, null):Int;
 
-  private var mDisposed:Bool;
-
   /**
    * Constructor
    */
   public function new()
   {
-    this.mDisposed = false;
-  }
-
-  /**
-   * Dispose method
-   */
-  public function dispose():Void
-  {
-    this.mDisposed = true;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
+    super();
   }
 }

@@ -3,14 +3,12 @@ package tiledfl;
 /**
  * Tiled properties representation
  */
-class Properties implements tiledfl.Disposable
+class Properties extends tiledfl.RootObject
 {
   /**
    * Array of properties
    */
   public var property(default, null):Array<tiledfl.Property>;
-
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -18,7 +16,7 @@ class Properties implements tiledfl.Disposable
    */
   public function new(node:Xml)
   {
-    this.mDisposed = false;
+    super();
     this.property = new Array<tiledfl.Property>();
     for (child in node)
     {
@@ -56,22 +54,13 @@ class Properties implements tiledfl.Disposable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     for (p in this.property)
     {
       p.dispose();
     }
     this.property = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

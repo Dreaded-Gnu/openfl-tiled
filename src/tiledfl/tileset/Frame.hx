@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Frame representation
  */
-class Frame implements tiledfl.Disposable
+class Frame extends tiledfl.RootObject
 {
   /**
    * Tile id of the frame
@@ -15,33 +15,14 @@ class Frame implements tiledfl.Disposable
    */
   public var duration(default, null):Int;
 
-  private var mDisposed:Bool;
-
   /**
    * Constructor
    * @param node xml representation to parse
    */
   public function new(node:Xml)
   {
-    this.mDisposed = false;
+    super();
     this.tileid = Std.parseInt(node.get("tileid"));
     this.duration = Std.parseInt(node.get("duration"));
-  }
-
-  /**
-   * Dispose
-   */
-  public function dispose():Void
-  {
-    this.mDisposed = true;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

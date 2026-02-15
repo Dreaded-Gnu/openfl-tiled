@@ -9,7 +9,6 @@ import openfl.display.Bitmap;
 import openfl.errors.Error;
 #end
 import openfl.events.Event;
-import openfl.events.EventDispatcher;
 import openfl.geom.Point;
 
 /**
@@ -17,7 +16,7 @@ import openfl.geom.Point;
  *
  * @event complete Dispatched once image layer loading is completed
  */
-class Image extends EventDispatcher implements tiledfl.Disposable
+class Image extends tiledfl.RootObject
 {
   /**
    * Format
@@ -56,7 +55,6 @@ class Image extends EventDispatcher implements tiledfl.Disposable
 
   private var mTransSet:Bool;
   private var mMap:tiledfl.Map;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -67,7 +65,6 @@ class Image extends EventDispatcher implements tiledfl.Disposable
   {
     super();
     // cache map
-    this.mDisposed = false;
     this.mMap = map;
     // parse stuff
     this.format = node.get("format");
@@ -156,21 +153,12 @@ class Image extends EventDispatcher implements tiledfl.Disposable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.data?.dispose();
     this.data = null;
     this.mMap = null;
     this.bitmap = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

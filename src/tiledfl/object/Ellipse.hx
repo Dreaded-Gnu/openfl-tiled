@@ -3,10 +3,9 @@ package tiledfl.object;
 /**
  * Tiled ellipse object
  */
-class Ellipse implements tiledfl.Disposable
+class Ellipse extends tiledfl.RootObject
 {
   private var mObject:tiledfl.Object;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -15,25 +14,16 @@ class Ellipse implements tiledfl.Disposable
    */
   public function new(node:Xml, object:tiledfl.Object)
   {
-    this.mDisposed = false;
+    super();
     this.mObject = object;
   }
 
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.mObject = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

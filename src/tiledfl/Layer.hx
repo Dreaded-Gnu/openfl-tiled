@@ -6,7 +6,7 @@ import tiledfl.map.RenderOrder;
 /**
  * Layer representation
  */
-class Layer implements tiledfl.Updatable
+class Layer extends tiledfl.RootObject implements tiledfl.Updatable
 {
   /**
    * Id
@@ -90,7 +90,6 @@ class Layer implements tiledfl.Updatable
 
   private var mTileCheckContainer:std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>;
   private var mMap:tiledfl.Map;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -100,7 +99,7 @@ class Layer implements tiledfl.Updatable
    */
   public function new(node:Xml, map:tiledfl.Map, layerId:Int)
   {
-    this.mDisposed = false;
+    super();
     this.mMap = map;
     this.mTileCheckContainer = new std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>();
     // parse stuff
@@ -840,9 +839,9 @@ class Layer implements tiledfl.Updatable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.properties?.dispose();
     this.properties = null;
     this.data?.dispose();
@@ -861,14 +860,5 @@ class Layer implements tiledfl.Updatable
     }
     this.mTileCheckContainer = null;
     this.mMap = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

@@ -3,7 +3,7 @@ package tiledfl.helper;
 /**
  * Flippable interface
  */
-interface Flippable extends tiledfl.Disposable
+interface Flippable
 {
   /**
    * Helper for flipped horizontally checks

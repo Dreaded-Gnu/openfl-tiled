@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Chunk layer implementation
  */
-class Chunk implements tiledfl.Disposable
+class Chunk extends tiledfl.RootObject
 {
   /**
    * X coordinate the chunk starts
@@ -33,8 +33,6 @@ class Chunk implements tiledfl.Disposable
    */
   public var tile(default, null):Array<tiledfl.layer.Tile>;
 
-  private var mDisposed:Bool;
-
   /**
    * Constructor
    * @param node chunk xml representation
@@ -42,7 +40,7 @@ class Chunk implements tiledfl.Disposable
    */
   public function new(node:Xml, data:tiledfl.layer.Data)
   {
-    this.mDisposed = false;
+    super();
 
     this.x = Std.parseInt(node.get("x"));
     this.y = Std.parseInt(node.get("y"));
@@ -100,24 +98,14 @@ class Chunk implements tiledfl.Disposable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    // set disposed flag
-    this.mDisposed = true;
+    super.dispose();
     // clear tiles
     for (t in this.tile)
     {
       t.dispose();
     }
     this.tile = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

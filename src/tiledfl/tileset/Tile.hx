@@ -1,13 +1,12 @@
 package tiledfl.tileset;
 
 import openfl.events.Event;
-import openfl.events.EventDispatcher;
 import openfl.geom.Rectangle;
 
 /**
  * Tiled tile representation
  */
-class Tile extends EventDispatcher implements tiledfl.Disposable
+class Tile extends tiledfl.RootObject
 {
   /**
    * Tile id
@@ -75,7 +74,6 @@ class Tile extends EventDispatcher implements tiledfl.Disposable
   public var tileset(default, null):Null<openfl.display.Tileset>;
 
   private var mMap:tiledfl.Map;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -85,7 +83,6 @@ class Tile extends EventDispatcher implements tiledfl.Disposable
   public function new(node:Xml, map:tiledfl.Map)
   {
     super();
-    this.mDisposed = false;
     this.mMap = map;
     // parse properties
     this.id = Std.parseInt(node.get("id"));
@@ -151,9 +148,9 @@ class Tile extends EventDispatcher implements tiledfl.Disposable
   /**
    * Dispose method
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    this.mDisposed = true;
+    super.dispose();
     this.mMap = null;
     this.tileset = null;
     this.properties?.dispose();
@@ -164,14 +161,5 @@ class Tile extends EventDispatcher implements tiledfl.Disposable
     this.objectgroup = null;
     this.animation?.dispose();
     this.animation = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }

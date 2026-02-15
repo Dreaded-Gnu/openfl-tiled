@@ -4,7 +4,6 @@ package tiledfl;
 import openfl.Assets;
 #end
 import openfl.events.Event;
-import openfl.events.EventDispatcher;
 import openfl.errors.Error;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
@@ -23,7 +22,7 @@ import tiledfl.map.Orientation;
  * @event resize Dispatched once resize was done
  * @event complete Dispatched once map loading is completed
  */
-class Map extends EventDispatcher implements tiledfl.Disposable
+class Map extends tiledfl.RootObject
 {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
@@ -196,7 +195,6 @@ class Map extends EventDispatcher implements tiledfl.Disposable
   private var mRenderOffsetX:Float;
   private var mRenderOffsetY:Float;
   private var mRendered:Bool;
-  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -223,7 +221,6 @@ class Map extends EventDispatcher implements tiledfl.Disposable
     this.mRenderOffsetX = 0;
     this.mRenderOffsetY = 0;
     this.mRendered = false;
-    this.mDisposed = false;
     // set public properties if needed
     #if tiledfl_debug_render_object
     this.debugRenderObjectColor = TILEMAP_DEFAULT_DEBUG_RENDER_COLOR;
@@ -857,10 +854,9 @@ class Map extends EventDispatcher implements tiledfl.Disposable
   /**
    * Dispose map
    */
-  public function dispose():Void
+  override public function dispose():Void
   {
-    // set disposed to true
-    this.mDisposed = true;
+    super.dispose();
     // remove child from stage
     this.mTileMap.stage?.removeChild(this.tilemap);
     for (t in this.tileset)
@@ -892,14 +888,5 @@ class Map extends EventDispatcher implements tiledfl.Disposable
     this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
     this.mTileMap = null;
     this.mRenderObjects = null;
-  }
-
-  /**
-   * Is disposed
-   * @return true if disposed, else false
-   */
-  public function isDisposed():Bool
-  {
-    return this.mDisposed;
   }
 }
