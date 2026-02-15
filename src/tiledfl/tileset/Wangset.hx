@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Wangset representation
  */
-class Wangset
+class Wangset implements Disposable
 {
   /**
    * Name
@@ -35,8 +35,43 @@ class Wangset
    */
   public var wangtile(default, null):Array<tiledfl.tileset.Wangtile>;
 
+  private var mDisposed:Bool;
+
   /**
    * Constructor
    */
-  public function new() {}
+  public function new()
+  {
+    this.mDisposed = false;
+    this.wangcolor = new Array<tiledfl.tileset.Wangcolor>();
+    this.wangtile = new Array<tiledfl.tileset.Wangtile>();
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.properties?.dispose();
+    for (c in this.wangcolor)
+    {
+      c.dispose();
+    }
+    this.wangcolor = null;
+    for (t in this.wangtile)
+    {
+      t.dispose();
+    }
+    this.wangtile = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
+  }
 }

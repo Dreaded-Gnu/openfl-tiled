@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Layer data handling
  */
-class Data
+class Data implements Disposable
 {
   /**
    * Used encoding of data
@@ -28,12 +28,16 @@ class Data
    */
   public var chunk(default, null):Array<tiledfl.layer.Chunk>;
 
+  private var mDisposed:Bool;
+
   /**
    * Constructor
    * @param node xml representation of data
    */
   public function new(node:Xml)
   {
+    this.mDisposed = false;
+
     this.encoding = node.get("encoding");
     this.compression = node.get("compression");
 
@@ -103,5 +107,35 @@ class Data
           throw new Error("no encoding not supported");
       }
     }
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    // set disposed flag
+    this.mDisposed = true;
+    // dispose tiles
+    for (t in this.tile)
+    {
+      t.dispose();
+    }
+    this.tile = null;
+    // dispose chunks
+    for (c in this.chunk)
+    {
+      c.dispose();
+    }
+    this.chunk = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

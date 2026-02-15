@@ -17,7 +17,7 @@ import openfl.geom.Point;
  *
  * @event complete Dispatched once image layer loading is completed
  */
-class Image extends EventDispatcher
+class Image extends EventDispatcher implements Disposable
 {
   /**
    * Format
@@ -56,6 +56,7 @@ class Image extends EventDispatcher
 
   private var mTransSet:Bool;
   private var mMap:tiledfl.Map;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -66,6 +67,7 @@ class Image extends EventDispatcher
   {
     super();
     // cache map
+    this.mDisposed = false;
     this.mMap = map;
     // parse stuff
     this.format = node.get("format");
@@ -96,6 +98,10 @@ class Image extends EventDispatcher
    */
   @:dox(hide) @:noCompletion public function load():Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // handle data set
     if (this.data != null)
     {
@@ -122,6 +128,10 @@ class Image extends EventDispatcher
    */
   private function onLoadComplete(bitmapData:BitmapData)
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // apply transparency if necessary
     if (this.mTransSet)
     {
@@ -129,7 +139,7 @@ class Image extends EventDispatcher
       bitmapData.threshold(bitmapData, bitmapData.rect, new Point(0, 0), "==", this.trans);
     }
     // create bitmap
-    bitmap = new Bitmap(bitmapData);
+    this.bitmap = new Bitmap(bitmapData);
     // populate width and height if undefined
     if (-1 == this.width)
     {
@@ -141,5 +151,26 @@ class Image extends EventDispatcher
     }
     // dispatch load complete
     this.dispatchEvent(new Event(Event.COMPLETE));
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.data?.dispose();
+    this.data = null;
+    this.mMap = null;
+    this.bitmap = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

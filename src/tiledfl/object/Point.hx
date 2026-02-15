@@ -3,9 +3,10 @@ package tiledfl.object;
 /**
  * Tiled point object
  */
-class Point
+class Point implements Disposable
 {
-  private var object:tiledfl.Object;
+  private var mObject:tiledfl.Object;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -14,6 +15,25 @@ class Point
    */
   public function new(node:Xml, object:tiledfl.Object)
   {
-    this.object = object;
+    this.mDisposed = false;
+    this.mObject = object;
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.mObject = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

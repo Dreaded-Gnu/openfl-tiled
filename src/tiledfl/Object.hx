@@ -6,7 +6,7 @@ import openfl.geom.Rectangle;
 /**
  * Tiled object
  */
-class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
+class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable implements Disposable
 {
   /**
    * ID
@@ -96,6 +96,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
   private var mTile:tiledfl.helper.AnimatedTile;
   private var mMap:tiledfl.Map;
   private var mGid:Int;
+  private var mDisposed:Bool;
   #if tiledfl_debug_render_object
   private var mShape:openfl.display.Shape;
   private var mTileset:openfl.display.Tileset;
@@ -108,6 +109,7 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
    */
   public function new(node:Xml, map:tiledfl.Map)
   {
+    this.mDisposed = false;
     this.mMap = map;
     #if tiledfl_debug_render_object
     this.mShape = new openfl.display.Shape();
@@ -426,6 +428,10 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
+    if (this.isDisposed())
+    {
+      return false;
+    }
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // float buffer
@@ -553,6 +559,10 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     var added:Int = 0;
     // render collision object if set
     #if tiledfl_debug_render_object
@@ -581,5 +591,42 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
   @:dox(hide) @:noCompletion public function evaluateHeight():Float
   {
     return 0;
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.properties?.dispose();
+    this.properties = null;
+    this.ellipse?.dispose();
+    this.ellipse = null;
+    this.point?.dispose();
+    this.point = null;
+    this.polygon?.dispose();
+    this.polygon = null;
+    this.polyline?.dispose();
+    this.polyline = null;
+    this.text?.dispose();
+    this.text = null;
+
+    this.mTile?.dispose();
+    this.mTile = null;
+    this.mMap = null;
+    #if tiledfl_debug_render_object
+    this.mShape = null;
+    this.mTileset = null;
+    #end
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

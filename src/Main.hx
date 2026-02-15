@@ -32,7 +32,7 @@ class Main extends Sprite
     //   "tiled/isometric_staggered_grass_and_water/isometric_staggered_grass_and_water.tmx", this.stage.stageWidth, this.stage.stageHeight);
     this.mMap.tilemap.scaleX = SCALE;
     this.mMap.tilemap.scaleY = SCALE;
-    //this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener

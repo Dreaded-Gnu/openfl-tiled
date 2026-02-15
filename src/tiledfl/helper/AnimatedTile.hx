@@ -5,7 +5,7 @@ import openfl.events.Event;
 /**
  * Animated tile implementation extending openfl.display.Tile
  */
-class AnimatedTile extends openfl.display.Tile
+class AnimatedTile extends openfl.display.Tile implements Disposable
 {
   /**
    * Animation data used for this tile
@@ -33,6 +33,7 @@ class AnimatedTile extends openfl.display.Tile
   private var mMap:tiledfl.Map;
   private var mPreviousTime:Float;
   private var mDuration:Float;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -52,6 +53,7 @@ class AnimatedTile extends openfl.display.Tile
     this.mAnimation = animation;
     this.mMaxAnimation = animation != null ? animation.frame.length : 0;
     this.mMap = map;
+    this.mDisposed = false;
     // save real x and y
     this.realX = this.x;
     this.realY = this.y;
@@ -66,6 +68,11 @@ class AnimatedTile extends openfl.display.Tile
    */
   private function onEnterFrame(event:Event):Void
   {
+    // handle disposed
+    if (this.mDisposed)
+    {
+      return;
+    }
     // save current time
     var currentTime:Float = haxe.Timer.stamp();
     // calculate milliseconds delta
@@ -117,7 +124,13 @@ class AnimatedTile extends openfl.display.Tile
    * On added to stage callback
    * @param event
    */
-  private function onAddedToStage(event:Event):Void {
+  private function onAddedToStage(event:Event):Void
+  {
+    // handle disposed
+    if (this.mDisposed)
+    {
+      return;
+    }
     // set initial timer for possible animation
     if (this.mAnimation == null || this.mAnimation.frame.length == 0)
     {
@@ -137,7 +150,13 @@ class AnimatedTile extends openfl.display.Tile
    * On removed from stage callback
    * @param event
    */
-  private function onRemovedFromStage(event:Event):Void {
+  private function onRemovedFromStage(event:Event):Void
+  {
+    // handle disposed
+    if (this.mDisposed)
+    {
+      return;
+    }
     // set initial timer for possible animation
     if (this.mAnimation == null || this.mAnimation.frame.length == 0)
     {
@@ -189,5 +208,33 @@ class AnimatedTile extends openfl.display.Tile
   private function get_map():tiledfl.Map
   {
     return this.mMap;
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    // set disposed flag
+    this.mDisposed = true;
+    // add event listener for added / removed from stage
+    this.mMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
+    this.mMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    // Remove enter frame listener
+    this.mMap.tilemap.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+    // dispose animation
+    this.mAnimation?.dispose();
+    // unset properties
+    this.mMap = null;
+    this.mAnimation = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

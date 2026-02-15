@@ -18,7 +18,7 @@ import tiledfl.tileset.ObjectAlignment;
  *
  * @event completed Dispatched when tileset has finished loading
  */
-class Tileset extends EventDispatcher
+class Tileset extends EventDispatcher implements Disposable
 {
   /**
    * First gid
@@ -133,6 +133,7 @@ class Tileset extends EventDispatcher
   private var mSourceLoaded:Bool = false;
   private var mTileLoaded:Bool = false;
   private var mMap:tiledfl.Map;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -143,6 +144,7 @@ class Tileset extends EventDispatcher
   {
     super();
     // cache map
+    this.mDisposed = false;
     this.mMap = map;
     // parse stuff
     this.parse(node);
@@ -248,6 +250,10 @@ class Tileset extends EventDispatcher
    */
   @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):Null<tiledfl.tileset.Tile>
   {
+    if (this.isDisposed())
+    {
+      return null;
+    }
     for (tile in this.tile)
     {
       if (tile.id == gid)
@@ -263,6 +269,10 @@ class Tileset extends EventDispatcher
    */
   @:dox(hide) @:noCompletion public function load():Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     if (!this.mSourceLoaded && this.source != null)
     {
       #if tiledfl_use_asset
@@ -342,6 +352,10 @@ class Tileset extends EventDispatcher
    */
   private function onImageCompleted(event:Event):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // evaluate tx and ty length
@@ -361,5 +375,44 @@ class Tileset extends EventDispatcher
     this.tileset = new openfl.display.Tileset(this.image.bitmap.bitmapData, rect);
     // call load again to continue
     this.load();
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.mMap = null;
+    this.image?.dispose();
+    this.image = null;
+    this.tileoffset?.dispose();
+    this.tileoffset = null;
+    this.grid?.dispose();
+    this.grid = null;
+    this.properties?.dispose();
+    this.properties = null;
+    this.terraintypes?.dispose();
+    this.terraintypes = null;
+    this.wangset?.dispose();
+    this.wangset = null;
+    this.transformations?.dispose();
+    this.transformations = null;
+    this.tileset = null;
+    for (tileId in this.tile.keys())
+    {
+      var t:tiledfl.tileset.Tile = this.tile.get(tileId);
+      t.dispose();
+    }
+    this.tile = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

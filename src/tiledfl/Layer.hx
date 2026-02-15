@@ -6,7 +6,7 @@ import tiledfl.map.RenderOrder;
 /**
  * Layer representation
  */
-class Layer implements tiledfl.Updatable
+class Layer implements tiledfl.Updatable implements Disposable
 {
   /**
    * Id
@@ -90,6 +90,7 @@ class Layer implements tiledfl.Updatable
 
   private var mTileCheckContainer:std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>;
   private var mMap:tiledfl.Map;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -99,6 +100,7 @@ class Layer implements tiledfl.Updatable
    */
   public function new(node:Xml, map:tiledfl.Map, layerId:Int)
   {
+    this.mDisposed = false;
     this.mMap = map;
     this.mTileCheckContainer = new std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>();
     // parse stuff
@@ -540,6 +542,10 @@ class Layer implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     switch (this.mMap.renderorder)
     {
       case RenderOrder.MapRenderOrderRightDown:
@@ -728,6 +734,10 @@ class Layer implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
+    if (this.isDisposed())
+    {
+      return false;
+    }
     // array of tiles
     var tiles:Array<tiledfl.tileset.Tile> = new Array<tiledfl.tileset.Tile>();
     var tileId:Array<Int> = new Array<Int>();
@@ -779,6 +789,10 @@ class Layer implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function evaluateWidth():Float
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     if (0 == this.data.chunk.length)
     {
       return this.width;
@@ -802,6 +816,10 @@ class Layer implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function evaluateHeight():Float
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     if (0 == this.data.chunk.length)
     {
       return this.height;
@@ -817,5 +835,40 @@ class Layer implements tiledfl.Updatable
       }
     }
     return maxHeight;
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.properties?.dispose();
+    this.properties = null;
+    this.data?.dispose();
+    this.data = null;
+    for (gid in this.mTileCheckContainer.keys())
+    {
+      for (key in this.mTileCheckContainer.get(gid).keys())
+      {
+        var t = this.mTileCheckContainer.get(gid).get(key);
+        if (this.mMap.tilemap.contains(t))
+        {
+          this.mMap.tilemap.removeTile(t);
+        }
+        t.dispose();
+      }
+    }
+    this.mTileCheckContainer = null;
+    this.mMap = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

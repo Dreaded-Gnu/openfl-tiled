@@ -3,7 +3,7 @@ package tiledfl.layer;
 /**
  * Tile representation
  */
-class Tile implements tiledfl.helper.Flippable
+class Tile implements tiledfl.helper.Flippable implements Disposable
 {
   /**
    * Gid property
@@ -11,6 +11,7 @@ class Tile implements tiledfl.helper.Flippable
   public var gid(get, null):Int;
 
   private var mGid:Int;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -18,6 +19,7 @@ class Tile implements tiledfl.helper.Flippable
    */
   public function new(gid:Int)
   {
+    this.mDisposed = false;
     this.mGid = gid;
   }
 
@@ -64,5 +66,23 @@ class Tile implements tiledfl.helper.Flippable
   public function isRotatedHexagonal120():Bool
   {
     return Helper.isGidRotatedHexagonal120(this.mGid);
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    // set disposed flag
+    this.mDisposed = true;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

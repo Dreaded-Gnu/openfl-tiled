@@ -8,7 +8,7 @@ import openfl.events.EventDispatcher;
  *
  * @event complete Dispatched once group loading is completed
  */
-class Group extends EventDispatcher implements tiledfl.Updatable
+class Group extends EventDispatcher implements tiledfl.Updatable implements Disposable
 {
   /**
    * Group id
@@ -79,6 +79,7 @@ class Group extends EventDispatcher implements tiledfl.Updatable
   private var mRenderObjects:Array<tiledfl.Updatable>;
   private var mImageLayerLoaded:Bool;
   private var mGroupLoaded:Bool;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -89,6 +90,7 @@ class Group extends EventDispatcher implements tiledfl.Updatable
   {
     super();
     // cache map
+    this.mDisposed = false;
     this.mMap = map;
     // parse attributes
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -147,6 +149,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     // initialize total
     var total:Int = 0;
     // iterate through render objects and perform an update
@@ -169,6 +175,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
+    if (this.isDisposed())
+    {
+      return false;
+    }
     for (renderObject in this.mRenderObjects)
     {
       if (renderObject.collides(x, y, width, height))
@@ -185,6 +195,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function evaluateWidth():Float
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     var width:Float = 0;
     for (renderObject in this.mRenderObjects)
     {
@@ -199,6 +213,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function evaluateHeight():Float
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     var height:Float = 0;
     for (renderObject in this.mRenderObjects)
     {
@@ -212,6 +230,10 @@ class Group extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function load():Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     if (!this.mImageLayerLoaded)
     {
       var tmpImageLayer:Array<tiledfl.ImageLayer> = new Array<tiledfl.ImageLayer>();
@@ -281,5 +303,44 @@ class Group extends EventDispatcher implements tiledfl.Updatable
       // dispatch complete event
       this.dispatchEvent(new Event(Event.COMPLETE));
     }
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    for (l in this.layer)
+    {
+      l.dispose();
+    }
+    this.layer = null;
+    for (o in this.objectgroup)
+    {
+      o.dispose();
+    }
+    this.objectgroup = null;
+    for (i in this.imagelayer)
+    {
+      i.dispose();
+    }
+    this.imagelayer = null;
+    for (g in this.group)
+    {
+      g.dispose();
+    }
+    this.group = null;
+    this.mRenderObjects = null;
+    this.mMap = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

@@ -23,7 +23,7 @@ import tiledfl.map.Orientation;
  * @event resize Dispatched once resize was done
  * @event complete Dispatched once map loading is completed
  */
-class Map extends EventDispatcher
+class Map extends EventDispatcher implements Disposable
 {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
   private static inline var TILEMAP_RENDER_MIN_FACTOR:Float = 1;
@@ -196,6 +196,7 @@ class Map extends EventDispatcher
   private var mRenderOffsetX:Float;
   private var mRenderOffsetY:Float;
   private var mRendered:Bool;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -222,6 +223,7 @@ class Map extends EventDispatcher
     this.mRenderOffsetX = 0;
     this.mRenderOffsetY = 0;
     this.mRendered = false;
+    this.mDisposed = false;
     // set public properties if needed
     #if tiledfl_debug_render_object
     this.debugRenderObjectColor = TILEMAP_DEFAULT_DEBUG_RENDER_COLOR;
@@ -241,6 +243,10 @@ class Map extends EventDispatcher
    */
   private function onAddedToStage(event:Event):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // initially render the map
     this.render();
     // dispatch added to stage event
@@ -253,6 +259,10 @@ class Map extends EventDispatcher
    */
   private function onRemovedFromStage(event:Event):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // remove set event listeners from tilemap
     this.mTileMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
     this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
@@ -267,6 +277,10 @@ class Map extends EventDispatcher
    */
   public function resize(width:Float, height:Float):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // resize tilemap
     this.mTileMap.width = width * TILEMAP_RENDER_OFFSET_FACTOR;
     this.mTileMap.height = height * TILEMAP_RENDER_OFFSET_FACTOR;
@@ -285,6 +299,10 @@ class Map extends EventDispatcher
    */
   private function onLoadComplete(event:Event):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // get url loader
     var loader:URLLoader = cast event.target;
     // remove on load complete handler
@@ -301,6 +319,10 @@ class Map extends EventDispatcher
    */
   private function parseXml(xmlContent:String):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     var xmlParsed:Xml = Xml.parse(xmlContent).firstElement();
     // parse map
     this.version = Std.parseFloat(xmlParsed.get("version"));
@@ -446,6 +468,10 @@ class Map extends EventDispatcher
    */
   public function load():Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     #if tiledfl_use_asset
     // fake loader
     var loader:URLLoader = new URLLoader();
@@ -468,6 +494,10 @@ class Map extends EventDispatcher
    */
   private function loadData():Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     if (!this.mTilesetLoaded)
     {
       var tmpTileset:Array<tiledfl.Tileset> = new Array<tiledfl.Tileset>();
@@ -580,6 +610,10 @@ class Map extends EventDispatcher
    */
   @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):Null<tiledfl.Tileset>
   {
+    if (this.isDisposed())
+    {
+      return null;
+    }
     var tileset:tiledfl.Tileset = null;
     for (ts in this.tileset)
     {
@@ -598,6 +632,10 @@ class Map extends EventDispatcher
    */
   public function render(offsetX:Float = 0, offsetY:Float = 0):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // skip render if not loaded!
     if (!this.isLoaded)
     {
@@ -739,6 +777,10 @@ class Map extends EventDispatcher
    */
   public function objectgroupByName(name:String):Null<tiledfl.ObjectGroup>
   {
+    if (this.isDisposed())
+    {
+      return null;
+    }
     for (objectgroup in this.objectgroup)
     {
       if (objectgroup.name == name)
@@ -759,6 +801,10 @@ class Map extends EventDispatcher
    */
   public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
+    if (this.isDisposed())
+    {
+      return false;
+    }
     // skip render if not loaded!
     if (!this.isLoaded)
     {
@@ -787,6 +833,10 @@ class Map extends EventDispatcher
    */
   @:dox(hide) @:noCompletion public function willBeVisible(x:Float, y:Float, width:Float, height:Float):Bool
   {
+    if (this.isDisposed())
+    {
+      return false;
+    }
     // cache scrollrect x and y
     var scrollRectX:Float = this.mTileMap.scrollRect.x;
     var scrollRectY:Float = this.mTileMap.scrollRect.y;
@@ -802,5 +852,54 @@ class Map extends EventDispatcher
     // check whether it's in tilemap width range
     return (maxPoint.x >= 0 && maxPoint.x <= mapWidth && maxPoint.y >= 0 && maxPoint.y <= mapHeight)
       || (minPoint.x >= 0 && minPoint.x <= mapWidth && minPoint.y >= 0 && minPoint.y <= mapHeight);
+  }
+
+  /**
+   * Dispose map
+   */
+  public function dispose():Void
+  {
+    // set disposed to true
+    this.mDisposed = true;
+    // remove child from stage
+    this.mTileMap.stage?.removeChild(this.tilemap);
+    for (t in this.tileset)
+    {
+      t.dispose();
+    }
+    this.tileset = null;
+    for (l in this.layer)
+    {
+      l.dispose();
+    }
+    this.layer = null;
+    for (o in this.objectgroup)
+    {
+      o.dispose();
+    }
+    this.objectgroup = null;
+    for (i in this.imagelayer)
+    {
+      i.dispose();
+    }
+    this.imagelayer = null;
+    for (g in this.group)
+    {
+      g.dispose();
+    }
+    this.group = null;
+    this.mTileMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
+    this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    this.mTileMap = null;
+    this.mRenderObjects = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

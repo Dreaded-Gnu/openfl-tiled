@@ -5,7 +5,7 @@ import openfl.errors.Error;
 /**
  * Grid representation
  */
-class Grid
+class Grid implements Disposable
 {
   /**
    * Orientation of the grid
@@ -22,12 +22,15 @@ class Grid
    */
   public var height(default, null):Float;
 
+  private var mDisposed:Bool;
+
   /**
    * Constructor
    * @param node xml representation to parse
    */
   public function new(node:Xml)
   {
+    this.mDisposed = false;
     var o:String = node.get("orientation");
     switch (o)
     {
@@ -40,5 +43,22 @@ class Grid
     }
     this.width = Std.parseInt(node.get("width"));
     this.height = Std.parseInt(node.get("height"));
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

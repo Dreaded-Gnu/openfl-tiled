@@ -65,6 +65,14 @@ public function collides(x:Float, y:Float, width:Float, height:Float):Bool;
 
 Check whether a rectangle starting at x/y width specific width and height collides with a collidable object. Collidable objects are tiles that have a property `collides` set to `"true"`, objects that have `collision` set as name or objects that have type set to `collision`
 
+#### tiledfl.Map::dispose
+
+```haxe
+public function dispose():Void;
+```
+
+Dispose whole map and all related instances.
+
 ## Installation
 
 Using TiledFL source install.

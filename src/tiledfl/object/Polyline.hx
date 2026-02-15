@@ -5,14 +5,15 @@ import openfl.geom.Point;
 /**
  * Tiled poly line object
  */
-class Polyline
+class Polyline implements Disposable
 {
   /**
    * Array of points of the polyline
    */
   public var points(default, null):Array<openfl.geom.Point>;
 
-  private var object:tiledfl.Object;
+  private var mObject:tiledfl.Object;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -21,7 +22,8 @@ class Polyline
    */
   public function new(node:Xml, object:tiledfl.Object)
   {
-    this.object = object;
+    this.mDisposed = false;
+    this.mObject = object;
     this.points = new Array<Point>();
     // get points string
     var p:String = node.get("points");
@@ -36,5 +38,24 @@ class Polyline
       var point:Array<String> = splittedPoint.split(",");
       this.points.push(new Point(Std.parseFloat(point[0]), Std.parseFloat(point[1])));
     }
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.mObject = null;
+    this.points = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

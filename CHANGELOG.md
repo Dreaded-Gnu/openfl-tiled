@@ -7,6 +7,7 @@
 * Changed `AnimatedTile` to set ENTER_FRAME handler when map is added to stage
 * Extended `AnimatedTile` to remove ENTER_FRAME handler when map is removed from stage
 * Adjusted nullable types to be typed with `Null<Type>`
+* Implemented possibility to dispose a map
 
 ## 0.2.0 (2025-04-26)
 

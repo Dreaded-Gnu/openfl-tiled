@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Chunk layer implementation
  */
-class Chunk
+class Chunk implements Disposable
 {
   /**
    * X coordinate the chunk starts
@@ -33,6 +33,8 @@ class Chunk
    */
   public var tile(default, null):Array<tiledfl.layer.Tile>;
 
+  private var mDisposed:Bool;
+
   /**
    * Constructor
    * @param node chunk xml representation
@@ -40,6 +42,8 @@ class Chunk
    */
   public function new(node:Xml, data:tiledfl.layer.Data)
   {
+    this.mDisposed = false;
+
     this.x = Std.parseInt(node.get("x"));
     this.y = Std.parseInt(node.get("y"));
     this.width = Std.parseInt(node.get("width"));
@@ -91,5 +95,29 @@ class Chunk
       default:
         throw new Error("no encoding not supported");
     }
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    // set disposed flag
+    this.mDisposed = true;
+    // clear tiles
+    for (t in this.tile)
+    {
+      t.dispose();
+    }
+    this.tile = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

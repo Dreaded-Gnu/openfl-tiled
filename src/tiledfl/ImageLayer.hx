@@ -9,7 +9,7 @@ import openfl.geom.Rectangle;
  *
  * @event complete Dispatched once image layer loading is completed
  */
-class ImageLayer extends EventDispatcher implements tiledfl.Updatable
+class ImageLayer extends EventDispatcher implements tiledfl.Updatable implements Disposable
 {
   /**
    * Id
@@ -102,6 +102,7 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   public var tile(default, null):Null<tiledfl.helper.AnimatedTile>;
 
   private var mMap:tiledfl.Map;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -112,6 +113,7 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   {
     super();
     // cache map
+    this.mDisposed = false;
     this.mMap = map;
     // parse attributes
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -151,6 +153,10 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function load():Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     if (this.image != null)
     {
       // register event listener
@@ -170,6 +176,10 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
    */
   private function onImageCompleted(event:Event):Void
   {
+    if (this.isDisposed())
+    {
+      return;
+    }
     // remove event listener
     this.image.removeEventListener(Event.COMPLETE, onImageCompleted);
     // parse image to tileset
@@ -192,6 +202,10 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     // handle null, which shouldn't happen at all
     if (this.tile == null)
     {
@@ -251,5 +265,30 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   @:dox(hide) @:noCompletion public function evaluateHeight():Int
   {
     return 0;
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.properties?.dispose();
+    this.properties = null;
+    this.image?.dispose();
+    this.image = null;
+    this.tile?.dispose();
+    this.tile = null;
+    this.tileset = null;
+    this.mMap = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

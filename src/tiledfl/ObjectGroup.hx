@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Group of objects
  */
-class ObjectGroup implements tiledfl.Updatable
+class ObjectGroup implements tiledfl.Updatable implements Disposable
 {
   /**
    * ID
@@ -96,6 +96,7 @@ class ObjectGroup implements tiledfl.Updatable
   public var object(default, null):Array<tiledfl.Object>;
 
   private var mMap:tiledfl.Map;
+  private var mDisposed:Bool;
 
   /**
    * Constructor
@@ -104,6 +105,7 @@ class ObjectGroup implements tiledfl.Updatable
    */
   public function new(node:Xml, map:tiledfl.Map)
   {
+    this.mDisposed = false;
     this.mMap = map;
     // parse properties
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : 0;
@@ -160,6 +162,10 @@ class ObjectGroup implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
+    if (this.isDisposed())
+    {
+      return 0;
+    }
     // initialize total
     var total:Int = 0;
     // iterate through objects
@@ -182,6 +188,10 @@ class ObjectGroup implements tiledfl.Updatable
    */
   @:dox(hide) @:noCompletion public function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
+    if (this.isDisposed())
+    {
+      return false;
+    }
     for (object in this.object)
     {
       // handle no collision layer and not collidable object
@@ -214,5 +224,30 @@ class ObjectGroup implements tiledfl.Updatable
   @:dox(hide) @:noCompletion public function evaluateHeight():Float
   {
     return 0;
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    this.mDisposed = true;
+    this.properties?.dispose();
+    this.properties = null;
+    for (o in this.object)
+    {
+      o.dispose();
+    }
+    this.object = null;
+    this.mMap = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }

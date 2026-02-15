@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Image data handling
  */
-class Data
+class Data implements Disposable
 {
   /**
    * Used encoding of data
@@ -23,12 +23,15 @@ class Data
    */
   public var data(default, null):ByteArray;
 
+  private var mDisposed:Bool;
+
   /**
    * Constructor
    * @param node data node to parse
    */
   public function new(node:Xml)
   {
+    this.mDisposed = false;
     this.encoding = node.get("encoding");
     this.compression = node.get("compression");
 
@@ -61,5 +64,27 @@ class Data
       default:
         throw new Error("no encoding not supported");
     }
+  }
+
+  /**
+   * Dispose method
+   */
+  public function dispose():Void
+  {
+    // set disposed flag
+    this.mDisposed = true;
+    // unset properties
+    this.data = null;
+    this.encoding = null;
+    this.compression = null;
+  }
+
+  /**
+   * Is disposed
+   * @return true if disposed, else false
+   */
+  public function isDisposed():Bool
+  {
+    return this.mDisposed;
   }
 }
