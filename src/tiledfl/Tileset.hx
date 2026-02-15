@@ -88,37 +88,37 @@ class Tileset extends EventDispatcher
   /**
    * Tileset image
    */
-  public var image(default, null):tiledfl.Image;
+  public var image(default, null):Null<tiledfl.Image>;
 
   /**
    * Tileset offset
    */
-  public var tileoffset(default, null):tiledfl.tileset.TileOffset;
+  public var tileoffset(default, null):Null<tiledfl.tileset.TileOffset>;
 
   /**
    * Grid
    */
-  public var grid(default, null):tiledfl.tileset.Grid;
+  public var grid(default, null):Null<tiledfl.tileset.Grid>;
 
   /**
    * Properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Terrain types
    */
-  public var terraintypes(default, null):tiledfl.tileset.TerrainTypes;
+  public var terraintypes(default, null):Null<tiledfl.tileset.TerrainTypes>;
 
   /**
    * Wangset
    */
-  public var wangset(default, null):tiledfl.tileset.Wangsets;
+  public var wangset(default, null):Null<tiledfl.tileset.Wangsets>;
 
   /**
    * Transformations
    */
-  public var transformations(default, null):tiledfl.tileset.Transformations;
+  public var transformations(default, null):Null<tiledfl.tileset.Transformations>;
 
   /**
    * Map of tiles
@@ -128,7 +128,7 @@ class Tileset extends EventDispatcher
   /**
    * Openfl tileset created
    */
-  public var tileset(default, null):openfl.display.Tileset;
+  public var tileset(default, null):Null<openfl.display.Tileset>;
 
   private var mSourceLoaded:Bool = false;
   private var mTileLoaded:Bool = false;
@@ -246,7 +246,7 @@ class Tileset extends EventDispatcher
    * @param gid
    * @return tiledfl.tileset.Tile
    */
-  @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):tiledfl.tileset.Tile
+  @:dox(hide) @:noCompletion public function getTileByGid(gid:Int):Null<tiledfl.tileset.Tile>
   {
     for (tile in this.tile)
     {

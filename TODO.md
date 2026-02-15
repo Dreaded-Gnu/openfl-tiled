@@ -6,6 +6,9 @@
 - [ ] Improve code documentation
 - [ ] Publish code documentation
 - [ ] Provide some samples
+- [ ] Add support for terraintypes
+- [ ] Add support for wangsets
+- [ ] Add support for transformations
 
 ## Already done
 

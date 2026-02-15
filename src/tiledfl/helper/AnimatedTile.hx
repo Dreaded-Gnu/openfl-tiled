@@ -10,7 +10,7 @@ class AnimatedTile extends openfl.display.Tile
   /**
    * Animation data used for this tile
    */
-  public var animation(get, set):tiledfl.tileset.Animation;
+  public var animation(get, set):Null<tiledfl.tileset.Animation>;
 
   /**
    * Real x value which might differ to x because of possible tile flipping
@@ -90,8 +90,18 @@ class AnimatedTile extends openfl.display.Tile
     id = this.mAnimation.frame[mCurrentAnimation].tileid;
     // get tileset by id
     var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(id);
+    // handle null
+    if (tileset == null)
+    {
+      return;
+    }
     // get tile of tileset by id
     var tile:tiledfl.tileset.Tile = tileset.getTileByGid(id);
+    // handle null
+    if (tileset == null)
+    {
+      return;
+    }
     // overwrite tileset
     this.tileset = tileset.tileset;
     // overwrite tileset with one from tile if set

@@ -52,27 +52,27 @@ class Tile extends EventDispatcher
   /**
    * Tile properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Image of the tile
    */
-  public var image(default, null):tiledfl.Image;
+  public var image(default, null):Null<tiledfl.Image>;
 
   /**
    * Object group
    */
-  public var objectgroup(default, null):tiledfl.ObjectGroup;
+  public var objectgroup(default, null):Null<tiledfl.ObjectGroup>;
 
   /**
    * Animation
    */
-  public var animation(default, null):tiledfl.tileset.Animation;
+  public var animation(default, null):Null<tiledfl.tileset.Animation>;
 
   /**
    * Used and created openfl tileset
    */
-  public var tileset(default, null):openfl.display.Tileset;
+  public var tileset(default, null):Null<openfl.display.Tileset>;
 
   private var mMap:tiledfl.Map;
 

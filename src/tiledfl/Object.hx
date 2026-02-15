@@ -66,32 +66,32 @@ class Object implements tiledfl.helper.Flippable implements tiledfl.Updatable
   /**
    * Object properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Ellipse instance
    */
-  public var ellipse(default, null):tiledfl.object.Ellipse;
+  public var ellipse(default, null):Null<tiledfl.object.Ellipse>;
 
   /**
    * Point instance
    */
-  public var point(default, null):tiledfl.object.Point;
+  public var point(default, null):Null<tiledfl.object.Point>;
 
   /**
    * Polygon instance
    */
-  public var polygon(default, null):tiledfl.object.Polygon;
+  public var polygon(default, null):Null<tiledfl.object.Polygon>;
 
   /**
    * Polyline instance
    */
-  public var polyline(default, null):tiledfl.object.Polyline;
+  public var polyline(default, null):Null<tiledfl.object.Polyline>;
 
   /**
    * Text instance
    */
-  public var text(default, null):tiledfl.object.Text;
+  public var text(default, null):Null<tiledfl.object.Text>;
 
   private var mTile:tiledfl.helper.AnimatedTile;
   private var mMap:tiledfl.Map;

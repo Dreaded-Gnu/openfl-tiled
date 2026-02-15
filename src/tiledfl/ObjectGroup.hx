@@ -88,7 +88,7 @@ class ObjectGroup implements tiledfl.Updatable
   /**
    * Object group properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Objects within object group

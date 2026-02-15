@@ -578,7 +578,7 @@ class Map extends EventDispatcher
    * @param gid
    * @return tiledfl.Tileset
    */
-  @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):tiledfl.Tileset
+  @:dox(hide) @:noCompletion public function tilesetByGid(gid:Int):Null<tiledfl.Tileset>
   {
     var tileset:tiledfl.Tileset = null;
     for (ts in this.tileset)
@@ -737,7 +737,7 @@ class Map extends EventDispatcher
    * @param name object group name to lookup
    * @return Object group with the name or null if not found
    */
-  public function objectgroupByName(name:String):tiledfl.ObjectGroup
+  public function objectgroupByName(name:String):Null<tiledfl.ObjectGroup>
   {
     for (objectgroup in this.objectgroup)
     {

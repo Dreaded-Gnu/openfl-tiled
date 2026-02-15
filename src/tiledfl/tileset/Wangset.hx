@@ -23,7 +23,7 @@ class Wangset
   /**
    * Wangset properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Wang color

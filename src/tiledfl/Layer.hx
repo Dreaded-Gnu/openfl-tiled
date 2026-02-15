@@ -81,12 +81,12 @@ class Layer implements tiledfl.Updatable
   /**
    * Layer properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Embedded layer data
    */
-  public var data(default, null):tiledfl.layer.Data;
+  public var data(default, null):Null<tiledfl.layer.Data>;
 
   private var mTileCheckContainer:std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>;
   private var mMap:tiledfl.Map;
@@ -652,7 +652,7 @@ class Layer implements tiledfl.Updatable
    * @param y
    * @return tiledfl.tileset.Tile
    */
-  private function getTileAt(x:Float, y:Float):tiledfl.tileset.Tile
+  private function getTileAt(x:Float, y:Float):Null<tiledfl.tileset.Tile>
   {
     // handle non infinite maps
     if (this.mMap.infinite != 1)

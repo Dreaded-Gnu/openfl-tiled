@@ -84,22 +84,22 @@ class ImageLayer extends EventDispatcher implements tiledfl.Updatable
   /**
    * Image layer properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Null<tiledfl.Properties>;
 
   /**
    * Linked image of image layer
    */
-  public var image(default, null):tiledfl.Image;
+  public var image(default, null):Null<tiledfl.Image>;
 
   /**
    * Tileset
    */
-  public var tileset(default, null):openfl.display.Tileset;
+  public var tileset(default, null):Null<openfl.display.Tileset>;
 
   /**
    * Tile
    */
-  public var tile(default, null):tiledfl.helper.AnimatedTile;
+  public var tile(default, null):Null<tiledfl.helper.AnimatedTile>;
 
   private var mMap:tiledfl.Map;
 
