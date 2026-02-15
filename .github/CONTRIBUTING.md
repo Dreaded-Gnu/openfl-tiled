@@ -21,15 +21,13 @@ To report a bug, request a feature or simply ask a question, make use of GiHub I
 To setup for making changes you'll need to take a few steps, we've outlined below.
 
 1. Ensure that haxe is installed
-2. Ensure that node is installed
-3. Fork the openfl-tiled repository
-4. Run `npm install`
-5. Run `haxelib newrepo`
-6. Run `haxelib install openfl`
-7. Run `haxelib install crypto`
-8. Run `haxelib install formatter`
-9. Run `haxelib install dox`
-10. Run `openfl setup`
+2. Fork the openfl-tiled repository
+3. Run `haxelib newrepo`
+4. Run `haxelib install openfl`
+5. Run `haxelib install crypto`
+6. Run `haxelib install formatter`
+7. Run `haxelib install dox`
+8. Run `openfl setup`
 
 ### Making a change
 
