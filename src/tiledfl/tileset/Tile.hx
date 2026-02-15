@@ -3,11 +3,11 @@ package tiledfl.tileset;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
 
-@:allow(tiledfl.Map)
-@:allow(tiledfl.Tileset)
 /**
  * Tiled tile representation
  */
+@:allow(tiledfl.Map)
+@:allow(tiledfl.Tileset)
 class Tile extends tiledfl.RootObject
 {
   /**

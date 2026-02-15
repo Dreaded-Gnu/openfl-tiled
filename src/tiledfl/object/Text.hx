@@ -83,4 +83,12 @@ class Text extends tiledfl.RootObject
     this.halign = node.get("halign");
     this.valign = node.get("valign");
   }
+
+  /**
+   * Dispose method
+   */
+  override public function dispose():Void {
+    super.dispose();
+    this.mObject = null;
+  }
 }

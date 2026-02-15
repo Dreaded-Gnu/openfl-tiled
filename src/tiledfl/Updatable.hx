@@ -3,6 +3,7 @@ package tiledfl;
 /**
  * Updatable interface used for updatable/displayable objects
  */
+@:allow(tiledfl.Map)
 interface Updatable
 {
   /**
@@ -12,7 +13,7 @@ interface Updatable
    * @param index index
    * @return amount of added items
    */
-  public function update(offsetX:Float, offsetY:Float, index:Int):Int;
+  private function update(offsetX:Float, offsetY:Float, index:Int):Int;
 
   /**
    * Helper to check for collision of "rectangle" with element
@@ -22,17 +23,17 @@ interface Updatable
    * @param height height
    * @return true if something collides, else false
    */
-  public function collides(x:Float, y:Float, width:Float, height:Float):Bool;
+  private function collides(x:Float, y:Float, width:Float, height:Float):Bool;
 
   /**
    * Helper to evaluate width
    * @return evaluated width
    */
-  public function evaluateWidth():Float;
+  private function evaluateWidth():Float;
 
   /**
    * Helper to evaluate height
    * @return evaluated height
    */
-  public function evaluateHeight():Float;
+  private function evaluateHeight():Float;
 }

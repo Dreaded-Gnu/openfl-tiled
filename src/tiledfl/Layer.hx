@@ -539,7 +539,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param index
    * @return Int
    */
-  public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  private function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
     if (this.isDisposed())
     {
@@ -731,7 +731,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param height
    * @return Bool
    */
-  public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  private function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
     if (this.isDisposed())
     {
@@ -786,7 +786,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Float
+  private function evaluateWidth():Float
   {
     if (this.isDisposed())
     {
@@ -813,7 +813,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Float
+  private function evaluateHeight():Float
   {
     if (this.isDisposed())
     {

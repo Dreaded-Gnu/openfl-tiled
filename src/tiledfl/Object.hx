@@ -6,6 +6,7 @@ import openfl.geom.Rectangle;
 /**
  * Tiled object
  */
+@:allow(tiledfl.ObjectGroup)
 class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable implements tiledfl.Updatable
 {
   /**
@@ -425,7 +426,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * @param height
    * @return Bool
    */
-  public function collides(x:Float, y:Float, width:Float, height:Float):Bool
+  private function collides(x:Float, y:Float, width:Float, height:Float):Bool
   {
     if (this.isDisposed())
     {
@@ -556,7 +557,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * @param offsetY
    * @param index
    */
-  public function update(offsetX:Float, offsetY:Float, index:Int):Int
+  private function update(offsetX:Float, offsetY:Float, index:Int):Int
   {
     if (this.isDisposed())
     {
@@ -578,7 +579,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * Helper to evaluate width
    * @return Int
    */
-  public function evaluateWidth():Float
+  private function evaluateWidth():Float
   {
     return 0;
   }
@@ -587,7 +588,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * Helper to evaluate height
    * @return Int
    */
-  public function evaluateHeight():Float
+  private function evaluateHeight():Float
   {
     return 0;
   }

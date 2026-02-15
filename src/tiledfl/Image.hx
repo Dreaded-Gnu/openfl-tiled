@@ -11,15 +11,15 @@ import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.geom.Point;
 
-@:allow(tiledfl.ImageLayer)
-@:allow(tiledfl.Map)
-@:allow(tiledfl.Tileset)
-@:allow(tiledfl.tileset.Tile)
 /**
  * Image representation
  *
  * @event complete Dispatched once image layer loading is completed
  */
+@:allow(tiledfl.ImageLayer)
+@:allow(tiledfl.Map)
+@:allow(tiledfl.Tileset)
+@:allow(tiledfl.tileset.Tile)
 class Image extends tiledfl.RootObject
 {
   /**
@@ -62,8 +62,8 @@ class Image extends tiledfl.RootObject
 
   /**
    * Constructor
-   * @param node
-   * @param map
+   * @param node representation to parse
+   * @param map map object this new instance belongs to
    */
   public function new(node:Xml, map:tiledfl.Map)
   {

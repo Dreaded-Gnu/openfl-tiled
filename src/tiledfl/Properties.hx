@@ -3,6 +3,7 @@ package tiledfl;
 /**
  * Tiled properties representation
  */
+@:allow(tiledfl.Layer)
 class Properties extends tiledfl.RootObject
 {
   /**
@@ -35,7 +36,7 @@ class Properties extends tiledfl.RootObject
    * @param name Name to get property
    * @return Found property or null
    */
-  public function propertyByName(name:String):Null<Property>
+  private function propertyByName(name:String):Null<Property>
   {
     if (this.isDisposed())
     {

@@ -12,15 +12,15 @@ import tiledfl.tileset.FillMode;
 import tiledfl.tileset.TileRenderSize;
 import tiledfl.tileset.ObjectAlignment;
 
-@:allow(tiledfl.helper.AnimatedTile)
-@:allow(tiledfl.Layer)
-@:allow(tiledfl.Map)
-@:allow(tiledfl.Object)
 /**
  * Representation of tiled tileset object
  *
  * @event completed Dispatched when tileset has finished loading
  */
+@:allow(tiledfl.helper.AnimatedTile)
+@:allow(tiledfl.Layer)
+@:allow(tiledfl.Map)
+@:allow(tiledfl.Object)
 class Tileset extends tiledfl.RootObject
 {
   /**
@@ -153,7 +153,7 @@ class Tileset extends tiledfl.RootObject
 
   /**
    * Helper to parse
-   * @param node
+   * @param node xml representation to parse
    */
   private function parse(node:Xml):Void
   {

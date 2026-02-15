@@ -14,9 +14,6 @@ import tiledfl.map.StaggerAxis;
 import tiledfl.map.RenderOrder;
 import tiledfl.map.Orientation;
 
-@:allow(tiledfl.ImageLayer)
-@:allow(tiledfl.Layer)
-@:allow(tiledfl.Object)
 /**
  * Map class for loading and rendering tilemap
  *
@@ -25,6 +22,9 @@ import tiledfl.map.Orientation;
  * @event resize Dispatched once resize was done
  * @event complete Dispatched once map loading is completed
  */
+@:allow(tiledfl.ImageLayer)
+@:allow(tiledfl.Layer)
+@:allow(tiledfl.Object)
 class Map extends tiledfl.RootObject
 {
   private static inline var TILEMAP_RENDER_OFFSET_FACTOR:Int = 2;
