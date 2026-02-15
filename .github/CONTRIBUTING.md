@@ -44,7 +44,7 @@ The change should be made directly to the correct branch within your fork or to 
 
 ### Testing Your change
 
-You can test your change by adjusting the `Main.hx` temporarily and then run `npm start` or `openfl test html5 -debug -verbose`.
+You can test your change by adjusting the `Main.hx` temporarily and then run `openfl test html5 -debug -verbose`.
 
 ### Submitting Your change
 
