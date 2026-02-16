@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.3.0 (YYYY-MM-DD)
+## 0.3.0 (2025-02-16)
 
 * Fixed rendering of isometric maps (diamond and staggered)
 * Reworked coordinate handling to float to prevent unnecessary int castings
