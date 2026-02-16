@@ -389,20 +389,22 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         }
         else
         {
-          // add half map as offset for diamond shaped maps
-          t.x += this.mMap.width / 2 * tileset.tilewidth;
-          // adjust realX as well, because if not visible check will detect
-          // half of the map as not visible
-          t.realX += this.mMap.width / 2 * tileset.tilewidth;
+          // calculate offset for diamond shaped maps by using half map width
+          // multiplied by tile width with subtract half tilewidth to prevent
+          // shift to right
+          var offset:Float = this.mMap.width / 2 * tileset.tilewidth - tileset.tilewidth / 2;
+          // apply offset to x and realX
+          t.x += offset;
+          t.realX += offset;
         }
         // apply position correction when tileheight is greater than tilemap
         if (tileset.tileheight > this.mMap.tileheight)
         {
-          t.y = Std.int(t.y / (tileset.tileheight / this.mMap.tileheight));
+          t.y /= (tileset.tileheight / this.mMap.tileheight);
         }
         if (tileset.tilewidth > this.mMap.tilewidth)
         {
-          t.x = Std.int(t.x / (tileset.tilewidth / this.mMap.tilewidth));
+          t.x /= (tileset.tilewidth / this.mMap.tilewidth);
         }
         // apply tileoffset
         t.x -= tileset.tileoffset.x;

@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.3.1 (YYYY-MM-DD)
+
+* Fixed rendering gap for diamond shaped maps on left side
+
 ## 0.3.0 (2025-02-16)
 
 * Fixed rendering of isometric maps (diamond and staggered)
