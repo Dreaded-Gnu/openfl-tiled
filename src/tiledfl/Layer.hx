@@ -353,12 +353,14 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         }
         if (this.mMap.orientation == MapOrientationStaggered)
         {
-          // for staggered adjust x and y
-          t.x = x * tileset.tilewidth;
-          t.y = y * tileset.tileheight;
-          // for staggered also adjust realX and realY
-          t.realX = x * tileset.tilewidth;
-          t.realY = y * tileset.tileheight;
+          // calculate adjusted x and y
+          var adjustedX:Float = x * tileset.tilewidth;
+          var adjustedY:Float = y * tileset.tileheight;
+          // adjust x and y as well as realX and realY
+          t.x = adjustedX;
+          t.y = adjustedY;
+          t.realX = adjustedX;
+          t.realY = adjustedY;
           // handle stagger axis and index
           if (this.mMap.staggeraxis == MapStaggerAxisY)
           {
@@ -400,15 +402,21 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         // apply position correction when tileheight is greater than tilemap
         if (tileset.tileheight > this.mMap.tileheight)
         {
-          t.y /= (tileset.tileheight / this.mMap.tileheight);
+          var diff:Float = tileset.tileheight / this.mMap.tileheight;
+          t.y /= diff;
+          t.realY /= diff;
         }
         if (tileset.tilewidth > this.mMap.tilewidth)
         {
-          t.x /= (tileset.tilewidth / this.mMap.tilewidth);
+          var diff:Float = tileset.tilewidth / this.mMap.tilewidth;
+          t.x /= diff;
+          t.realX = diff;
         }
         // apply tileoffset
         t.x -= tileset.tileoffset.x;
         t.y -= tileset.tileoffset.y;
+        t.realX -= tileset.tileoffset.x;
+        t.realY -= tileset.tileoffset.y;
       case MapOrientationOrthogonal:
         if (map.exists(mapIndex))
         {
