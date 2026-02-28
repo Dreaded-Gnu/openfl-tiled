@@ -101,11 +101,6 @@ class Chunk extends tiledfl.RootObject
   override public function dispose():Void
   {
     super.dispose();
-    // clear tiles
-    for (t in this.tile)
-    {
-      t.dispose();
-    }
-    this.tile = null;
+    this.tile = cast this.destroyArray(this.tile);
   }
 }

@@ -233,11 +233,7 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
     super.dispose();
     this.properties?.dispose();
     this.properties = null;
-    for (o in this.object)
-    {
-      o.dispose();
-    }
-    this.object = null;
+    this.object = cast this.destroyArray(this.object);
     this.mMap = null;
   }
 }

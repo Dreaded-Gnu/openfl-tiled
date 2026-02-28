@@ -38,10 +38,6 @@ class Animation extends tiledfl.RootObject
   override public function dispose():Void
   {
     super.dispose();
-    for (f in this.frame)
-    {
-      f.dispose();
-    }
-    this.frame = null;
+    this.frame = cast this.destroyArray(this.frame);
   }
 }

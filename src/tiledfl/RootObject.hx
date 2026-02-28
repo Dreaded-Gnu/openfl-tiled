@@ -1,5 +1,6 @@
 package tiledfl;
 
+import haxe.ds.WeakMap;
 import openfl.events.EventDispatcher;
 
 /**
@@ -33,5 +34,42 @@ class RootObject extends EventDispatcher implements Disposable
   public function isDisposed():Bool
   {
     return this.mDisposed;
+  }
+
+  /**
+   * Callback to destroy an object
+   * @param a
+   */
+  private function destroy(a:Dynamic):Void
+  {
+    if (Std.isOfType(a, RootObject))
+    {
+      cast(a, RootObject).dispose();
+    }
+    else if (Std.isOfType(a, Array))
+    {
+      this.destroyArray(cast(a, Array<Dynamic>));
+    }
+  }
+
+  /**
+   * Wrapper to destroy an array
+   * @param a
+   */
+  public function destroyArray(a:Array<Dynamic>, returnEmpty:Bool = false):Null<Array<Dynamic>>
+  {
+    var e:Dynamic = null;
+    // loop through array
+    do
+    {
+      // shift away element
+      e = a.shift();
+      // try to destroy it
+      this.destroy(e);
+      // shift away next element
+      e = a.shift();
+    } while (e != null);
+    // return depending on flag
+    return returnEmpty ? a : null;
   }
 }

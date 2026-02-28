@@ -873,33 +873,16 @@ class Map extends tiledfl.RootObject
     super.dispose();
     // remove child from stage
     this.mTileMap.stage?.removeChild(this.tilemap);
-    for (t in this.tileset)
-    {
-      t.dispose();
-    }
-    this.tileset = null;
-    for (l in this.layer)
-    {
-      l.dispose();
-    }
-    this.layer = null;
-    for (o in this.objectgroup)
-    {
-      o.dispose();
-    }
-    this.objectgroup = null;
-    for (i in this.imagelayer)
-    {
-      i.dispose();
-    }
-    this.imagelayer = null;
-    for (g in this.group)
-    {
-      g.dispose();
-    }
-    this.group = null;
+    // destroy all arrays
+    this.tileset = cast this.destroyArray(this.tileset);
+    this.layer = cast this.destroyArray(this.layer);
+    this.objectgroup = cast this.destroyArray(this.objectgroup);
+    this.imagelayer = cast this.destroyArray(this.imagelayer);
+    this.group = cast this.destroyArray(this.group);
+    // remove event listener
     this.mTileMap.removeEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage);
     this.mTileMap.removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    this.mTileMap.parent?.removeChild(this.mTileMap);
     this.mTileMap = null;
     this.mRenderObjects = null;
   }

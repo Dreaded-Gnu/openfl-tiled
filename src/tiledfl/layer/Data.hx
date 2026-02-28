@@ -113,17 +113,7 @@ class Data extends tiledfl.RootObject
   override public function dispose():Void
   {
     super.dispose();
-    // dispose tiles
-    for (t in this.tile)
-    {
-      t.dispose();
-    }
-    this.tile = null;
-    // dispose chunks
-    for (c in this.chunk)
-    {
-      c.dispose();
-    }
-    this.chunk = null;
+    this.tile = cast this.destroyArray(this.tile);
+    this.chunk = cast this.destroyArray(this.chunk);
   }
 }

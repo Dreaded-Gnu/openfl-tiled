@@ -52,15 +52,7 @@ class Wangset extends tiledfl.RootObject
   {
     super.dispose();
     this.properties?.dispose();
-    for (c in this.wangcolor)
-    {
-      c.dispose();
-    }
-    this.wangcolor = null;
-    for (t in this.wangtile)
-    {
-      t.dispose();
-    }
-    this.wangtile = null;
+    this.wangcolor = cast this.destroyArray(this.wangcolor);
+    this.wangtile = cast this.destroyArray(this.wangtile);
   }
 }

@@ -25,10 +25,6 @@ class TerrainTypes extends tiledfl.RootObject
   override public function dispose():Void
   {
     super.dispose();
-    for (t in this.terrain)
-    {
-      t.dispose();
-    }
-    this.terrain = null;
+    this.terrain = cast this.destroyArray(this.terrain);
   }
 }

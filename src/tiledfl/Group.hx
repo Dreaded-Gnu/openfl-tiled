@@ -309,26 +309,10 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
   override public function dispose():Void
   {
     super.dispose();
-    for (l in this.layer)
-    {
-      l.dispose();
-    }
-    this.layer = null;
-    for (o in this.objectgroup)
-    {
-      o.dispose();
-    }
-    this.objectgroup = null;
-    for (i in this.imagelayer)
-    {
-      i.dispose();
-    }
-    this.imagelayer = null;
-    for (g in this.group)
-    {
-      g.dispose();
-    }
-    this.group = null;
+    this.layer = cast this.destroyArray(this.layer);
+    this.objectgroup = cast this.destroyArray(this.objectgroup);
+    this.imagelayer = cast this.destroyArray(this.imagelayer);
+    this.group = cast this.destroyArray(this.group);
     this.mRenderObjects = null;
     this.mMap = null;
   }

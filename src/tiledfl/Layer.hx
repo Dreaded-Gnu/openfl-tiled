@@ -856,17 +856,19 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
     this.properties = null;
     this.data?.dispose();
     this.data = null;
-    for (gid in this.mTileCheckContainer.keys())
+    // destroy tile check container
+    var gidList:Iterator<Int> = this.mTileCheckContainer.keys();
+    for (gid in gidList)
     {
-      for (key in this.mTileCheckContainer.get(gid).keys())
+      var keyList:Iterator<Int> = this.mTileCheckContainer.get(gid).keys();
+      for (key in keyList)
       {
         var t = this.mTileCheckContainer.get(gid).get(key);
-        if (this.mMap.tilemap.contains(t))
-        {
-          this.mMap.tilemap.removeTile(t);
-        }
+        this.mMap.tilemap.removeTile(t);
         t.dispose();
+        this.mTileCheckContainer.get(gid).remove(key);
       }
+      this.mTileCheckContainer.remove(gid);
     }
     this.mTileCheckContainer = null;
     this.mMap = null;

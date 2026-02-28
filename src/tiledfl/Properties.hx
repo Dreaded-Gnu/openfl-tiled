@@ -58,10 +58,6 @@ class Properties extends tiledfl.RootObject
   override public function dispose():Void
   {
     super.dispose();
-    for (p in this.property)
-    {
-      p.dispose();
-    }
-    this.property = null;
+    this.property = cast this.destroyArray(this.property);
   }
 }

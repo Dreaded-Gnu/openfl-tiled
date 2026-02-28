@@ -25,10 +25,6 @@ class Wangsets extends tiledfl.RootObject
   override public function dispose():Void
   {
     super.dispose();
-    for (w in this.wangset)
-    {
-      w.dispose();
-    }
-    this.wangset = null;
+    this.wangset = cast this.destroyArray(this.wangset);
   }
 }

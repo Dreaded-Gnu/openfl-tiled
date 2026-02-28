@@ -404,6 +404,7 @@ class Tileset extends tiledfl.RootObject
     {
       var t:tiledfl.tileset.Tile = this.tile.get(tileId);
       t.dispose();
+      this.tile.remove(tileId);
     }
     this.tile = null;
   }
