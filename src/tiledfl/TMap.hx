@@ -25,7 +25,7 @@ import tiledfl.map.Orientation;
 @:allow(tiledfl.ImageLayer)
 @:allow(tiledfl.Layer)
 @:allow(tiledfl.Object)
-class Map extends tiledfl.RootObject
+class TMap extends tiledfl.RootObject
 {
   /**
    * Tilemap render offset factor

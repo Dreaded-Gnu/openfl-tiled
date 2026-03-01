@@ -95,7 +95,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
   public var text(default, null):Null<tiledfl.object.Text>;
 
   private var mTile:tiledfl.helper.AnimatedTile;
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
   private var mGid:Int;
   #if tiledfl_debug_render_object
   private var mShape:openfl.display.Shape;
@@ -107,7 +107,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * @param node xml representation to parse
    * @param map map this object belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     this.mMap = map;

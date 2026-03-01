@@ -1,8 +1,9 @@
 # ChangeLog
 
-## 0.3.1 (YYYY-MM-DD)
+## 0.4.0 (YYYY-MM-DD)
 
 * Fixed rendering gap for diamond shaped maps on left side
+* Renamed class Map to TMap
 
 ## 0.3.0 (2025-02-16)
 

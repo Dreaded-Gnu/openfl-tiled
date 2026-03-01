@@ -9,7 +9,7 @@ import openfl.geom.Rectangle;
  * @event complete Dispatched once image layer loading is completed
  */
 @:allow(tiledfl.Group)
-@:allow(tiledfl.Map)
+@:allow(tiledfl.TMap)
 class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
 {
   /**
@@ -102,14 +102,14 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
    */
   public var tile(default, null):Null<tiledfl.helper.AnimatedTile>;
 
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
 
   /**
    * Constructor
    * @param node xml representation to parse
    * @param map map the image lyer belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     // cache map

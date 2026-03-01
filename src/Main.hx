@@ -8,7 +8,7 @@ import openfl.ui.Keyboard;
 
 class Main extends Sprite
 {
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
   private var mPlayer:Sprite;
   private var mKeys:Map<Int, Bool> = [];
   private var mOffsetX:Float = 0;
@@ -24,15 +24,15 @@ class Main extends Sprite
   {
     super();
     // load map
-    // this.mMap = new tiledfl.Map("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    // this.mMap = new tiledfl.Map("tiled/rpg/", "tiled/rpg/island.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    // this.mMap = new tiledfl.Map("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    // this.mMap = new tiledfl.Map("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
-    this.mMap = new tiledfl.Map("tiled/isometric_grass_and_water/", "tiled/isometric_grass_and_water/isometric_grass_and_water.tmx", this.stage.stageWidth,
+    // this.mMap = new tiledfl.TMap("phaser/tmx/", "phaser/tmx/features test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new tiledfl.TMap("tiled/rpg/", "tiled/rpg/island.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new tiledfl.TMap("phaser/tmx", "phaser/tmx/collision test.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new tiledfl.TMap("tiled/desert_infinite/", "tiled/desert_infinite/desert_infinite.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    this.mMap = new tiledfl.TMap("tiled/isometric_grass_and_water/", "tiled/isometric_grass_and_water/isometric_grass_and_water.tmx", this.stage.stageWidth,
       this.stage.stageHeight);
     this.mMap.tilemap.scaleX = SCALE;
     this.mMap.tilemap.scaleY = SCALE;
-    // this.mMap = new tiledfl.Map("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
+    // this.mMap = new tiledfl.TMap("tiled/desert/", "tiled/desert/desert.tmx", this.stage.stageWidth, this.stage.stageHeight);
     // set complete event listener
     this.mMap.addEventListener(Event.COMPLETE, onMapLoadComplete);
     // set event listener

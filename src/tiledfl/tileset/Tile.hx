@@ -6,7 +6,7 @@ import openfl.geom.Rectangle;
 /**
  * Tiled tile representation
  */
-@:allow(tiledfl.Map)
+@:allow(tiledfl.TMap)
 @:allow(tiledfl.Tileset)
 class Tile extends tiledfl.RootObject
 {
@@ -75,14 +75,14 @@ class Tile extends tiledfl.RootObject
    */
   public var tileset(default, null):Null<openfl.display.Tileset>;
 
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
 
   /**
    * Constructor
    * @param node xml representation to parse
    * @param map map the tile belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     this.mMap = map;

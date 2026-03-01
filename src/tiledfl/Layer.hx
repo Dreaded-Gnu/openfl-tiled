@@ -88,8 +88,8 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    */
   public var data(default, null):Null<tiledfl.layer.Data>;
 
-  private var mTileCheckContainer:std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>;
-  private var mMap:tiledfl.Map;
+  private var mTileCheckContainer:Map<Int, Map<Int, tiledfl.helper.AnimatedTile>>;
+  private var mMap:tiledfl.TMap;
 
   /**
    * Constructor
@@ -97,11 +97,11 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param map map this layer belongs to
    * @param layerId layer id
    */
-  public function new(node:Xml, map:tiledfl.Map, layerId:Int)
+  public function new(node:Xml, map:tiledfl.TMap, layerId:Int)
   {
     super();
     this.mMap = map;
-    this.mTileCheckContainer = new std.Map<Int, std.Map<Int, tiledfl.helper.AnimatedTile>>();
+    this.mTileCheckContainer = new Map<Int, Map<Int, tiledfl.helper.AnimatedTile>>();
     // parse stuff
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : layerId;
     this.name = node.get("name");
@@ -235,7 +235,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
       t.realX -= offsetX;
       t.realY -= offsetY;
       // get tile container for checking
-      var map:std.Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
+      var map:Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
       if (!map.exists(mapIndex))
       {
@@ -304,11 +304,11 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
     {
       if (chunkIndex != -1)
       {
-        this.mTileCheckContainer.set(chunkIndex, new std.Map<Int, tiledfl.helper.AnimatedTile>());
+        this.mTileCheckContainer.set(chunkIndex, new Map<Int, tiledfl.helper.AnimatedTile>());
       }
       else
       {
-        this.mTileCheckContainer.set(tileset.firstgid, new std.Map<Int, tiledfl.helper.AnimatedTile>());
+        this.mTileCheckContainer.set(tileset.firstgid, new Map<Int, tiledfl.helper.AnimatedTile>());
       }
     }
     var ts:openfl.display.Tileset = tileset.tileset;
@@ -319,7 +319,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
     }
     var layerTile:tiledfl.layer.Tile = chunk != null ? chunk.tile[id] : this.data.tile[id];
     // get tile container for checking
-    var map:std.Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
+    var map:Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
     // generate tile
     var t:tiledfl.helper.AnimatedTile = null;
     switch (this.mMap.orientation)

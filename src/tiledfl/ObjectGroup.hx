@@ -95,14 +95,14 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
    */
   public var object(default, null):Array<tiledfl.Object>;
 
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
 
   /**
    * Constructor
    * @param node xml representation to be parsed
    * @param map map this object group belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     this.mMap = map;

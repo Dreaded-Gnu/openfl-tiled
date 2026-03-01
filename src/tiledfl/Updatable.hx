@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Updatable interface used for updatable/displayable objects
  */
-@:allow(tiledfl.Map)
+@:allow(tiledfl.TMap)
 interface Updatable
 {
   /**

@@ -25,12 +25,12 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
   /**
    * Map this animated tile belongs to
    */
-  public var map(get, set):tiledfl.Map;
+  public var map(get, set):tiledfl.TMap;
 
   private var mAnimation:tiledfl.tileset.Animation;
   private var mCurrentAnimation:Int;
   private var mMaxAnimation:Int;
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
   private var mPreviousTime:Float;
   private var mDuration:Float;
   private var mDisposed:Bool;
@@ -46,7 +46,7 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
    * @param animation animation data
    * @param map map instance
    */
-  public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:tiledfl.tileset.Animation, map:tiledfl.Map)
+  public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:tiledfl.tileset.Animation, map:tiledfl.TMap)
   {
     super(id, x, y, scaleX, scaleY, rotation);
     // save animation and prepare max animation
@@ -194,18 +194,18 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
   /**
    * Map setter
    * @param map
-   * @return tiledfl.Map
+   * @return tiledfl.TMap
    */
-  private function set_map(map:tiledfl.Map):tiledfl.Map
+  private function set_map(map:tiledfl.TMap):tiledfl.TMap
   {
     return this.mMap = map;
   }
 
   /**
    * Map getter
-   * @return tiledfl.Map
+   * @return tiledfl.TMap
    */
-  private function get_map():tiledfl.Map
+  private function get_map():tiledfl.TMap
   {
     return this.mMap;
   }

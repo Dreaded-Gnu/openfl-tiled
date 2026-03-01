@@ -17,7 +17,7 @@ import openfl.geom.Point;
  * @event complete Dispatched once image layer loading is completed
  */
 @:allow(tiledfl.ImageLayer)
-@:allow(tiledfl.Map)
+@:allow(tiledfl.TMap)
 @:allow(tiledfl.Tileset)
 @:allow(tiledfl.tileset.Tile)
 class Image extends tiledfl.RootObject
@@ -58,14 +58,14 @@ class Image extends tiledfl.RootObject
   public var bitmap(default, null):Bitmap;
 
   private var mTransSet:Bool;
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
 
   /**
    * Constructor
    * @param node representation to parse
    * @param map map object this new instance belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     // cache map

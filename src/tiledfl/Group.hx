@@ -7,7 +7,7 @@ import openfl.events.Event;
  *
  * @event complete Dispatched once group loading is completed
  */
-@:allow(tiledfl.Map)
+@:allow(tiledfl.TMap)
 class Group extends tiledfl.RootObject implements tiledfl.Updatable
 {
   /**
@@ -75,7 +75,7 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
    */
   public var group(default, null):Array<tiledfl.Group>;
 
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
   private var mRenderObjects:Array<tiledfl.Updatable>;
   private var mImageLayerLoaded:Bool;
   private var mGroupLoaded:Bool;
@@ -85,7 +85,7 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
    * @param node xml representation to parse
    * @param map map this group belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     // cache map

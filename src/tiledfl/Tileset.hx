@@ -19,7 +19,7 @@ import tiledfl.tileset.ObjectAlignment;
  */
 @:allow(tiledfl.helper.AnimatedTile)
 @:allow(tiledfl.Layer)
-@:allow(tiledfl.Map)
+@:allow(tiledfl.TMap)
 @:allow(tiledfl.Object)
 class Tileset extends tiledfl.RootObject
 {
@@ -126,7 +126,7 @@ class Tileset extends tiledfl.RootObject
   /**
    * Map of tiles
    */
-  public var tile(default, null):std.Map<Int, tiledfl.tileset.Tile>;
+  public var tile(default, null):Map<Int, tiledfl.tileset.Tile>;
 
   /**
    * Openfl tileset created
@@ -135,14 +135,14 @@ class Tileset extends tiledfl.RootObject
 
   private var mSourceLoaded:Bool = false;
   private var mTileLoaded:Bool = false;
-  private var mMap:tiledfl.Map;
+  private var mMap:tiledfl.TMap;
 
   /**
    * Constructor
    * @param node xml representation to parse
    * @param map map the tileset belongs to
    */
-  public function new(node:Xml, map:tiledfl.Map)
+  public function new(node:Xml, map:tiledfl.TMap)
   {
     super();
     // cache map
@@ -211,7 +211,7 @@ class Tileset extends tiledfl.RootObject
     }
 
     // initialize arrays
-    this.tile = new std.Map<Int, tiledfl.tileset.Tile>();
+    this.tile = new Map<Int, tiledfl.tileset.Tile>();
     // loop through children
     for (child in node)
     {
