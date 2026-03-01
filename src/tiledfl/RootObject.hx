@@ -42,9 +42,9 @@ class RootObject extends EventDispatcher implements Disposable
    */
   private function destroy(a:Dynamic):Void
   {
-    if (Std.isOfType(a, RootObject))
+    if (Std.isOfType(a, Disposable))
     {
-      cast(a, RootObject).dispose();
+      cast(a, Disposable).dispose();
     }
     else if (Std.isOfType(a, Array))
     {
