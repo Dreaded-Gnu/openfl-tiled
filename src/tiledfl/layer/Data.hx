@@ -2,11 +2,13 @@ package tiledfl.layer;
 
 import openfl.errors.Error;
 import openfl.utils.ByteArray;
+import tiledfl.layer.Chunk;
+import tiledfl.layer.Tile;
 
 /**
  * Layer data handling
  */
-class Data extends tiledfl.RootObject
+class Data extends RootObject
 {
   /**
    * Used encoding of data
@@ -21,12 +23,12 @@ class Data extends tiledfl.RootObject
   /**
    * Array of tiles represented in data
    */
-  public var tile(default, null):Array<tiledfl.layer.Tile>;
+  public var tile(default, null):Array<Tile>;
 
   /**
    * Array of chunks represented in data
    */
-  public var chunk(default, null):Array<tiledfl.layer.Chunk>;
+  public var chunk(default, null):Array<Chunk>;
 
   /**
    * Constructor
@@ -39,8 +41,8 @@ class Data extends tiledfl.RootObject
     this.encoding = node.get("encoding");
     this.compression = node.get("compression");
 
-    this.tile = new Array<tiledfl.layer.Tile>();
-    this.chunk = new Array<tiledfl.layer.Chunk>();
+    this.tile = new Array<Tile>();
+    this.chunk = new Array<Chunk>();
 
     for (child in node)
     {
@@ -51,9 +53,9 @@ class Data extends tiledfl.RootObject
       switch (child.nodeName)
       {
         case "chunk":
-          this.chunk.push(new tiledfl.layer.Chunk(child, this));
+          this.chunk.push(new Chunk(child, this));
         case "tile":
-          this.tile.push(new tiledfl.layer.Tile(Std.parseInt(child.get("gid"))));
+          this.tile.push(new Tile(Std.parseInt(child.get("gid"))));
       }
     }
 
@@ -80,7 +82,7 @@ class Data extends tiledfl.RootObject
               // read tiles and push them
               while (data.position < data.length)
               {
-                this.tile.push(new tiledfl.layer.Tile(data.readInt()));
+                this.tile.push(new Tile(data.readInt()));
               }
             case "zstd":
               throw new Error("zstd compression not supported");
@@ -92,14 +94,14 @@ class Data extends tiledfl.RootObject
               // read tiles and push them
               while (data.position < data.length)
               {
-                this.tile.push(new tiledfl.layer.Tile(data.readInt()));
+                this.tile.push(new Tile(data.readInt()));
               }
           }
         case "csv":
           var tileIndexList:Array<Int> = Helper.csvToArray(chunk);
           for (tileId in tileIndexList)
           {
-            this.tile.push(new tiledfl.layer.Tile(tileId));
+            this.tile.push(new Tile(tileId));
           }
         default:
           throw new Error("no encoding not supported");

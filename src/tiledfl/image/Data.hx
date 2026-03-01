@@ -6,7 +6,7 @@ import openfl.utils.ByteArray;
 /**
  * Image data handling
  */
-class Data extends tiledfl.RootObject
+class Data extends RootObject
 {
   /**
    * Used encoding of data

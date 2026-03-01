@@ -3,6 +3,8 @@ package tiledfl;
 import haxe.Int64;
 import haxe.io.Path;
 import openfl.utils.ByteArray;
+import tiledfl.helper.AnimatedTile;
+import tiledfl.helper.Flippable;
 
 /**
  * Class with some helpers
@@ -158,7 +160,7 @@ class Helper
    * @param flippable Flippable implementation
    * @param tileset tileset
    */
-  public static function applyTileFlipping(map:tiledfl.TMap, t:tiledfl.helper.AnimatedTile, flippable:tiledfl.helper.Flippable, tileset:tiledfl.Tileset):Void
+  public static function applyTileFlipping(map:TMap, t:AnimatedTile, flippable:Flippable, tileset:Tileset):Void
   {
     var x:Float = t.x;
     var y:Float = t.y;

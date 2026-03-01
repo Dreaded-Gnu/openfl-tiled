@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Wang tile representation
  */
-class Wangtile extends tiledfl.RootObject
+class Wangtile extends RootObject
 {
   /**
    * Tile id

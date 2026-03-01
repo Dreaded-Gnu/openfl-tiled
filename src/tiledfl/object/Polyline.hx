@@ -5,21 +5,21 @@ import openfl.geom.Point;
 /**
  * Tiled poly line object
  */
-class Polyline extends tiledfl.RootObject
+class Polyline extends RootObject
 {
   /**
    * Array of points of the polyline
    */
   public var points(default, null):Array<openfl.geom.Point>;
 
-  private var mObject:tiledfl.Object;
+  private var mObject:Object;
 
   /**
    * Constructor
    * @param node node data to parse
    * @param object object instance this object belongs to
    */
-  public function new(node:Xml, object:tiledfl.Object)
+  public function new(node:Xml, object:Object)
   {
     super();
     this.mObject = object;

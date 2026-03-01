@@ -1,16 +1,18 @@
 package tiledfl.helper;
 
 import openfl.events.Event;
+import tiledfl.tileset.Animation;
+import tiledfl.tileset.Tile;
 
 /**
  * Animated tile implementation extending openfl.display.Tile
  */
-class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
+class AnimatedTile extends openfl.display.Tile implements Disposable
 {
   /**
    * Animation data used for this tile
    */
-  public var animation(get, set):Null<tiledfl.tileset.Animation>;
+  public var animation(get, set):Null<Animation>;
 
   /**
    * Real x value which might differ to x because of possible tile flipping
@@ -25,12 +27,12 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
   /**
    * Map this animated tile belongs to
    */
-  public var map(get, set):tiledfl.TMap;
+  public var map(get, set):TMap;
 
-  private var mAnimation:tiledfl.tileset.Animation;
+  private var mAnimation:Animation;
   private var mCurrentAnimation:Int;
   private var mMaxAnimation:Int;
-  private var mMap:tiledfl.TMap;
+  private var mMap:TMap;
   private var mPreviousTime:Float;
   private var mDuration:Float;
   private var mDisposed:Bool;
@@ -46,7 +48,7 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
    * @param animation animation data
    * @param map map instance
    */
-  public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:tiledfl.tileset.Animation, map:tiledfl.TMap)
+  public function new(id:Int, x:Float, y:Float, scaleX:Float, scaleY:Float, rotation:Float, animation:Animation, map:TMap)
   {
     super(id, x, y, scaleX, scaleY, rotation);
     // save animation and prepare max animation
@@ -96,14 +98,14 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
     // set id correctly
     id = this.mAnimation.frame[mCurrentAnimation].tileid;
     // get tileset by id
-    var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(id);
+    var tileset:Tileset = this.mMap.tilesetByGid(id);
     // handle null
     if (tileset == null)
     {
       return;
     }
     // get tile of tileset by id
-    var tile:tiledfl.tileset.Tile = tileset.getTileByGid(id);
+    var tile:Tile = tileset.getTileByGid(id);
     // handle null
     if (tileset == null)
     {
@@ -169,9 +171,9 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
   /**
    * Animation setter
    * @param animation
-   * @return tiledfl.tileset.Animation
+   * @return Animation
    */
-  private function set_animation(animation:tiledfl.tileset.Animation):tiledfl.tileset.Animation
+  private function set_animation(animation:Animation):Animation
   {
     this.mAnimation = animation;
     this.mMaxAnimation = animation != null ? animation.frame.length : 0;
@@ -184,9 +186,9 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
 
   /**
    * Animation getter
-   * @return tiledfl.tileset.Animation
+   * @return Animation
    */
-  private function get_animation():tiledfl.tileset.Animation
+  private function get_animation():Animation
   {
     return this.mAnimation;
   }
@@ -194,18 +196,18 @@ class AnimatedTile extends openfl.display.Tile implements tiledfl.Disposable
   /**
    * Map setter
    * @param map
-   * @return tiledfl.TMap
+   * @return TMap
    */
-  private function set_map(map:tiledfl.TMap):tiledfl.TMap
+  private function set_map(map:TMap):TMap
   {
     return this.mMap = map;
   }
 
   /**
    * Map getter
-   * @return tiledfl.TMap
+   * @return TMap
    */
-  private function get_map():tiledfl.TMap
+  private function get_map():TMap
   {
     return this.mMap;
   }

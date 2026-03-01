@@ -5,21 +5,21 @@ import openfl.geom.Point;
 /**
  * Tiled polygon object
  */
-class Polygon extends tiledfl.RootObject
+class Polygon extends RootObject
 {
   /**
    * Array of points of the polygon
    */
   public var points(default, null):Array<Point>;
 
-  private var mObject:tiledfl.Object;
+  private var mObject:Object;
 
   /**
    * Constructor
    * @param node node data to parse
    * @param object object instance this object belongs to
    */
-  public function new(node:Xml, object:tiledfl.Object)
+  public function new(node:Xml, object:Object)
   {
     super();
     this.mObject = object;

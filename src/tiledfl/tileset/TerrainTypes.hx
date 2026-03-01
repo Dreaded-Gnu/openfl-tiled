@@ -3,12 +3,12 @@ package tiledfl.tileset;
 /**
  * Terrain types representation
  */
-class TerrainTypes extends tiledfl.RootObject
+class TerrainTypes extends RootObject
 {
   /**
    * Array of terrain elements
    */
-  public var terrain(default, null):Array<tiledfl.tileset.Terrain>;
+  public var terrain(default, null):Array<Terrain>;
 
   /**
    * Constructor
@@ -16,7 +16,7 @@ class TerrainTypes extends tiledfl.RootObject
   public function new()
   {
     super();
-    this.terrain = new Array<tiledfl.tileset.Terrain>();
+    this.terrain = new Array<Terrain>();
   }
 
   /**

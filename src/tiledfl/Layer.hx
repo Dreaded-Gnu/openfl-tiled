@@ -1,12 +1,18 @@
 package tiledfl;
 
 import openfl.errors.Error;
+import tiledfl.Helper;
+import tiledfl.helper.AnimatedTile;
+import tiledfl.layer.Chunk;
+import tiledfl.layer.Data;
+import tiledfl.layer.Tile as LayerTile;
 import tiledfl.map.RenderOrder;
+import tiledfl.tileset.Tile as TilesetTile;
 
 /**
  * Layer representation
  */
-class Layer extends tiledfl.RootObject implements tiledfl.Updatable
+class Layer extends RootObject implements Updatable
 {
   /**
    * Id
@@ -81,15 +87,15 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
   /**
    * Layer properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Embedded layer data
    */
-  public var data(default, null):Null<tiledfl.layer.Data>;
+  public var data(default, null):Null<Data>;
 
-  private var mTileCheckContainer:Map<Int, Map<Int, tiledfl.helper.AnimatedTile>>;
-  private var mMap:tiledfl.TMap;
+  private var mTileCheckContainer:Map<Int, Map<Int, AnimatedTile>>;
+  private var mMap:TMap;
 
   /**
    * Constructor
@@ -97,11 +103,11 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param map map this layer belongs to
    * @param layerId layer id
    */
-  public function new(node:Xml, map:tiledfl.TMap, layerId:Int)
+  public function new(node:Xml, map:TMap, layerId:Int)
   {
     super();
     this.mMap = map;
-    this.mTileCheckContainer = new Map<Int, Map<Int, tiledfl.helper.AnimatedTile>>();
+    this.mTileCheckContainer = new Map<Int, Map<Int, AnimatedTile>>();
     // parse stuff
     this.id = node.exists("id") ? Std.parseInt(node.get("id")) : layerId;
     this.name = node.get("name");
@@ -128,9 +134,9 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
       switch (child.nodeName)
       {
         case "data":
-          this.data = new tiledfl.layer.Data(child);
+          this.data = new Data(child);
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
       }
     }
   }
@@ -155,13 +161,13 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
       return 0;
     }
     // get tileset
-    var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+    var tileset:Tileset = this.mMap.tilesetByGid(gid);
     if (null == tileset)
     {
       return 0;
     }
     // generate tile
-    var t:tiledfl.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, id);
+    var t:AnimatedTile = this.generateTile(x, y, id, gid, tileset, id);
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
     // adjust x and y of tile by offset
@@ -199,7 +205,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param chunkIndex
    * @return Void
    */
-  private function renderChunk(chunk:tiledfl.layer.Chunk, chunkIndex:Int, offsetX:Float, offsetY:Float, mapIndex:Int, index:Int):Int
+  private function renderChunk(chunk:Chunk, chunkIndex:Int, offsetX:Float, offsetY:Float, mapIndex:Int, index:Int):Int
   {
     // calculate max to iterate to
     var max:Int = Std.int(chunk.width * chunk.height);
@@ -222,20 +228,20 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         continue;
       }
       // get tileset
-      var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+      var tileset:Tileset = this.mMap.tilesetByGid(gid);
       if (null == tileset)
       {
         continue;
       }
       // generate tile
-      var t:tiledfl.helper.AnimatedTile = this.generateTile(x, y, id, gid, tileset, mapIndex, chunk, chunkIndex);
+      var t:AnimatedTile = this.generateTile(x, y, id, gid, tileset, mapIndex, chunk, chunkIndex);
       // apply offset
       t.x -= offsetX;
       t.y -= offsetY;
       t.realX -= offsetX;
       t.realY -= offsetY;
       // get tile container for checking
-      var map:Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
+      var map:Map<Int, AnimatedTile> = this.mTileCheckContainer.get(chunkIndex);
       // add tile at position
       if (!map.exists(mapIndex))
       {
@@ -277,10 +283,10 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * @param mapIndex
    * @param chunk
    * @param chunkIndex
-   * @return tiledfl.helper.AnimatedTile
+   * @return AnimatedTile
    */
-  private function generateTile(x:Float, y:Float, id:Int, gid:Int, tileset:tiledfl.Tileset, mapIndex:Int, chunk:tiledfl.layer.Chunk = null,
-      chunkIndex:Int = -1):tiledfl.helper.AnimatedTile
+  private function generateTile(x:Float, y:Float, id:Int, gid:Int, tileset:Tileset, mapIndex:Int, chunk:Chunk = null,
+      chunkIndex:Int = -1):AnimatedTile
   {
     // subtract first gid from tileset
     gid -= tileset.firstgid;
@@ -304,24 +310,24 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
     {
       if (chunkIndex != -1)
       {
-        this.mTileCheckContainer.set(chunkIndex, new Map<Int, tiledfl.helper.AnimatedTile>());
+        this.mTileCheckContainer.set(chunkIndex, new Map<Int, AnimatedTile>());
       }
       else
       {
-        this.mTileCheckContainer.set(tileset.firstgid, new Map<Int, tiledfl.helper.AnimatedTile>());
+        this.mTileCheckContainer.set(tileset.firstgid, new Map<Int, AnimatedTile>());
       }
     }
     var ts:openfl.display.Tileset = tileset.tileset;
-    var tile:tiledfl.tileset.Tile = tileset.getTileByGid(gid);
+    var tile:TilesetTile = tileset.getTileByGid(gid);
     if (tile?.tileset != null)
     {
       ts = tile.tileset;
     }
-    var layerTile:tiledfl.layer.Tile = chunk != null ? chunk.tile[id] : this.data.tile[id];
+    var layerTile:LayerTile = chunk != null ? chunk.tile[id] : this.data.tile[id];
     // get tile container for checking
-    var map:Map<Int, tiledfl.helper.AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
+    var map:Map<Int, AnimatedTile> = this.mTileCheckContainer.get(chunkIndex != -1 ? chunkIndex : tileset.firstgid);
     // generate tile
-    var t:tiledfl.helper.AnimatedTile = null;
+    var t:AnimatedTile = null;
     switch (this.mMap.orientation)
     {
       case MapOrientationIsometric, MapOrientationStaggered:
@@ -340,16 +346,16 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
           t.animation = tileset.tile[gid]?.animation;
           t.map = this.mMap;
           // apply flipping
-          tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
+          Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         else
         {
-          t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1, 1, 0,
+          t = new AnimatedTile(tile?.tileset != null ? 0 : gid, (x - y) * (tileset.tilewidth / 2), (x + y) * (tileset.tileheight / 2), 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping
-          tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
+          Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (this.mMap.orientation == MapOrientationStaggered)
         {
@@ -433,16 +439,16 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
           t.animation = tileset.tile[gid]?.animation;
           t.map = this.mMap;
           // apply flipping
-          tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
+          Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         else
         {
-          t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
+          t = new AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping
-          tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
+          Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (tile?.tileset != null)
         {
@@ -485,16 +491,16 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
           t.animation = tileset.tile[gid]?.animation;
           t.map = this.mMap;
           // apply flipping
-          tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
+          Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         else
         {
-          t = new tiledfl.helper.AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
+          t = new AnimatedTile(tile?.tileset != null ? 0 : gid, x * this.mMap.tilewidth, y * this.mMap.tileheight, 1, 1, 0,
             tileset.tile[gid]?.animation, this.mMap);
           // set tileset
           t.tileset = ts;
           // apply flipping
-          tiledfl.Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
+          Helper.applyTileFlipping(this.mMap, t, layerTile, tileset);
         }
         if (this.mMap.staggeraxis == MapStaggerAxisY)
         {
@@ -620,7 +626,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         return 0;
       }
       // get tileset
-      var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+      var tileset:Tileset = this.mMap.tilesetByGid(gid);
       if (null == tileset)
       {
         return 0;
@@ -650,7 +656,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         return 0;
       }
       // get tileset
-      var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+      var tileset:Tileset = this.mMap.tilesetByGid(gid);
       if (null == tileset)
       {
         return 0;
@@ -665,9 +671,9 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
    * Helper to get tile at x/y coordinate
    * @param x
    * @param y
-   * @return tiledfl.tileset.Tile
+   * @return TilesetTile
    */
-  private function getTileAt(x:Float, y:Float):Null<tiledfl.tileset.Tile>
+  private function getTileAt(x:Float, y:Float):Null<TilesetTile>
   {
     // handle non infinite maps
     if (this.mMap.infinite != 1)
@@ -686,7 +692,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         return null;
       }
       // get tileset
-      var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+      var tileset:Tileset = this.mMap.tilesetByGid(gid);
       if (null == tileset)
       {
         return null;
@@ -719,7 +725,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
         return null;
       }
       // get tileset
-      var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+      var tileset:Tileset = this.mMap.tilesetByGid(gid);
       if (null == tileset)
       {
         return null;
@@ -748,7 +754,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
       return false;
     }
     // array of tiles
-    var tiles:Array<tiledfl.tileset.Tile> = new Array<tiledfl.tileset.Tile>();
+    var tiles:Array<TilesetTile> = new Array<TilesetTile>();
     var tileId:Array<Int> = new Array<Int>();
     // apply rendering offset for collision check
     x += this.mMap.renderOffsetX;
@@ -761,7 +767,7 @@ class Layer extends tiledfl.RootObject implements tiledfl.Updatable
       var tx:Int = Std.int(i % width);
       var ty:Int = Std.int(i / height);
       // get tile at x/y coordinate
-      var tile:tiledfl.tileset.Tile = this.getTileAt(x + tx, y + ty);
+      var tile:TilesetTile = this.getTileAt(x + tx, y + ty);
       var id:Int = this.getTileGidAt(x + tx, y + ty);
       // push tile if not null and not yet existing
       if (tile != null && -1 == Lambda.indexOf(tiles, tile))

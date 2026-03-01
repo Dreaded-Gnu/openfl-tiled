@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Wang color representation
  */
-class Wangcolor extends tiledfl.RootObject
+class Wangcolor extends RootObject
 {
   /**
    * Name

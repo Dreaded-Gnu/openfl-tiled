@@ -9,8 +9,14 @@ import openfl.net.URLRequest;
 import openfl.net.URLLoader;
 import tiledfl.map.Orientation;
 import tiledfl.tileset.FillMode;
+import tiledfl.tileset.Grid;
+import tiledfl.tileset.TerrainTypes;
+import tiledfl.tileset.Tile;
+import tiledfl.tileset.TileOffset;
 import tiledfl.tileset.TileRenderSize;
 import tiledfl.tileset.ObjectAlignment;
+import tiledfl.tileset.Transformations;
+import tiledfl.tileset.Wangsets;
 
 /**
  * Representation of tiled tileset object
@@ -21,7 +27,7 @@ import tiledfl.tileset.ObjectAlignment;
 @:allow(tiledfl.Layer)
 @:allow(tiledfl.TMap)
 @:allow(tiledfl.Object)
-class Tileset extends tiledfl.RootObject
+class Tileset extends RootObject
 {
   /**
    * First gid
@@ -91,42 +97,42 @@ class Tileset extends tiledfl.RootObject
   /**
    * Tileset image
    */
-  public var image(default, null):Null<tiledfl.Image>;
+  public var image(default, null):Null<Image>;
 
   /**
    * Tileset offset
    */
-  public var tileoffset(default, null):Null<tiledfl.tileset.TileOffset>;
+  public var tileoffset(default, null):Null<TileOffset>;
 
   /**
    * Grid
    */
-  public var grid(default, null):Null<tiledfl.tileset.Grid>;
+  public var grid(default, null):Null<Grid>;
 
   /**
    * Properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Terrain types
    */
-  public var terraintypes(default, null):Null<tiledfl.tileset.TerrainTypes>;
+  public var terraintypes(default, null):Null<TerrainTypes>;
 
   /**
    * Wangset
    */
-  public var wangset(default, null):Null<tiledfl.tileset.Wangsets>;
+  public var wangset(default, null):Null<Wangsets>;
 
   /**
    * Transformations
    */
-  public var transformations(default, null):Null<tiledfl.tileset.Transformations>;
+  public var transformations(default, null):Null<Transformations>;
 
   /**
    * Map of tiles
    */
-  public var tile(default, null):Map<Int, tiledfl.tileset.Tile>;
+  public var tile(default, null):Map<Int, Tile>;
 
   /**
    * Openfl tileset created
@@ -135,14 +141,14 @@ class Tileset extends tiledfl.RootObject
 
   private var mSourceLoaded:Bool = false;
   private var mTileLoaded:Bool = false;
-  private var mMap:tiledfl.TMap;
+  private var mMap:TMap;
 
   /**
    * Constructor
    * @param node xml representation to parse
    * @param map map the tileset belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     // cache map
@@ -211,7 +217,7 @@ class Tileset extends tiledfl.RootObject
     }
 
     // initialize arrays
-    this.tile = new Map<Int, tiledfl.tileset.Tile>();
+    this.tile = new Map<Int, Tile>();
     // loop through children
     for (child in node)
     {
@@ -223,15 +229,15 @@ class Tileset extends tiledfl.RootObject
       switch (child.nodeName)
       {
         case "image":
-          this.image = new tiledfl.Image(child, this.mMap);
+          this.image = new Image(child, this.mMap);
         case "tile":
-          this.tile.set(Std.parseInt(child.get("id")), new tiledfl.tileset.Tile(child, this.mMap));
+          this.tile.set(Std.parseInt(child.get("id")), new Tile(child, this.mMap));
         case "tileoffset":
-          this.tileoffset = new tiledfl.tileset.TileOffset(child);
+          this.tileoffset = new TileOffset(child);
         case "grid":
-          this.grid = new tiledfl.tileset.Grid(child);
+          this.grid = new Grid(child);
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
         case "terraintypes":
         case "wangset":
         case "transformations":
@@ -240,16 +246,16 @@ class Tileset extends tiledfl.RootObject
 
     if (this.tileoffset == null)
     {
-      this.tileoffset = new tiledfl.tileset.TileOffset(null);
+      this.tileoffset = new TileOffset(null);
     }
   }
 
   /**
    * Helper to get tile by gid
    * @param gid
-   * @return tiledfl.tileset.Tile
+   * @return Tile
    */
-  private function getTileByGid(gid:Int):Null<tiledfl.tileset.Tile>
+  private function getTileByGid(gid:Int):Null<Tile>
   {
     if (this.isDisposed())
     {
@@ -302,7 +308,7 @@ class Tileset extends tiledfl.RootObject
     }
     else if (!this.mTileLoaded)
     {
-      var tmpTile:Array<tiledfl.tileset.Tile> = new Array<tiledfl.tileset.Tile>();
+      var tmpTile:Array<Tile> = new Array<Tile>();
       for (tile in this.tile)
       {
         tmpTile.push(tile);
@@ -402,7 +408,7 @@ class Tileset extends tiledfl.RootObject
     this.tileset = null;
     for (tileId in this.tile.keys())
     {
-      var t:tiledfl.tileset.Tile = this.tile.get(tileId);
+      var t:Tile = this.tile.get(tileId);
       t.dispose();
       this.tile.remove(tileId);
     }

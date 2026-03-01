@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Tileset animation class
  */
-class Animation extends tiledfl.RootObject
+class Animation extends RootObject
 {
   /**
    * Array of frames of the animation

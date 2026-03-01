@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Frame representation
  */
-class Frame extends tiledfl.RootObject
+class Frame extends RootObject
 {
   /**
    * Tile id of the frame

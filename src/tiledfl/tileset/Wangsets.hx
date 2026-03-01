@@ -3,12 +3,12 @@ package tiledfl.tileset;
 /**
  * Wangsets representation
  */
-class Wangsets extends tiledfl.RootObject
+class Wangsets extends RootObject
 {
   /**
    * Array of wangsets
    */
-  public var wangset(default, null):Array<tiledfl.tileset.Wangset>;
+  public var wangset(default, null):Array<Wangset>;
 
   /**
    * Constructor
@@ -16,7 +16,7 @@ class Wangsets extends tiledfl.RootObject
   public function new()
   {
     super();
-    this.wangset = new Array<tiledfl.tileset.Wangset>();
+    this.wangset = new Array<Wangset>();
   }
 
   /**

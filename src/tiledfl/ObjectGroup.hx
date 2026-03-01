@@ -1,9 +1,11 @@
 package tiledfl;
 
+import tiledfl.objectgroup.DrawOrder;
+
 /**
  * Group of objects
  */
-class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
+class ObjectGroup extends RootObject implements Updatable
 {
   /**
    * ID
@@ -83,26 +85,26 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
   /**
    * Draw order
    */
-  public var draworder(default, null):tiledfl.objectgroup.DrawOrder;
+  public var draworder(default, null):DrawOrder;
 
   /**
    * Object group properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Objects within object group
    */
-  public var object(default, null):Array<tiledfl.Object>;
+  public var object(default, null):Array<Object>;
 
-  private var mMap:tiledfl.TMap;
+  private var mMap:TMap;
 
   /**
    * Constructor
    * @param node xml representation to be parsed
    * @param map map this object group belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     this.mMap = map;
@@ -133,7 +135,7 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
         this.draworder = ObjectGroupDrawOrderTopDown;
     }
 
-    this.object = new Array<tiledfl.Object>();
+    this.object = new Array<Object>();
 
     for (child in node)
     {
@@ -145,9 +147,9 @@ class ObjectGroup extends tiledfl.RootObject implements tiledfl.Updatable
       switch (child.nodeName)
       {
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
         case "object":
-          this.object.push(new tiledfl.Object(child, mMap));
+          this.object.push(new Object(child, mMap));
       }
     }
   }

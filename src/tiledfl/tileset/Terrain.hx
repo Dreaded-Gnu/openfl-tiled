@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Tiled terrain object
  */
-class Terrain extends tiledfl.RootObject
+class Terrain extends RootObject
 {
   /**
    * Terrain name

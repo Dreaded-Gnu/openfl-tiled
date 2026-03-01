@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Transformations representation
  */
-class Transformations extends tiledfl.RootObject
+class Transformations extends RootObject
 {
   /**
    * Horizontally flipped

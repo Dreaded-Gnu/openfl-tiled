@@ -1,16 +1,17 @@
 package tiledfl.tileset;
 
 import openfl.errors.Error;
+import tiledfl.map.Orientation;
 
 /**
  * Grid representation
  */
-class Grid extends tiledfl.RootObject
+class Grid extends RootObject
 {
   /**
    * Orientation of the grid
    */
-  public var orientation(default, null):tiledfl.map.Orientation;
+  public var orientation(default, null):Orientation;
 
   /**
    * Grid width
@@ -33,9 +34,9 @@ class Grid extends tiledfl.RootObject
     switch (o)
     {
       case "orthogonal":
-        this.orientation = tiledfl.map.Orientation.MapOrientationOrthogonal;
+        this.orientation = Orientation.MapOrientationOrthogonal;
       case "isometric":
-        this.orientation = tiledfl.map.Orientation.MapOrientationIsometric;
+        this.orientation = Orientation.MapOrientationIsometric;
       default:
         throw new Error("Unsupported orientation for grid");
     }

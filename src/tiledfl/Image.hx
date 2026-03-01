@@ -10,6 +10,7 @@ import openfl.errors.Error;
 #end
 import openfl.events.Event;
 import openfl.geom.Point;
+import tiledfl.image.Data;
 
 /**
  * Image representation
@@ -20,7 +21,7 @@ import openfl.geom.Point;
 @:allow(tiledfl.TMap)
 @:allow(tiledfl.Tileset)
 @:allow(tiledfl.tileset.Tile)
-class Image extends tiledfl.RootObject
+class Image extends RootObject
 {
   /**
    * Format
@@ -50,7 +51,7 @@ class Image extends tiledfl.RootObject
   /**
    * Possible embedded data
    */
-  public var data(default, null):tiledfl.image.Data;
+  public var data(default, null):Data;
 
   /**
    * Loaded bitmap
@@ -58,14 +59,14 @@ class Image extends tiledfl.RootObject
   public var bitmap(default, null):Bitmap;
 
   private var mTransSet:Bool;
-  private var mMap:tiledfl.TMap;
+  private var mMap:TMap;
 
   /**
    * Constructor
    * @param node representation to parse
    * @param map map object this new instance belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     // cache map
@@ -89,7 +90,7 @@ class Image extends tiledfl.RootObject
       switch (child.nodeName)
       {
         case "data":
-          this.data = new tiledfl.image.Data(child);
+          this.data = new Data(child);
       }
     }
   }

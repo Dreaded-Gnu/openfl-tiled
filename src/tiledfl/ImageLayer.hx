@@ -2,6 +2,7 @@ package tiledfl;
 
 import openfl.events.Event;
 import openfl.geom.Rectangle;
+import tiledfl.helper.AnimatedTile;
 
 /**
  * Image layer representation
@@ -10,7 +11,7 @@ import openfl.geom.Rectangle;
  */
 @:allow(tiledfl.Group)
 @:allow(tiledfl.TMap)
-class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
+class ImageLayer extends RootObject implements Updatable
 {
   /**
    * Id
@@ -85,12 +86,12 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
   /**
    * Image layer properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Linked image of image layer
    */
-  public var image(default, null):Null<tiledfl.Image>;
+  public var image(default, null):Null<Image>;
 
   /**
    * Tileset
@@ -100,16 +101,16 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
   /**
    * Tile
    */
-  public var tile(default, null):Null<tiledfl.helper.AnimatedTile>;
+  public var tile(default, null):Null<AnimatedTile>;
 
-  private var mMap:tiledfl.TMap;
+  private var mMap:TMap;
 
   /**
    * Constructor
    * @param node xml representation to parse
    * @param map map the image lyer belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     // cache map
@@ -140,9 +141,9 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
       switch (child.nodeName)
       {
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
         case "image":
-          this.image = new tiledfl.Image(child, this.mMap);
+          this.image = new Image(child, this.mMap);
       }
     }
   }
@@ -186,7 +187,7 @@ class ImageLayer extends tiledfl.RootObject implements tiledfl.Updatable
     rect.push(new Rectangle(0, 0, this.image.width, this.image.height));
     this.tileset = new openfl.display.Tileset(this.image.bitmap.bitmapData, rect);
     // build tile
-    this.tile = new tiledfl.helper.AnimatedTile(0, this.x, this.y, 1, 1, 0, null, this.mMap);
+    this.tile = new AnimatedTile(0, this.x, this.y, 1, 1, 0, null, this.mMap);
     // set tileset
     this.tile.tileset = this.tileset;
     // fire complete event

@@ -25,7 +25,7 @@ import tiledfl.map.Orientation;
 @:allow(tiledfl.ImageLayer)
 @:allow(tiledfl.Layer)
 @:allow(tiledfl.Object)
-class TMap extends tiledfl.RootObject
+class TMap extends RootObject
 {
   /**
    * Tilemap render offset factor
@@ -142,27 +142,27 @@ class TMap extends tiledfl.RootObject
   /**
    * Array of tilesets
    */
-  public var tileset(default, null):Array<tiledfl.Tileset>;
+  public var tileset(default, null):Array<Tileset>;
 
   /**
    * Array of layers
    */
-  public var layer(default, null):Array<tiledfl.Layer>;
+  public var layer(default, null):Array<Layer>;
 
   /**
    * Array of object groups
    */
-  public var objectgroup(default, null):Array<tiledfl.ObjectGroup>;
+  public var objectgroup(default, null):Array<ObjectGroup>;
 
   /**
    * Array of image layers
    */
-  public var imagelayer(default, null):Array<tiledfl.ImageLayer>;
+  public var imagelayer(default, null):Array<ImageLayer>;
 
   /**
    * Array of groups
    */
-  public var group(default, null):Array<tiledfl.Group>;
+  public var group(default, null):Array<Group>;
 
   /**
    * Is fully loaded flag
@@ -201,7 +201,7 @@ class TMap extends tiledfl.RootObject
   private var mGroupLoaded:Bool;
   private var mPath:String;
   private var mTileMap:openfl.display.Tilemap;
-  private var mRenderObjects:Array<tiledfl.Updatable>;
+  private var mRenderObjects:Array<Updatable>;
   private var mOffsetX:Float;
   private var mOffsetY:Float;
   private var mPreviousOffsetX:Float;
@@ -408,13 +408,13 @@ class TMap extends tiledfl.RootObject
     this.nextobjectid = xmlParsed.exists("nextobjectid") ? Std.parseInt(xmlParsed.get("nextobjectid")) : -1;
     this.infinite = xmlParsed.exists("infinite") ? Std.parseInt(xmlParsed.get("infinite")) : 0;
     // setup tileset, layer, objectgroup, imagelayer and group
-    this.tileset = new Array<tiledfl.Tileset>();
-    this.layer = new Array<tiledfl.Layer>();
-    this.objectgroup = new Array<tiledfl.ObjectGroup>();
-    this.imagelayer = new Array<tiledfl.ImageLayer>();
-    this.group = new Array<tiledfl.Group>();
+    this.tileset = new Array<Tileset>();
+    this.layer = new Array<Layer>();
+    this.objectgroup = new Array<ObjectGroup>();
+    this.imagelayer = new Array<ImageLayer>();
+    this.group = new Array<Group>();
     // setup render objects array
-    this.mRenderObjects = new Array<tiledfl.Updatable>();
+    this.mRenderObjects = new Array<Updatable>();
 
     var layerId:Int = 0;
     for (child in xmlParsed)
@@ -427,22 +427,22 @@ class TMap extends tiledfl.RootObject
       switch (child.nodeName)
       {
         case "tileset":
-          var ts:tiledfl.Tileset = new tiledfl.Tileset(child, this);
+          var ts:Tileset = new Tileset(child, this);
           this.tileset.push(ts);
         case "layer":
-          var l:tiledfl.Layer = new tiledfl.Layer(child, this, layerId++);
+          var l:Layer = new Layer(child, this, layerId++);
           this.layer.push(l);
           this.mRenderObjects.push(l);
         case "objectgroup":
-          var o:tiledfl.ObjectGroup = new tiledfl.ObjectGroup(child, this);
+          var o:ObjectGroup = new ObjectGroup(child, this);
           this.objectgroup.push(o);
           this.mRenderObjects.push(o);
         case "imagelayer":
-          var i:tiledfl.ImageLayer = new tiledfl.ImageLayer(child, this);
+          var i:ImageLayer = new ImageLayer(child, this);
           this.imagelayer.push(i);
           this.mRenderObjects.push(i);
         case "group":
-          var g:tiledfl.Group = new tiledfl.Group(child, this);
+          var g:Group = new Group(child, this);
           this.group.push(g);
           this.mRenderObjects.push(g);
       }
@@ -511,7 +511,7 @@ class TMap extends tiledfl.RootObject
     }
     if (!this.mTilesetLoaded)
     {
-      var tmpTileset:Array<tiledfl.Tileset> = new Array<tiledfl.Tileset>();
+      var tmpTileset:Array<Tileset> = new Array<Tileset>();
       for (tileset in this.tileset)
       {
         tmpTileset.push(tileset);
@@ -543,7 +543,7 @@ class TMap extends tiledfl.RootObject
     }
     else if (!this.mImageLayerLoaded)
     {
-      var tmpImageLayer:Array<tiledfl.ImageLayer> = new Array<tiledfl.ImageLayer>();
+      var tmpImageLayer:Array<ImageLayer> = new Array<ImageLayer>();
       for (imagelayer in this.imagelayer)
       {
         tmpImageLayer.push(imagelayer);
@@ -575,7 +575,7 @@ class TMap extends tiledfl.RootObject
     }
     else if (!this.mGroupLoaded)
     {
-      var tmpGroup:Array<tiledfl.Group> = new Array<tiledfl.Group>();
+      var tmpGroup:Array<Group> = new Array<Group>();
       for (group in this.group)
       {
         tmpGroup.push(group);
@@ -617,15 +617,15 @@ class TMap extends tiledfl.RootObject
   /**
    * Helper to get tileset by gid
    * @param gid
-   * @return tiledfl.Tileset
+   * @return Tileset
    */
-  public function tilesetByGid(gid:Int):Null<tiledfl.Tileset>
+  public function tilesetByGid(gid:Int):Null<Tileset>
   {
     if (this.isDisposed())
     {
       return null;
     }
-    var tileset:tiledfl.Tileset = null;
+    var tileset:Tileset = null;
     for (ts in this.tileset)
     {
       if (gid >= ts.firstgid)
@@ -786,7 +786,7 @@ class TMap extends tiledfl.RootObject
    * @param name object group name to lookup
    * @return Object group with the name or null if not found
    */
-  public function objectgroupByName(name:String):Null<tiledfl.ObjectGroup>
+  public function objectgroupByName(name:String):Null<ObjectGroup>
   {
     if (this.isDisposed())
     {

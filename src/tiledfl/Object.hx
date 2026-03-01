@@ -2,12 +2,21 @@ package tiledfl;
 
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import tiledfl.Helper;
+import tiledfl.helper.AnimatedTile;
+import tiledfl.helper.Flippable;
+import tiledfl.object.Ellipse;
+import tiledfl.object.Point as ObjectPoint;
+import tiledfl.object.Polygon;
+import tiledfl.object.Polyline;
+import tiledfl.object.Text;
+import tiledfl.tileset.Tile;
 
 /**
  * Tiled object
  */
 @:allow(tiledfl.ObjectGroup)
-class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable implements tiledfl.Updatable
+class Object extends RootObject implements Flippable implements Updatable
 {
   /**
    * ID
@@ -67,35 +76,35 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
   /**
    * Object properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Ellipse instance
    */
-  public var ellipse(default, null):Null<tiledfl.object.Ellipse>;
+  public var ellipse(default, null):Null<Ellipse>;
 
   /**
    * Point instance
    */
-  public var point(default, null):Null<tiledfl.object.Point>;
+  public var point(default, null):Null<ObjectPoint>;
 
   /**
    * Polygon instance
    */
-  public var polygon(default, null):Null<tiledfl.object.Polygon>;
+  public var polygon(default, null):Null<Polygon>;
 
   /**
    * Polyline instance
    */
-  public var polyline(default, null):Null<tiledfl.object.Polyline>;
+  public var polyline(default, null):Null<Polyline>;
 
   /**
    * Text instance
    */
-  public var text(default, null):Null<tiledfl.object.Text>;
+  public var text(default, null):Null<Text>;
 
-  private var mTile:tiledfl.helper.AnimatedTile;
-  private var mMap:tiledfl.TMap;
+  private var mTile:AnimatedTile;
+  private var mMap:TMap;
   private var mGid:Int;
   #if tiledfl_debug_render_object
   private var mShape:openfl.display.Shape;
@@ -107,7 +116,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
    * @param node xml representation to parse
    * @param map map this object belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     this.mMap = map;
@@ -137,17 +146,17 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
       switch (child.nodeName)
       {
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
         case "ellipse":
-          this.ellipse = new tiledfl.object.Ellipse(child, this);
+          this.ellipse = new Ellipse(child, this);
         case "point":
-          this.point = new tiledfl.object.Point(child, this);
+          this.point = new ObjectPoint(child, this);
         case "polygon":
-          this.polygon = new tiledfl.object.Polygon(child, this);
+          this.polygon = new Polygon(child, this);
         case "polyline":
-          this.polyline = new tiledfl.object.Polyline(child, this);
+          this.polyline = new Polyline(child, this);
         case "text":
-          this.text = new tiledfl.object.Text(child, this);
+          this.text = new Text(child, this);
       }
     }
   }
@@ -213,7 +222,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
       return 0;
     }
     // get tileset
-    var tileset:tiledfl.Tileset = this.mMap.tilesetByGid(gid);
+    var tileset:Tileset = this.mMap.tilesetByGid(gid);
     if (null == tileset)
     {
       return 0;
@@ -222,13 +231,13 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
     gid -= tileset.firstgid;
     // get tileset and tile
     var ts:openfl.display.Tileset = tileset.tileset;
-    var tile:tiledfl.tileset.Tile = tileset.getTileByGid(gid);
+    var tile:Tile = tileset.getTileByGid(gid);
     if (tile?.tileset != null)
     {
       ts = tile.tileset;
     }
     // generate tile
-    var t:tiledfl.helper.AnimatedTile = null;
+    var t:AnimatedTile = null;
     // handle already set
     if (this.mTile != null)
     {
@@ -246,11 +255,11 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
       t.tileset = ts;
       t.map = this.mMap;
       // apply flipping
-      tiledfl.Helper.applyTileFlipping(this.mMap, t, this, tileset);
+      Helper.applyTileFlipping(this.mMap, t, this, tileset);
     }
     else
     {
-      t = new tiledfl.helper.AnimatedTile( // gid
+      t = new AnimatedTile( // gid
         tile?.tileset != null ? 0 : gid, // x / y position
         this.x - tileset.tileoffset.x,
         this.y - tileset.tileoffset.y - this.height, // scaling depending on object size
@@ -259,7 +268,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
       // set tileset
       t.tileset = ts;
       // apply flipping
-      tiledfl.Helper.applyTileFlipping(this.mMap, t, this, tileset);
+      Helper.applyTileFlipping(this.mMap, t, this, tileset);
     }
     // cache tilemap locally
     var tilemap:openfl.display.Tilemap = this.mMap.tilemap;
@@ -307,7 +316,7 @@ class Object extends tiledfl.RootObject implements tiledfl.helper.Flippable impl
     // build tile if not built
     if (this.mTile == null)
     {
-      this.mTile = new tiledfl.helper.AnimatedTile(0, this.x, this.y, 1, 1, 0, null, this.mMap);
+      this.mTile = new AnimatedTile(0, this.x, this.y, 1, 1, 0, null, this.mMap);
     }
     // set x and y
     this.mTile.x = this.x - shapeOffsetX;

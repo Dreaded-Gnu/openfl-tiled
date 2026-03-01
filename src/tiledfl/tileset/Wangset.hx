@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Wangset representation
  */
-class Wangset extends tiledfl.RootObject
+class Wangset extends RootObject
 {
   /**
    * Name
@@ -23,17 +23,17 @@ class Wangset extends tiledfl.RootObject
   /**
    * Wangset properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Wang color
    */
-  public var wangcolor(default, null):Array<tiledfl.tileset.Wangcolor>;
+  public var wangcolor(default, null):Array<Wangcolor>;
 
   /**
    * Wang tile
    */
-  public var wangtile(default, null):Array<tiledfl.tileset.Wangtile>;
+  public var wangtile(default, null):Array<Wangtile>;
 
   /**
    * Constructor
@@ -41,8 +41,8 @@ class Wangset extends tiledfl.RootObject
   public function new()
   {
     super();
-    this.wangcolor = new Array<tiledfl.tileset.Wangcolor>();
-    this.wangtile = new Array<tiledfl.tileset.Wangtile>();
+    this.wangcolor = new Array<Wangcolor>();
+    this.wangtile = new Array<Wangtile>();
   }
 
   /**

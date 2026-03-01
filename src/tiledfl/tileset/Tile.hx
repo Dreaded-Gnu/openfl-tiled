@@ -2,13 +2,14 @@ package tiledfl.tileset;
 
 import openfl.events.Event;
 import openfl.geom.Rectangle;
+import tiledfl.tileset.Animation;
 
 /**
  * Tiled tile representation
  */
 @:allow(tiledfl.TMap)
 @:allow(tiledfl.Tileset)
-class Tile extends tiledfl.RootObject
+class Tile extends RootObject
 {
   /**
    * Tile id
@@ -53,36 +54,36 @@ class Tile extends tiledfl.RootObject
   /**
    * Tile properties
    */
-  public var properties(default, null):Null<tiledfl.Properties>;
+  public var properties(default, null):Null<Properties>;
 
   /**
    * Image of the tile
    */
-  public var image(default, null):Null<tiledfl.Image>;
+  public var image(default, null):Null<Image>;
 
   /**
    * Object group
    */
-  public var objectgroup(default, null):Null<tiledfl.ObjectGroup>;
+  public var objectgroup(default, null):Null<ObjectGroup>;
 
   /**
    * Animation
    */
-  public var animation(default, null):Null<tiledfl.tileset.Animation>;
+  public var animation(default, null):Null<Animation>;
 
   /**
    * Used and created openfl tileset
    */
   public var tileset(default, null):Null<openfl.display.Tileset>;
 
-  private var mMap:tiledfl.TMap;
+  private var mMap:TMap;
 
   /**
    * Constructor
    * @param node xml representation to parse
    * @param map map the tile belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     this.mMap = map;
@@ -105,13 +106,13 @@ class Tile extends tiledfl.RootObject
       switch (child.nodeName)
       {
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
         case "image":
-          this.image = new tiledfl.Image(child, this.mMap);
+          this.image = new Image(child, this.mMap);
         case "objectgroup":
-          this.objectgroup = new tiledfl.ObjectGroup(child, this.mMap);
+          this.objectgroup = new ObjectGroup(child, this.mMap);
         case "animation":
-          this.animation = new tiledfl.tileset.Animation(child);
+          this.animation = new Animation(child);
       }
     }
   }

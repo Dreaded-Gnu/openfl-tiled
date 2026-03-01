@@ -3,7 +3,7 @@ package tiledfl.tileset;
 /**
  * Tile offset representation
  */
-class TileOffset extends tiledfl.RootObject
+class TileOffset extends RootObject
 {
   /**
    * Offset on x axis

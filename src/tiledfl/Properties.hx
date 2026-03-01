@@ -4,12 +4,12 @@ package tiledfl;
  * Tiled properties representation
  */
 @:allow(tiledfl.Layer)
-class Properties extends tiledfl.RootObject
+class Properties extends RootObject
 {
   /**
    * Array of properties
    */
-  public var property(default, null):Array<tiledfl.Property>;
+  public var property(default, null):Array<Property>;
 
   /**
    * Constructor
@@ -18,7 +18,7 @@ class Properties extends tiledfl.RootObject
   public function new(node:Xml)
   {
     super();
-    this.property = new Array<tiledfl.Property>();
+    this.property = new Array<Property>();
     for (child in node)
     {
       if (child.nodeType != Xml.Element)
@@ -27,7 +27,7 @@ class Properties extends tiledfl.RootObject
         continue;
       }
       // push property
-      this.property.push(new tiledfl.Property(child));
+      this.property.push(new Property(child));
     }
   }
 

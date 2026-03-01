@@ -2,11 +2,13 @@ package tiledfl.layer;
 
 import openfl.errors.Error;
 import openfl.utils.ByteArray;
+import tiledfl.layer.Data;
+import tiledfl.layer.Tile;
 
 /**
  * Chunk layer implementation
  */
-class Chunk extends tiledfl.RootObject
+class Chunk extends RootObject
 {
   /**
    * X coordinate the chunk starts
@@ -31,14 +33,14 @@ class Chunk extends tiledfl.RootObject
   /**
    * Array of tiles in chunk
    */
-  public var tile(default, null):Array<tiledfl.layer.Tile>;
+  public var tile(default, null):Array<Tile>;
 
   /**
    * Constructor
    * @param node chunk xml representation
    * @param data layer data handling
    */
-  public function new(node:Xml, data:tiledfl.layer.Data)
+  public function new(node:Xml, data:Data)
   {
     super();
 
@@ -47,7 +49,7 @@ class Chunk extends tiledfl.RootObject
     this.width = Std.parseInt(node.get("width"));
     this.height = Std.parseInt(node.get("height"));
 
-    this.tile = new Array<tiledfl.layer.Tile>();
+    this.tile = new Array<Tile>();
     // get data
     var chunk:String = node.firstChild().nodeValue;
     // handle encoding
@@ -69,7 +71,7 @@ class Chunk extends tiledfl.RootObject
             // read tiles and push them
             while (data.position < data.length)
             {
-              this.tile.push(new tiledfl.layer.Tile(data.readInt()));
+              this.tile.push(new Tile(data.readInt()));
             }
           case "zstd":
             throw new Error("zstd compression not supported");
@@ -81,14 +83,14 @@ class Chunk extends tiledfl.RootObject
             // read tiles and push them
             while (data.position < data.length)
             {
-              this.tile.push(new tiledfl.layer.Tile(data.readInt()));
+              this.tile.push(new Tile(data.readInt()));
             }
         }
       case "csv":
         var tileIndexList:Array<Int> = Helper.csvToArray(chunk);
         for (tileId in tileIndexList)
         {
-          this.tile.push(new tiledfl.layer.Tile(tileId));
+          this.tile.push(new Tile(tileId));
         }
       default:
         throw new Error("no encoding not supported");

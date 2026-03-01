@@ -1,9 +1,11 @@
 package tiledfl.layer;
 
+import tiledfl.helper.Flippable;
+
 /**
  * Tile representation
  */
-class Tile extends RootObject implements tiledfl.helper.Flippable
+class Tile extends RootObject implements Flippable
 {
   /**
    * Gid property

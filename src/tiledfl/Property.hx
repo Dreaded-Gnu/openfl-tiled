@@ -3,7 +3,7 @@ package tiledfl;
 /**
  * Tiled property
  */
-class Property extends tiledfl.RootObject
+class Property extends RootObject
 {
   /**
    * Name

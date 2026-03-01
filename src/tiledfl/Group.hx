@@ -8,7 +8,7 @@ import openfl.events.Event;
  * @event complete Dispatched once group loading is completed
  */
 @:allow(tiledfl.TMap)
-class Group extends tiledfl.RootObject implements tiledfl.Updatable
+class Group extends RootObject implements Updatable
 {
   /**
    * Group id
@@ -53,30 +53,30 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
   /**
    * Object properties
    */
-  public var properties(default, null):tiledfl.Properties;
+  public var properties(default, null):Properties;
 
   /**
    * Object layer
    */
-  public var layer(default, null):Array<tiledfl.Layer>;
+  public var layer(default, null):Array<Layer>;
 
   /**
    * Object group
    */
-  public var objectgroup(default, null):Array<tiledfl.ObjectGroup>;
+  public var objectgroup(default, null):Array<ObjectGroup>;
 
   /**
    * Image layer
    */
-  public var imagelayer(default, null):Array<tiledfl.ImageLayer>;
+  public var imagelayer(default, null):Array<ImageLayer>;
 
   /**
    * Nested groups
    */
-  public var group(default, null):Array<tiledfl.Group>;
+  public var group(default, null):Array<Group>;
 
-  private var mMap:tiledfl.TMap;
-  private var mRenderObjects:Array<tiledfl.Updatable>;
+  private var mMap:TMap;
+  private var mRenderObjects:Array<Updatable>;
   private var mImageLayerLoaded:Bool;
   private var mGroupLoaded:Bool;
 
@@ -85,7 +85,7 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
    * @param node xml representation to parse
    * @param map map this group belongs to
    */
-  public function new(node:Xml, map:tiledfl.TMap)
+  public function new(node:Xml, map:TMap)
   {
     super();
     // cache map
@@ -100,12 +100,12 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
     this.visible = node.exists("visible") ? Std.parseInt(node.get("visible")) : 0;
     this.tintcolor = node.get("tintcolor");
     // initialize arrays
-    this.layer = new Array<tiledfl.Layer>();
-    this.objectgroup = new Array<tiledfl.ObjectGroup>();
-    this.imagelayer = new Array<tiledfl.ImageLayer>();
-    this.group = new Array<tiledfl.Group>();
+    this.layer = new Array<Layer>();
+    this.objectgroup = new Array<ObjectGroup>();
+    this.imagelayer = new Array<ImageLayer>();
+    this.group = new Array<Group>();
     // setup render objects array
-    this.mRenderObjects = new Array<tiledfl.Updatable>();
+    this.mRenderObjects = new Array<Updatable>();
     // parse children
     for (child in node)
     {
@@ -117,21 +117,21 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
       switch (child.nodeName)
       {
         case "properties":
-          this.properties = new tiledfl.Properties(child);
+          this.properties = new Properties(child);
         case "layer":
-          var l:tiledfl.Layer = new tiledfl.Layer(child, this.mMap, 0);
+          var l:Layer = new Layer(child, this.mMap, 0);
           this.layer.push(l);
           this.mRenderObjects.push(l);
         case "objectgroup":
-          var o:tiledfl.ObjectGroup = new tiledfl.ObjectGroup(child, this.mMap);
+          var o:ObjectGroup = new ObjectGroup(child, this.mMap);
           this.objectgroup.push(o);
           this.mRenderObjects.push(o);
         case "imagelayer":
-          var i:tiledfl.ImageLayer = new tiledfl.ImageLayer(child, this.mMap);
+          var i:ImageLayer = new ImageLayer(child, this.mMap);
           this.imagelayer.push(i);
           this.mRenderObjects.push(i);
         case "group":
-          var g:tiledfl.Group = new tiledfl.Group(child, this.mMap);
+          var g:Group = new Group(child, this.mMap);
           this.group.push(g);
           this.mRenderObjects.push(g);
       }
@@ -234,7 +234,7 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
     }
     if (!this.mImageLayerLoaded)
     {
-      var tmpImageLayer:Array<tiledfl.ImageLayer> = new Array<tiledfl.ImageLayer>();
+      var tmpImageLayer:Array<ImageLayer> = new Array<ImageLayer>();
       for (imagelayer in this.imagelayer)
       {
         tmpImageLayer.push(imagelayer);
@@ -266,7 +266,7 @@ class Group extends tiledfl.RootObject implements tiledfl.Updatable
     }
     else if (!this.mGroupLoaded)
     {
-      var tmpGroup:Array<tiledfl.Group> = new Array<tiledfl.Group>();
+      var tmpGroup:Array<Group> = new Array<Group>();
       for (group in this.group)
       {
         tmpGroup.push(group);

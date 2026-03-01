@@ -3,7 +3,7 @@ package tiledfl.object;
 /**
  * Tiled text object
  */
-class Text extends tiledfl.RootObject
+class Text extends RootObject
 {
   /**
    * Font family to be used
@@ -60,14 +60,14 @@ class Text extends tiledfl.RootObject
    */
   public var valign(default, null):String;
 
-  private var mObject:tiledfl.Object;
+  private var mObject:Object;
 
   /**
    * Constructor
    * @param node node data to parse
    * @param object object instance this object belongs to
    */
-  public function new(node:Xml, object:tiledfl.Object)
+  public function new(node:Xml, object:Object)
   {
     super();
     this.mObject = object;

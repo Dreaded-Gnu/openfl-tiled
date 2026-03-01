@@ -3,16 +3,16 @@ package tiledfl.object;
 /**
  * Tiled point object
  */
-class Point extends tiledfl.RootObject
+class Point extends RootObject
 {
-  private var mObject:tiledfl.Object;
+  private var mObject:Object;
 
   /**
    * Constructor
    * @param node node data to parse
    * @param object object instance this object belongs to
    */
-  public function new(node:Xml, object:tiledfl.Object)
+  public function new(node:Xml, object:Object)
   {
     super();
     this.mObject = object;
